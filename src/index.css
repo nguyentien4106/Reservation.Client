@@ -1,0 +1,10 @@
+.login{
+    position: absolute;
+    top: 35%;
+    left: 30%;
+    width: 50%;
+}
+
+.pointer{
+    cursor: pointer;
+}
