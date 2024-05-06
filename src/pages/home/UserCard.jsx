@@ -42,7 +42,7 @@ const UserCard = ({ user }) => {
                         items={[ {src: image}, {src: image}, {src: image}]}
                     >
                         {
-                            [image, image, image].map(item => <Image src={item} />)
+                            [image].map(item => <Image src={item} />)
                         }
                     </Image.PreviewGroup>
                 </Skeleton>

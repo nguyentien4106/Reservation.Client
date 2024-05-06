@@ -8,7 +8,6 @@ export function AppLayout({ children }) {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
-    
     return (
         <Layout>
             <Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} >
@@ -40,7 +39,9 @@ export function AppLayout({ children }) {
                         minHeight: 280,
                         padding: 24,
                         borderRadius: borderRadiusLG,
-                        textAlign: 'center'
+                        textAlign: 'center',
+                        display: 'flex',
+                        justifyContent: 'center',
                     }}
                 >
                 {
@@ -48,9 +49,9 @@ export function AppLayout({ children }) {
                 }
                 </div>
             </Content>
-            <Footer style={{ textAlign: 'center' }}>
+            {/* <Footer style={{ textAlign: 'center' }}>
                 Ant Design ©{new Date().getFullYear()} Created by Ant UED
-            </Footer>
+            </Footer> */}
         </Layout>
     )
 }

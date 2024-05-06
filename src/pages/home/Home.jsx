@@ -38,21 +38,21 @@ export default function Home() {
     
 
     return (
-        <>
+        <div>
             <Divider orientation="left">Responsive</Divider>
-                <Row
-                    gutter={{
-                        xs: 8,
-                        sm: 16,
-                        md: 24,
-                        lg: 32,
-                    }}
-                    justify="space-around"
-                >
-                    {
-                        users ? users.map((user, index) => <UserCard user={user} key={index} />) : <div>Loading</div>
-                    }
-                </Row>
-        </>
+            <Row
+                gutter={{
+                    xs: 8,
+                    sm: 16,
+                    md: 24,
+                    lg: 32,
+                }}
+                justify="space-around"
+            >
+                {
+                    users ? users.map((user, index) => <UserCard user={user} key={index} />) : <div>Loading</div>
+                }
+            </Row>
+        </div>
     )
 }

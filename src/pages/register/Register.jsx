@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 import {
-  AutoComplete,
   Button,
-  Cascader,
   Checkbox,
-  Col,
   Form,
   Input,
-  InputNumber,
-  Row,
   Select,
 } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const { Option } = Select;
 
@@ -39,29 +35,32 @@ const tailFormItemLayout = {
 };
 
 const Register= () => {
-  const [form] = Form.useForm();
+    const [form] = Form.useForm();
+    const navigate = useNavigate();
 
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);
-  };
+    const onFinish = (values) => {
+        console.log('Received values of form: ', values);
+        navigate("/login");
+    };
 
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 70 }}>
-        <Option value="84" >+84</Option>
-      </Select>
-    </Form.Item>
-  );
+    const prefixSelector = (
+        <Form.Item name="prefix" noStyle>
+        <Select style={{ width: 70 }}>
+            <Option value="84" >+84</Option>
+        </Select>
+        </Form.Item>
+    );
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', flexDirection: "column", width : "70%" }}>
+            <h1>Sign Up</h1>
             <Form
                 {...formItemLayout}
                 form={form}
                 name="register"
                 onFinish={onFinish}
                 initialValues={{ prefix: '+84' }}
-                style={{ maxWidth: 600 }}
+                style={{ maxWidth: 600, alignSelf: "center", width: "70%" }}
                 scrollToFirstError
             >
             <Form.Item
@@ -128,6 +127,17 @@ const Register= () => {
             </Form.Item>
 
             <Form.Item
+                name="role"
+                label="Role"
+                rules={[{ required: true, message: 'Please select you role!' }]}
+            >
+                <Select placeholder="select your role">
+                    <Option value="everyone">Find someone to hire</Option>
+                    <Option value="collaborator">Become a collaborator</Option>
+                </Select>
+            </Form.Item>
+
+            <Form.Item
                 name="phone"
                 label="Phone Number"
                 rules={[{ required: true, message: 'Please input your phone number!' }]}
@@ -141,8 +151,8 @@ const Register= () => {
                 rules={[{ required: true, message: 'Please select gender!' }]}
             >
                 <Select placeholder="select your gender">
-                <Option value="male">Nam</Option>
-                <Option value="female">Nữ</Option>
+                <Option value="male">Male</Option>
+                <Option value="female">Female</Option>
                 <Option value="other">Other</Option>
                 </Select>
             </Form.Item>
