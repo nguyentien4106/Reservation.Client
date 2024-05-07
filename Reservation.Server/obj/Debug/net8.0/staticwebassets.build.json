@@ -1,0 +1,23 @@
+{
+  "Version": 1,
+  "Hash": "m3+IgP6bvYj0CEJcgke1q6idb3fOiVJCzcTLSCmtGdc=",
+  "Source": "Reservation.Server",
+  "BasePath": "_content/Reservation.Server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "C:\\Users\\Walter\\Desktop\\Reservation\\reservation.client\\reservation.client.esproj",
+      "Version": 2,
+      "Source": "reservation.client",
+      "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
