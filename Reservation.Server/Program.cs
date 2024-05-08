@@ -1,8 +1,12 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Reservation.Server.Data;
+using Reservation.Server.Serivces.Auth;
 using System.Security.Claims;
+using System.Text;
 
 namespace Reservation.Server
 {
@@ -18,11 +22,32 @@ namespace Reservation.Server
 
             builder.Services.AddAuthorization();
             builder.Services.AddIdentityApiEndpoints<ApplicationUser>(opts => opts.SignIn.RequireConfirmedEmail = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddSignInManager()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>("REFRESHTOKENPROVIDER");
+            ;
 
             // Add services to the container.
+            builder.Services.AddTransient<AuthService>();
 
             builder.Services.AddControllers();
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["JWT:Audience"],
+                    ValidIssuer = builder.Configuration["JWT:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]))
+                };
+            });
+
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -32,22 +57,6 @@ namespace Reservation.Server
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.MapIdentityApi<ApplicationUser>();
-
-            app.MapPost("/logout", async (SignInManager<ApplicationUser> signInManager) =>
-            {
-
-                await signInManager.SignOutAsync();
-                return Results.Ok();
-
-            }).RequireAuthorization();
-
-
-            app.MapGet("/pingauth", (ClaimsPrincipal user) =>
-            {
-                var email = user.FindFirstValue(ClaimTypes.Email); // get the user's email from the claim
-                return Results.Json(new { Email = email }); ; // return the email as a plain text response
-            }).RequireAuthorization();
-
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
