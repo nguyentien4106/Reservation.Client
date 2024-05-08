@@ -33,11 +33,11 @@ function Login() {
             setError("");
             // post data to the /register api
 
-            var loginurl = "";
-            if (rememberme == true)
-                loginurl = "/login?useCookies=true";
-            else
-                loginurl = "/login?useSessionCookies=true";
+            var loginurl = "/auth/login";
+            // if (rememberme == true)
+            //     loginurl = "/login";
+            // else
+            //     loginurl = "/login";
 
             fetch(loginurl, {
                 method: "POST",
@@ -56,6 +56,9 @@ function Login() {
                     if (data.ok) {
                         setError("Successful Login.");
                         window.location.href = '/';
+                    }
+                    if(data.status === 401){
+                        setError("You need to confirm your email first.");
                     }
                     else
                         setError("Error Logging In.");

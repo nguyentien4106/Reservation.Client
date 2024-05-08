@@ -17,7 +17,7 @@ namespace Reservation.Server
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
             builder.Services.AddAuthorization();
-            builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
+            builder.Services.AddIdentityApiEndpoints<ApplicationUser>(opts => opts.SignIn.RequireConfirmedEmail = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Add services to the container.
