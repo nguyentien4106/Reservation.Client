@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Reservation.Server.Data;
 using Reservation.Server.Models.DTO.Auth;
 using Reservation.Server.Serivces.Auth;
+using Reservation.Server.Serivces.Email;
 using System.Security.Claims;
 using System.Text;
 
@@ -23,7 +24,10 @@ namespace Reservation.Server
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
             builder.Services.AddAuthorization();
-            builder.Services.AddIdentityApiEndpoints<ApplicationUser>(opts => opts.SignIn.RequireConfirmedEmail = true)
+            builder.Services.AddIdentityApiEndpoints<ApplicationUser>(opts =>
+            {
+                opts.SignIn.RequireConfirmedEmail = false;
+            })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>("REFRESHTOKENPROVIDER");
@@ -36,6 +40,7 @@ namespace Reservation.Server
 
             // Add services to the container.
             builder.Services.AddTransient<IAuthService, AuthService>();
+            builder.Services.AddTransient<IEmailService, EmailService>();
 
             builder.Services.AddControllers();
 
@@ -88,6 +93,11 @@ namespace Reservation.Server
 
             app.UseAuthorization();
 
+            app.MapGet("/pingauth", (ClaimsPrincipal user) =>
+            {
+                var email = user.FindFirstValue(ClaimTypes.Email); // get the user's email from the claim
+                return Results.Json(new { Email = email }); ; // return the email as a plain text response
+            }).RequireAuthorization();
 
             app.MapControllers();
 

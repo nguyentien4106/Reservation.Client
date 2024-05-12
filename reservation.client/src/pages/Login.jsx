@@ -1,122 +1,174 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { hide, show } from "../state/loading/loadingSlice";
+import { generateMessages, setLocal } from "../lib/helper";
+
+import { App, Button, Checkbox, Form, Grid, Input, theme, Typography } from "antd";
+
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import { setAuth } from "../state/auth/authSlice";
+
+const { useToken } = theme;
+const { useBreakpoint } = Grid;
+const { Text, Title, Link } = Typography;
+const BASE_URL = "https://localhost:7080/"
 
 function Login() {
-    // state variables for email and passwords
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [rememberme, setRememberme] = useState(false);
-    // state variable for error messages
-    const [error, setError] = useState("");
     const navigate = useNavigate();
-
-    // handle change events for input fields
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        if (name === "email") setEmail(value);
-        if (name === "password") setPassword(value);
-        if (name === "rememberme") setRememberme(e.target.checked);
-    };
-
-    const handleRegisterClick = () => {
-        navigate("/register");
-    }
-
-    // handle submit event for the form
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // validate email and passwords
-        if (!email || !password) {
-            setError("Please fill in all fields.");
-        } else {
-            // clear error message
-            setError("");
-            // post data to the /register api
-
-            var loginurl = "/auth/login";
-            // if (rememberme == true)
-            //     loginurl = "/login";
-            // else
-            //     loginurl = "/login";
-
-            fetch(loginurl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password,
-                }),
-            })
-
-                .then((data) => {
-                    // handle success or error from the server
-                    console.log(data);
-                    if (data.ok) {
-                        setError("Successful Login.");
-                        window.location.href = '/';
-                    }
-                    if(data.status === 401){
-                        setError("You need to confirm your email first.");
-                    }
-                    else
-                        setError("Error Logging In.");
-
-                })
-                .catch((error) => {
-                    // handle network error
-                    console.error(error);
-                    setError("Error Logging in.");
-                });
+    const dispatch = useDispatch()
+    const { token } = useToken();
+    const screens = useBreakpoint();
+    const styles = {
+        container: {
+            margin: "0 auto",
+            padding: screens.md ? `${token.paddingXL}px` : `${token.sizeXXL}px ${token.padding}px`,
+            width: "380px"
+        },
+        footer: {
+            marginTop: token.marginLG,
+            textAlign: "center",
+            width: "100%"
+        },
+        forgotPassword: {
+            float: "right"
+        },
+        header: {
+            marginBottom: token.marginXL
+        },
+        section: {
+            alignItems: "center",
+            backgroundColor: token.colorBgContainer,
+            display: "flex",
+            height: "auto",
+            padding: screens.md ? `${token.sizeXXL}px 0px` : "0px"
+        },
+        text: {
+            color: token.colorTextSecondary
+        },
+        title: {
+            fontSize: screens.md ? token.fontSizeHeading2 : token.fontSizeHeading3
         }
     };
+    const { message } = App.useApp();
 
+    const onFinish = (values) => {
+        const loginurl = BASE_URL + "auth/login"
+        dispatch(show())
+        axios.post(loginurl, values).then(res => {
+            const { data } = res
+            if (!data.isSucceed) {
+                message.error(generateMessages(data.messages))
+            }
+            else{
+                console.log(data)
+                // setAuthToken(data.data.accessToken)
+                setLocal("refreshToken", data.data.refreshToken)
+                setLocal("accessToken", data.data.accessToken)
+                setLocal("email", values.email)
+                dispatch(setAuth({ email : values.email}))
+                dispatch(setAuth({ isAuth: true }))
+                navigate('/')
+            }
+
+        }).finally(() => {
+            dispatch(hide())
+        })
+
+    };
+
+    
     return (
-        <div className="containerbox">
-            <h3>Login</h3>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label className="forminput" htmlFor="email">Email:</label>
+        <section style={styles.section}>
+            <div style={styles.container}>
+                <div style={styles.header}>
+                    <svg
+                        width="25"
+                        height="24"
+                        viewBox="0 0 25 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <rect x="0.464294" width="24" height="24" rx="4.8" fill="#1890FF" />
+                        <path
+                            d="M14.8643 3.6001H20.8643V9.6001H14.8643V3.6001Z"
+                            fill="white"
+                        />
+                        <path
+                            d="M10.0643 9.6001H14.8643V14.4001H10.0643V9.6001Z"
+                            fill="white"
+                        />
+                        <path
+                            d="M4.06427 13.2001H11.2643V20.4001H4.06427V13.2001Z"
+                            fill="white"
+                        />
+                    </svg>
+
+                    <Title style={styles.title}>Sign in</Title>
+                    <Text style={styles.text}>
+                        Welcome back to Reservation Partner Service! Please enter your details below to
+                        sign in.
+                    </Text>
                 </div>
-                <div>
-                    <input
-                        type="email"
-                        id="email"
+                <Form
+                    name="normal_login"
+                    initialValues={{
+                        remember: true,
+                    }}
+                    onFinish={onFinish}
+                    layout="vertical"
+                    requiredMark="optional"
+                >
+                    <Form.Item
                         name="email"
-                        value={email}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">Password:</label>
-                </div>
-                <div>
-                    <input
-                        type="password"
-                        id="password"
+                        rules={[
+                            {
+                                type: "email",
+                                required: true,
+                                message: "Please input your Email!",
+                            },
+                        ]}
+                    >
+                        <Input
+                            prefix={<MailOutlined />}
+                            placeholder="Email"
+                        />
+                    </Form.Item>
+                    <Form.Item
                         name="password"
-                        value={password}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <input
-                        type="checkbox"
-                        id="rememberme"
-                        name="rememberme"
-                        checked={rememberme}
-                        onChange={handleChange} /><span>Remember Me</span>
-                </div>
-                <div>
-                    <button type="submit">Login</button>
-                </div>
-                <div>
-                    <button onClick={handleRegisterClick}>Register</button>
-                </div>
-            </form>
-            {error && <p className="error">{error}</p>}
-        </div>
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input your Password!",
+                            },
+                        ]}
+                    >
+                        <Input.Password
+                            prefix={<LockOutlined />}
+                            type="password"
+                            placeholder="Password"
+                        />
+                    </Form.Item>
+                    <Form.Item>
+                        <Form.Item name="remember" valuePropName="checked" noStyle>
+                            <Checkbox>Remember me</Checkbox>
+                        </Form.Item>
+                        <a style={styles.forgotPassword} onClick={() => navigate("/forgotpassword")}>
+                            Forgot password?
+                        </a>
+                    </Form.Item>
+                    <Form.Item style={{ marginBottom: "0px" }}>
+                        <Button block="true" type="primary" htmlType="submit">
+                            Log in
+                        </Button>
+                        <div style={styles.footer}>
+                            <Text style={styles.text}>Don't have an account?</Text>{" "}
+                            <Link onClick={() => navigate('/register')}>Sign up now</Link>
+                        </div>
+                    </Form.Item>
+                </Form>
+            </div>
+        </section>
     );
 }
 

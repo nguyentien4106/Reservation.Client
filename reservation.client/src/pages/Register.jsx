@@ -1,120 +1,174 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { generateMessages } from '../lib/helper';
+import { useDispatch } from 'react-redux';
+import { hide, show } from '../state/loading/loadingSlice';
+import { App, Button, Form, Grid, Input, theme, Typography } from "antd";
+
+import { LockOutlined, MailOutlined, UserOutlined, PhoneOutlined } from "@ant-design/icons";
+import { useNavigate } from 'react-router-dom';
+
+const { useToken } = theme;
+const { useBreakpoint } = Grid;
+const { Text, Title, Link } = Typography;
 
 
-function Register() {
-    // state variables for email and passwords
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const navigate = useNavigate();
+const Register = () => {
+    const { message } = App.useApp()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    // state variable for error messages
-    const [error, setError] = useState("");
+    const onFinish = values => {
+        const BASE_URL = "https://localhost:7080/"
+        const registerPath = "auth/register"
+        dispatch(show())
+        axios.post(BASE_URL + registerPath, values).then(res => {
+            const { data } = res
 
-    const handleLoginClick = () => {
-        navigate("/login");
-    }
-
-
-    // handle change events for input fields
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        if (name === "email") setEmail(value);
-        if (name === "password") setPassword(value);
-        if (name === "confirmPassword") setConfirmPassword(value);
-    };
-
-    // handle submit event for the form
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // validate email and passwords
-        if (!email || !password || !confirmPassword) {
-            setError("Please fill in all fields.");
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            setError("Please enter a valid email address.");
-        } else if (password !== confirmPassword) {
-            setError("Passwords do not match.");
-        } else {
-            // clear error message
-            setError("");
-            // post data to the /register api
-            fetch("/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password,
-                }),
+            message.open({
+                type: data.isSucceed ? "success" : "error",
+                content: generateMessages(data.messages),
+                duration: 10
             })
-                //.then((response) => response.json())
-                .then((data) => {
-                    // handle success or error from the server
-                    console.log(data);
-                    if (data.ok)
-                        setError("Successful register.");
-                    else
-                        setError("Error registering.");
 
-                })
-                .catch((error) => {
-                    // handle network error
-                    console.error(error);
-                    setError("Error registering.");
-                });
+        }).finally(() => {
+            dispatch(hide())
+        })
+    };
+    const { token } = useToken();
+    const screens = useBreakpoint();
+
+    const styles = {
+        container: {
+            margin: "0 auto",
+            padding: screens.md ? `${token.paddingXL}px` : `${token.paddingXL}px ${token.padding}px`,
+            width: "380px"
+        },
+        forgotPassword: {
+            float: "right"
+        },
+        header: {
+            marginBottom: token.marginXL,
+            textAlign: "center"
+        },
+        section: {
+            alignItems: "center",
+            backgroundColor: token.colorBgContainer,
+            display: "flex",
+            height: "auto",
+            padding: screens.md ? `${token.sizeXXL}px 0px` : "0px"
+        },
+        signup: {
+            marginTop: token.marginLG,
+            textAlign: "center",
+            width: "100%"
+        },
+        text: {
+            color: token.colorTextSecondary
+        },
+        title: {
+            fontSize: screens.md ? token.fontSizeHeading2 : token.fontSizeHeading3
         }
     };
 
     return (
-        <div className="containerbox">
-            <h3>Register</h3>
+        <section style={styles.section}>
+            <div style={styles.container}>
+                <div style={styles.header}>
+                    <svg
+                        width="33"
+                        height="32"
+                        viewBox="0 0 33 32"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <rect x="0.125" width="32" height="32" rx="6.4" fill="#1890FF" />
+                        <path
+                            d="M19.3251 4.80005H27.3251V12.8H19.3251V4.80005Z"
+                            fill="white"
+                        />
+                        <path d="M12.925 12.8H19.3251V19.2H12.925V12.8Z" fill="white" />
+                        <path d="M4.92505 17.6H14.525V27.2001H4.92505V17.6Z" fill="white" />
+                    </svg>
 
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email">Email:</label>
-                </div><div>
-                    <input
-                        type="email"
-                        id="email"
+                    <Title style={styles.title}>Sign up</Title>
+                    <Text style={styles.text}>
+                        Join us! Create an account to get started.
+                    </Text>
+                </div>
+                <Form
+                    name="normal_signup"
+                    onFinish={onFinish}
+                    layout="vertical"
+                    requiredMark="optional"
+                >
+                    <Form.Item
+                        name="name"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input your Name!",
+                            },
+                        ]}
+                    >
+                        <Input prefix={<UserOutlined />} placeholder="Name" />
+                    </Form.Item>
+                    <Form.Item
                         name="email"
-                        value={email}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">Password:</label></div><div>
-                    <input
-                        type="password"
-                        id="password"
+                        rules={[
+                            {
+                                type: "email",
+                                required: true,
+                                message: "Please input your Email!",
+                            },
+                        ]}
+                    >
+                        <Input prefix={<MailOutlined />} placeholder="Email" />
+                    </Form.Item>
+                    <Form.Item
                         name="password"
-                        value={password}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="confirmPassword">Confirm Password:</label></div><div>
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        value={confirmPassword}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <button type="submit">Register</button>
-
-                </div>
-                <div>
-                    <button onClick={handleLoginClick}>Go to Login</button>
-                </div>
-            </form>
-
-            {error && <p className="error">{error}</p>}
-        </div>
+                        extra="Password needs to be at least 8 characters."
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input your Password!",
+                            },
+                        ]}
+                    >
+                        <Input.Password
+                            prefix={<LockOutlined />}
+                            type="password"
+                            placeholder="Password"
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        name="phonenumber"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input your Phone Number!",
+                                // min: 8
+                            },
+                        ]}
+                    >
+                        <Input
+                            prefix={<PhoneOutlined />}
+                            placeholder="Phone Number"
+                        />
+                    </Form.Item>
+                    <Form.Item style={{ marginBottom: "0px" }}>
+                        <Button block type="primary" htmlType="submit">
+                            Sign up
+                        </Button>
+                        <div style={styles.signup}>
+                            <Text style={styles.text}>Already have an account?</Text>{" "}
+                            <Link onClick={() => navigate("/login")}>Sign in</Link>
+                        </div>
+                    </Form.Item>
+                </Form>
+            </div>
+        </section>
     );
-}
+};
 
 export default Register;

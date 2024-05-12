@@ -1,40 +1,12 @@
 
-import { useNavigate } from "react-router-dom";
+import { Typography } from "antd";
 
-function LogoutLink(props) {
+const { Link } = Typography;
 
-    const navigate = useNavigate();
-
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        fetch("/logout", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: ""
-
-        })
-            .then((data) => {
-                if (data.ok) {
-
-                    navigate("/login");
-                }
-                else { }
-
-
-            })
-            .catch((error) => {
-                console.error(error);
-            })
-
-    };
+function LogoutLink({ email, handleLogout }) {
 
     return (
-        <>
-            <a href="#" onClick={handleSubmit}>{props.children}</a>
-        </>
+        <Link onClick={handleLogout} >{`${email} Logout`}</Link>
     );
 }
 

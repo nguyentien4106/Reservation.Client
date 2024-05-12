@@ -1,32 +1,28 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.WebUtilities;
 using Reservation.Server.Data;
 using Reservation.Server.Models.DTO.Auth;
+using Reservation.Server.Models.DTO.Auth.Request;
+using Reservation.Server.Models.DTO.Auth.Response;
+using Reservation.Server.Models.DTO.Email;
+using Reservation.Server.Serivces.Email;
 using System.Security.Claims;
+using System.Security.Policy;
+using System.Text.Encodings.Web;
+using System.Text;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using NuGet.Common;
+using System.Web;
 
 namespace Reservation.Server.Serivces.Auth
 {
-    public class UserRegisterRequest
-    {
-        public string Email { get; set; } = "";
-        public string Password { get; set; } = "";
-    }
-
-    public class UserLoginRequest
-    {
-        public string Email { get; set; } = "";
-        public string Password { get; set; } = "";
-    }
-    public class UserLoginResponse
-    {
-        public string AccessToken { get; set; } = "";
-        public string RefreshToken { get; set; } = "";
-    }
-
     public class AuthService(UserManager<ApplicationUser> userManager,
                                 SignInManager<ApplicationUser> signInManager,
                                 RoleManager<IdentityRole> roleManager,
                                 ApplicationDbContext applicationDbContext,
-                                TokenSettings tokenSettings
+                                TokenSettings tokenSettings,
+                                IEmailService emailService
         ) : IAuthService
     {
         private readonly UserManager<ApplicationUser> _userManager = userManager;
@@ -34,26 +30,42 @@ namespace Reservation.Server.Serivces.Auth
         private readonly RoleManager<IdentityRole> _roleManager = roleManager;
         private readonly TokenSettings _tokenSettings = tokenSettings;
         private readonly ApplicationDbContext _context = applicationDbContext;
+        private readonly IEmailService _emailServicee = emailService;
 
-        public async Task<AppResponse<bool>> RegisterAsync(UserRegisterRequest request)
+        public async Task<AppResponse<bool>> RegisterAsync(UserRegisterRequest request, string host)
         {
             var user = new ApplicationUser()
             {
                 UserName = request.Email,
                 Email = request.Email,
-
+                PhoneNumber = request.PhoneNumber
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
 
-            if (result.Succeeded)
-            {
-                return new AppResponse<bool>().SetSuccessResponse(true);
-            }
-            else
+            if (!result.Succeeded)
             {
                 return new AppResponse<bool>().SetErrorResponse(GetRegisterErrors(result));
+
             }
+
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //code = System.Web.HttpUtility.UrlEncode(code);
+
+            //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var callbackUrl = $"{tokenSettings.Audience}/ConfirmEmail?email={request.Email}&code={code}";
+
+            var emailContent = new EmailContent
+            {
+                Subject = "Confirm your email!",
+                Content = $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.",
+                ToEmail = request.Email,
+                ToName = request.Email
+            };
+
+            _emailServicee.SendMail(emailContent);
+
+            return new AppResponse<bool>().SetSuccessResponse(true, "confirm", "Your email has been registered successfully!\nPlease check the email to confirmation!");
         }
 
         private static Dictionary<string, string[]> GetRegisterErrors(IdentityResult result)
@@ -98,23 +110,20 @@ namespace Reservation.Server.Serivces.Auth
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
             {
-                return new AppResponse<UserLoginResponse>().SetErrorResponse("email", "Email not found");
+                return new AppResponse<UserLoginResponse>().SetErrorResponse("email", "Email hasn't been registered !");
             }
-            else
+            var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, true);
+
+            if (result.Succeeded)
             {
-                var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, true);
-
-                if (result.Succeeded)
-                {
-                    var token = await GenerateUserToken(user);
-                    return new AppResponse<UserLoginResponse>().SetSuccessResponse(token);
-                }
-                var emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
-
-                return emailConfirmed ? new AppResponse<UserLoginResponse>().SetErrorResponse("password", result.ToString(), 403) 
-                    : new AppResponse<UserLoginResponse>().SetErrorResponse("account", "Please check email and do confirmation!", 401);
-
+                var token = await GenerateUserToken(user);
+                return new AppResponse<UserLoginResponse>().SetSuccessResponse(token);
             }
+
+            var emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+
+            return emailConfirmed ? new AppResponse<UserLoginResponse>().SetErrorResponse("password", result.ToString(), 403)
+                : new AppResponse<UserLoginResponse>().SetErrorResponse("account", "Please check email and do confirmation!", 401);
 
         }
 
@@ -146,6 +155,23 @@ namespace Reservation.Server.Serivces.Auth
             var refreshToken = await _userManager.GenerateUserTokenAsync(user, "REFRESHTOKENPROVIDER", "RefreshToken");
             await _userManager.SetAuthenticationTokenAsync(user, "REFRESHTOKENPROVIDER", "RefreshToken", refreshToken);
             return new UserLoginResponse() { AccessToken = token, RefreshToken = refreshToken };
+        }
+
+        public async Task<AppResponse<string>> EmailConfirm(string email, string code)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if(user == null)
+            {
+                return new AppResponse<string>().SetErrorResponse("user", "User not found! Something goes wrong please check it again !", 404);
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (!result.Succeeded)
+            {
+                return new AppResponse<string>().SetErrorResponse("user", result.ToString(), 404);
+            }
+
+            return new AppResponse<string>().SetSuccessResponse(email, "success", "Congratulations ! Your email has been confirmed!");
         }
     }
 }

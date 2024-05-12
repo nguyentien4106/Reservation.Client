@@ -47,19 +47,23 @@ export default defineConfig({
                 target: 'https://localhost:7080/',
                 secure: false
             },
-            '^/pingauth': {
+            '/auth/profile': {
                 target: 'https://localhost:7080/',
                 secure: false
             },
-            '^/register': {
+            '/auth/register': {
                 target: 'https://localhost:7080/',
                 secure: false
             },
-            '^/login': {
+            '/auth/confirmemail': {
                 target: 'https://localhost:7080/',
                 secure: false
             },
-            '^/logout': {
+            '/auth/login': {
+                target: 'https://localhost:7080/',
+                secure: false
+            },
+            '/auth/logout': {
                 target: 'https://localhost:7080/',
                 secure: false
             },
