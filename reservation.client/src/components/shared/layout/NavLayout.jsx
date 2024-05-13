@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { Button, Grid, Menu, Space, theme } from "antd";
 
@@ -8,21 +8,35 @@ import { useNavigate } from "react-router-dom";
 import LogoutLink from "../../LogoutLink";
 import DataService from '../../../lib/DataService';
 import { getLocal, setLocal } from "../../../lib/helper";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { hide, show } from "../../../state/loading/loadingSlice";
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
 
-export default function NavLayout() {
+export default function NavLayout({ isAuth }) {
     const { token } = useToken();
     const screens = useBreakpoint();
-    // const [email, setEmail] = useState(getLocal("email"))
 
     const menuItems = [
         {
-            key: "userRegisterService",
-            label: "Đăng ký cho thuê",
+            key: "collaborator",
+            label: "Cộng tác viên",
+            children: [
+                {
+                    key: "overall",
+                    label: "Tổng quan"
+                },
+                {
+                    key: "customers",
+                    label: "Khách hàng"
+                },
+                {
+                    key: "setting",
+                    label: "Cài đặt",
+                    onClick: () => navigate("/collaborator-setting")
+                }
+            ]
         },
         {
             key: "donate",
@@ -84,41 +98,38 @@ export default function NavLayout() {
             console.log("lougout", res)
             setLocal("accessToken", "")
             setLocal("refreshToken", "")
-            setEmail("")
+            setLocal("email", "")
         })
         .finally(() => {
             dispacth(hide())
         })
     }
 
-    const [authView, setAuthView ] = useState("")
-
-    const email = useSelector(state => state.auth.email)
-
+    const email = getLocal("email")
+    
     const renderAuth = () => {
-        return email ? <LogoutLink email={email} handleLogout={handleLogout}/>
+        return isAuth ? <LogoutLink email={email} handleLogout={handleLogout}/>
             : <Space>
                 <Button type="text" style={{ backgroundColor: "white" }} onClick={() => navigate("/login")}>Log in</Button>
                 <Button type="primary" onClick={() => navigate("/register")}>Sign up</Button>
             </Space>
     }
 
-
-    useEffect(() => {
-        setAuthView(renderAuth())
-        console.log('emailchange')
-    }, [email])
-
     return (
         <>
             <div style={styles.menuContainer}>
-                <div className="demo-logo" onClick={() => navigate("/")}>
+                <div className="demo-logo" onClick={() => {
+                    navigate("/")
+                    setCurrent("")
+                }}>
                     ThueNguoiYeu.Com
                 </div>
                 <Menu
+                    className="layout-menu"
                     style={styles.menu}
                     mode="horizontal"
                     items={menuItems}
+                    theme="light"
                     onClick={onClick}
                     selectedKeys={screens.md ? [current] : ""}
                     overflowedIndicator={
@@ -127,7 +138,7 @@ export default function NavLayout() {
                 />
             </div>
             {
-                authView
+                renderAuth()
             }
         </>
     );

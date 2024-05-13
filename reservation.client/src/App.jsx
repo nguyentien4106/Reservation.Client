@@ -11,6 +11,10 @@ import { message } from 'antd';
 import { App as AntdApp } from 'antd'
 import ConfirmEmail from './pages/ConfirmEmail';
 import AppLayout from './components/shared/layout/AppLayout';
+import { getLocal } from './lib/helper';
+import ErrorPage from './pages/ErrorPage';
+import UserServicesRegister from './pages/CollaboratorSetting';
+import CollaboratorSetting from './pages/CollaboratorSetting';
 
 // const router = createBrowserRouter([
 //     {
@@ -40,6 +44,7 @@ import AppLayout from './components/shared/layout/AppLayout';
 function App() {
     const isLoading = useSelector(state => state.loading.isLoading)
     const [msg, contextHolder] = message.useMessage()
+    const isAuth = getLocal("email") ? true : false
 
     return (
         <>
@@ -48,10 +53,13 @@ function App() {
             <AntdApp>
                 <BrowserRouter>
                         <Routes>
-                            <Route path='/' element={<AppLayout />}>
-                                <Route index={true} element={<Home></Home>} />
-                                <Route path='login' element={<Login></Login>} />
-                                <Route path='register' element={<Register></Register>} />
+                            <Route path='/' element={<AppLayout isAuth={isAuth}/>}>
+                                <Route index={true} element={<Home />} />
+                                <Route path='login' element={<Login />} />
+                                <Route path='register' element={<Register />} />
+                                <Route path='confirmemail' element={<ConfirmEmail />} />
+                                <Route path='collaborator-setting' element={<CollaboratorSetting />}/>
+                                <Route path='*' element={<ErrorPage />} />
                             </Route>
                         </Routes>
                 </BrowserRouter>

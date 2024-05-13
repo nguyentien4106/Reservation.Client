@@ -4,3 +4,14 @@
   font-size: 24px;
   color: white;
 }
+/* 
+.ant-menu-item-only-child{
+    color: white !important;
+} */
+.ant-menu-submenu-title{
+    color: white !important;
+}
+.ant-menu-item-selected{
+    background-color: red;
+    color: red;
+}

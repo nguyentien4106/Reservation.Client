@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reservation.Server.Data;
 
@@ -11,9 +12,11 @@ using Reservation.Server.Data;
 namespace Reservation.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240513064745_Addprofile")]
+    partial class Addprofile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,9 +232,6 @@ namespace Reservation.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
@@ -268,26 +268,34 @@ namespace Reservation.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId")
-                        .IsUnique()
-                        .HasFilter("[ApplicationUserId] IS NOT NULL");
+                    b.HasIndex("UserId1");
 
-                    b.ToTable("CollaboratorProfiles");
+                    b.ToTable("UserServices");
                 });
 
             modelBuilder.Entity("Reservation.Server.Data.Entities.CollaboratorServiceEntity", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("CollaboratorProfileId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ServiceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("CollaboratorProfileId", "ServiceId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ServiceId");
+                    b.HasIndex("CollaboratorProfileId");
 
                     b.ToTable("CollaboratorServiceEntities");
                 });
@@ -362,31 +370,25 @@ namespace Reservation.Server.Migrations
 
             modelBuilder.Entity("Reservation.Server.Data.Entities.CollaboratorProfile", b =>
                 {
-                    b.HasOne("Reservation.Server.Data.ApplicationUser", "ApplicationUser")
-                        .WithOne("CollaboratorProfile")
-                        .HasForeignKey("Reservation.Server.Data.Entities.CollaboratorProfile", "ApplicationUserId");
+                    b.HasOne("Reservation.Server.Data.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId1");
 
-                    b.Navigation("ApplicationUser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Reservation.Server.Data.Entities.CollaboratorServiceEntity", b =>
                 {
                     b.HasOne("Reservation.Server.Data.Entities.CollaboratorProfile", null)
-                        .WithMany()
+                        .WithMany("CollaboratorServiceEntities")
                         .HasForeignKey("CollaboratorProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Reservation.Server.Data.Entities.Service", null)
-                        .WithMany()
-                        .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Reservation.Server.Data.ApplicationUser", b =>
+            modelBuilder.Entity("Reservation.Server.Data.Entities.CollaboratorProfile", b =>
                 {
-                    b.Navigation("CollaboratorProfile");
+                    b.Navigation("CollaboratorServiceEntities");
                 });
 #pragma warning restore 612, 618
         }

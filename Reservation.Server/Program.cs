@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Reservation.Server.Profile;
 using Reservation.Server.Data;
 using Reservation.Server.Models.DTO.Auth;
 using Reservation.Server.Serivces.Auth;
 using Reservation.Server.Serivces.Email;
 using System.Security.Claims;
 using System.Text;
+using Reservation.Server.Serivces.UserServiceRegister;
 
 namespace Reservation.Server
 {
@@ -26,7 +28,7 @@ namespace Reservation.Server
             builder.Services.AddAuthorization();
             builder.Services.AddIdentityApiEndpoints<ApplicationUser>(opts =>
             {
-                opts.SignIn.RequireConfirmedEmail = false;
+                opts.SignIn.RequireConfirmedEmail = true;
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -41,6 +43,7 @@ namespace Reservation.Server
             // Add services to the container.
             builder.Services.AddTransient<IAuthService, AuthService>();
             builder.Services.AddTransient<IEmailService, EmailService>();
+            builder.Services.AddTransient<ICollaboratorService, CollaboratorService>();
 
             builder.Services.AddControllers();
 
@@ -74,6 +77,8 @@ namespace Reservation.Server
             });
 
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
             var app = builder.Build();
 

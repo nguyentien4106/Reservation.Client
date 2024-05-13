@@ -2,17 +2,13 @@ import React, { useState } from 'react';
 import { Layout, theme, Button } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import NavLayout from './NavLayout';
-import { useSelector } from 'react-redux';
 
 const { Header, Content } = Layout;
 
-const AppLayout = ({ children }) => {
+const AppLayout = ({ isAuth }) => {
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
-
-    const isAuth = useSelector(state => state.auth.isAuth)
-    console.log(isAuth)
 
     return (
         <>

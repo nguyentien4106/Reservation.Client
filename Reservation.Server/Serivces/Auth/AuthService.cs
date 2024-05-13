@@ -32,13 +32,18 @@ namespace Reservation.Server.Serivces.Auth
         private readonly ApplicationDbContext _context = applicationDbContext;
         private readonly IEmailService _emailServicee = emailService;
 
+        private const string UserRole = "USER";
+
         public async Task<AppResponse<bool>> RegisterAsync(UserRegisterRequest request, string host)
         {
             var user = new ApplicationUser()
             {
                 UserName = request.Email,
                 Email = request.Email,
-                PhoneNumber = request.PhoneNumber
+                PhoneNumber = request.PhoneNumber,
+                PhoneNumberConfirmed = true,
+                EmailConfirmed = true,
+                JoinedDate = DateTime.UtcNow,
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
@@ -50,10 +55,9 @@ namespace Reservation.Server.Serivces.Auth
             }
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            //code = System.Web.HttpUtility.UrlEncode(code);
-
-            //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var callbackUrl = $"{tokenSettings.Audience}/ConfirmEmail?email={request.Email}&code={code}";
+
+            await _userManager.AddToRoleAsync(user, UserRole);
 
             var emailContent = new EmailContent
             {

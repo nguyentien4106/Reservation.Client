@@ -44,27 +44,27 @@ export default defineConfig({
     server: {
         proxy: {
             '^/weatherforecast': {
-                target: 'https://localhost:7080/',
+                target,
                 secure: false
             },
             '/auth/profile': {
-                target: 'https://localhost:7080/',
+                target,
                 secure: false
             },
             '/auth/register': {
-                target: 'https://localhost:7080/',
+                target,
                 secure: false
             },
             '/auth/confirmemail': {
-                target: 'https://localhost:7080/',
+                target,
                 secure: false
             },
             '/auth/login': {
-                target: 'https://localhost:7080/',
+                target,
                 secure: false
             },
             '/auth/logout': {
-                target: 'https://localhost:7080/',
+                target,
                 secure: false
             },
 

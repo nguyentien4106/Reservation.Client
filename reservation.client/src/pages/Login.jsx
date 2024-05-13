@@ -62,12 +62,10 @@ function Login() {
             }
             else{
                 console.log(data)
-                // setAuthToken(data.data.accessToken)
                 setLocal("refreshToken", data.data.refreshToken)
                 setLocal("accessToken", data.data.accessToken)
                 setLocal("email", values.email)
                 dispatch(setAuth({ email : values.email}))
-                dispatch(setAuth({ isAuth: true }))
                 navigate('/')
             }
 

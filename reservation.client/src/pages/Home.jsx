@@ -6,6 +6,7 @@ import AppLayout from "../components/shared/layout/AppLayout.jsx";
 function Home() {
     return (
         <>
+            <h1>Home</h1>
         </>
     );
 }
