@@ -5,6 +5,7 @@ import { hide, show } from '../state/loading/loadingSlice'
 import axios from 'axios'
 import { App } from 'antd'
 import { Button, Result } from 'antd';
+import DataService from '../lib/DataService'
 
 const BASE_URL = "https://localhost:7080/"
 
@@ -23,7 +24,7 @@ function ConfirmEmail() {
 
         dispatch(show())
 
-        axios.get(`${BASE_URL}Auth/ConfirmEmail?email=${email}&code=${code}`)
+        DataService.get(`Auth/ConfirmEmail?email=${email}&code=${code}`)
             .then(res => {
                 console.log(res.data)
                 setSucceed(res.data.isSucceed)

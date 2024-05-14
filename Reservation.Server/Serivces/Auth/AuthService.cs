@@ -14,6 +14,7 @@ using System.Text;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using NuGet.Common;
 using System.Web;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Reservation.Server.Serivces.Auth
 {
@@ -131,7 +132,31 @@ namespace Reservation.Server.Serivces.Auth
 
         }
 
+        public async Task<UserLoginResponse> RegenerateToken(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if(user == null)
+            {
+                return new();
+            }
+
+            var token = TokenUtil.GetToken(_tokenSettings, user, GetClaims(user));
+            await _userManager.RemoveAuthenticationTokenAsync(user, "REFRESHTOKENPROVIDER", "RefreshToken");
+            var refreshToken = await _userManager.GenerateUserTokenAsync(user, "REFRESHTOKENPROVIDER", "RefreshToken");
+            await _userManager.SetAuthenticationTokenAsync(user, "REFRESHTOKENPROVIDER", "RefreshToken", refreshToken);
+            return new UserLoginResponse() { AccessToken = token, RefreshToken = refreshToken };
+        }
+
         private async Task<UserLoginResponse> GenerateUserToken(ApplicationUser user)
+        {
+            var token = TokenUtil.GetToken(_tokenSettings, user, GetClaims(user));
+            await _userManager.RemoveAuthenticationTokenAsync(user, "REFRESHTOKENPROVIDER", "RefreshToken");
+            var refreshToken = await _userManager.GenerateUserTokenAsync(user, "REFRESHTOKENPROVIDER", "RefreshToken");
+            await _userManager.SetAuthenticationTokenAsync(user, "REFRESHTOKENPROVIDER", "RefreshToken", refreshToken);
+            return new UserLoginResponse() { AccessToken = token, RefreshToken = refreshToken };
+        }
+
+        private List<Claim> GetClaims(ApplicationUser user)
         {
             var claims = (from ur in _context.UserRoles
                           where ur.UserId == user.Id
@@ -154,13 +179,8 @@ namespace Reservation.Server.Serivces.Auth
 
             claims.AddRange(roleClaims);
 
-            var token = TokenUtil.GetToken(_tokenSettings, user, claims);
-            await _userManager.RemoveAuthenticationTokenAsync(user, "REFRESHTOKENPROVIDER", "RefreshToken");
-            var refreshToken = await _userManager.GenerateUserTokenAsync(user, "REFRESHTOKENPROVIDER", "RefreshToken");
-            await _userManager.SetAuthenticationTokenAsync(user, "REFRESHTOKENPROVIDER", "RefreshToken", refreshToken);
-            return new UserLoginResponse() { AccessToken = token, RefreshToken = refreshToken };
+            return claims;
         }
-
         public async Task<AppResponse<string>> EmailConfirm(string email, string code)
         {
             var user = await _userManager.FindByEmailAsync(email);

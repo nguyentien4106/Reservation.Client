@@ -14,5 +14,8 @@ namespace Reservation.Server.Serivces.Auth
         Task<AppResponse<bool>> LogoutAsync(ClaimsPrincipal user);
 
         Task<AppResponse<UserLoginResponse>> LoginAsync(UserLoginRequest request);
+
+        Task<UserLoginResponse> RegenerateToken(string email);
+
     }
 }

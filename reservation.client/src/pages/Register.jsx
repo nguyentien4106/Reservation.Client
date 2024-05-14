@@ -7,6 +7,7 @@ import { App, Button, Form, Grid, Input, theme, Typography } from "antd";
 
 import { LockOutlined, MailOutlined, UserOutlined, PhoneOutlined } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
+import DataService from '../lib/DataService';
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -19,10 +20,8 @@ const Register = () => {
     const navigate = useNavigate()
 
     const onFinish = values => {
-        const BASE_URL = "https://localhost:7080/"
-        const registerPath = "auth/register"
         dispatch(show())
-        axios.post(BASE_URL + registerPath, values).then(res => {
+        DataService.post("auth/register", values).then(res => {
             const { data } = res
 
             message.open({

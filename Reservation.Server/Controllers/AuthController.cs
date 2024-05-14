@@ -51,5 +51,11 @@ namespace Reservation.Server.Controllers
         {
             return await _authService.EmailConfirm(email, code);
         }
+
+        [HttpGet]
+        public async Task<UserLoginResponse> RegenerateToken(string email)
+        {
+            return await _authService.RegenerateToken(email);
+        }
     }
 }

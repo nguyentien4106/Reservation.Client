@@ -10,6 +10,7 @@ import DataService from '../../../lib/DataService';
 import { getLocal, setLocal } from "../../../lib/helper";
 import { useDispatch } from "react-redux";
 import { hide, show } from "../../../state/loading/loadingSlice";
+import { Cookie } from "../../../lib/cookies";
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -94,11 +95,13 @@ export default function NavLayout({ isAuth }) {
     const handleLogout = (e) => {
         e.preventDefault();
         dispacth(show())
-        DataService.post("Auth/Logout", {}).then(res => {
+        DataService.post("Auth/Logout").then(res => {
             console.log("lougout", res)
-            setLocal("accessToken", "")
-            setLocal("refreshToken", "")
+            // setLocal("accessToken", "")
+            // setLocal("refreshToken", "")
             setLocal("email", "")
+            Cookie.remove("accessToken")
+            Cookie.remove("refreshToken")
         })
         .finally(() => {
             dispacth(hide())

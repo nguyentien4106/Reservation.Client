@@ -8,11 +8,13 @@ import { App, Button, Checkbox, Form, Grid, Input, theme, Typography } from "ant
 
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { setAuth } from "../state/auth/authSlice";
-
+import { Cookie } from "../lib/cookies";
+import DataService from "../lib/DataService";
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
 const BASE_URL = "https://localhost:7080/"
+
 
 function Login() {
     const navigate = useNavigate();
@@ -53,18 +55,22 @@ function Login() {
     const { message } = App.useApp();
 
     const onFinish = (values) => {
-        const loginurl = BASE_URL + "auth/login"
         dispatch(show())
-        axios.post(loginurl, values).then(res => {
+        DataService.post("Auth/Login", values).then(res => {
             const { data } = res
             if (!data.isSucceed) {
                 message.error(generateMessages(data.messages))
             }
             else{
                 console.log(data)
+
                 setLocal("refreshToken", data.data.refreshToken)
                 setLocal("accessToken", data.data.accessToken)
                 setLocal("email", values.email)
+
+                Cookie.set("accessToken", data.data.accessToken, 1)
+                Cookie.set("refreshToken", data.data.refreshToken, 5)
+
                 dispatch(setAuth({ email : values.email}))
                 navigate('/')
             }
