@@ -16,6 +16,7 @@ namespace Reservation.Server.Data.Entities
         public bool? IsReady { get; set; }
 
         [Required]
+        [Length(10, 11)]
         public string PhoneNumber { get; set; }
 
         public string? Email{ get; set;}
@@ -36,6 +37,8 @@ namespace Reservation.Server.Data.Entities
         public string Title { get; set; }
 
         public List<Service> Services { get; set; } = [];
+
+        public string? Status { get; set; }
 
     }
 }

@@ -24,14 +24,14 @@ const AppLayout = ({ isAuth }) => {
                 </Header>
                 <Content
                     style={{
-                        padding: '0 48px',
+                        padding: '0 16px',
                     }}
                 >
                     <div
                         style={{
                             background: colorBgContainer,
                             minHeight: 280,
-                            padding: 24,
+                            padding: 10,
                             borderRadius: borderRadiusLG,
                         }}
                     >

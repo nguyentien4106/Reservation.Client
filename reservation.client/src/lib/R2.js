@@ -4,36 +4,27 @@ import {
     PutObjectCommand,
     S3Client,
     GetObjectCommand,
-    S3
-} from '@aws-sdk/client-s3'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-
+    DeleteObjectCommand,
+    DeleteObjectsCommand,
+    S3,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import axios from "axios";
 import {
     cloudflareAccountId,
     cloudflareR2AccessKeyId,
     cloudflareR2SecretAccessKey,
-    cloudflareR2BucketName
-} from './R2Config.js'
+    cloudflareR2BucketName,
+} from "./R2Config.js";
 
 const s3Client = new S3Client({
-    region: 'auto',
+    region: "auto",
     endpoint: `https://${cloudflareAccountId}.r2.cloudflarestorage.com`,
     credentials: {
         accessKeyId: cloudflareR2AccessKeyId,
         secretAccessKey: cloudflareR2SecretAccessKey,
     },
 });
-
-// console.log(
-//     await S3.send(
-//         new ListBucketsCommand('')
-//     )
-// );
-
-console.log(
-
-);
-
 
 const upload = async (fileName, fileStream, type) => {
     const uploadParams = {
@@ -44,36 +35,59 @@ const upload = async (fileName, fileStream, type) => {
     };
 
     const cmd = new PutObjectCommand(uploadParams);
-    
-    // const digest = md5(fileStream);
 
-    cmd.middlewareStack.add((next) => async (args) => {
-        args.request.headers["Access-Control-Allow-Origin"] = "*";
-        return await next(args);
-    }, {
-        step: 'build',
-        name: 'addETag'
-    })
+    return await s3Client.send(cmd);
+};
 
-    const data = await s3Client.send(cmd);
-    const url = await getSignedUrl(s3Client, cmd, { expiresIn : 3600 })
-    console.log(url)
-    return data
-}
+const get = async (username) => {
+    const SevenDays = 60 * 60 * 24 * 7;
+    const getUrl = async (content) =>
+        await getSignedUrl(
+            s3Client,
+            new GetObjectCommand({
+                Bucket: cloudflareR2BucketName,
+                Key: content.Key,
+            }),
+            { expiresIn: SevenDays }
+        );
+    const objects = s3Client
+        .send(
+            new ListObjectsV2Command({
+                Bucket: cloudflareR2BucketName,
+                Prefix: username,
+            })
+        )
+        .then((objects) => {
+            return (
+                objects.Contents &&
+                objects.Contents.map(async (content) => ({
+                    url: getUrl(content),
+                    content: content,
+                }))
+            );
+        });
 
-const get = async (user) => {
-    const urls = s3Client.send(
-                        new ListObjectsV2Command({ Bucket: cloudflareR2BucketName })
-                    ).then(objects => {
-                        console.log(objects)
-                        return objects && objects.Contents.map(async content =>  await getSignedUrl(s3Client, new GetObjectCommand({Bucket: cloudflareR2BucketName, Key: content.Key}), { expiresIn: 3600 }))
-                    })
-    return urls
-}
+    return objects;
+};
 
+const deleteObject = async (object) => {
+    const command = new DeleteObjectCommand({
+        Bucket: cloudflareR2BucketName,
+        Key: object,
+    });
 
+    try {
+        const response = await s3Client.send(command);
+        return response
+    } catch (err) {
+
+        console.log(err)
+        throw err.message
+    }
+};
 
 export const R2 = {
     upload: upload,
-    get: get
-}
+    get: get,
+    delete: deleteObject,
+};

@@ -3,93 +3,134 @@ import { PlusOutlined } from "@ant-design/icons";
 import { App, Button, Image, Upload } from "antd";
 import { R2 } from "../../lib/R2";
 import { getLocal } from "../../lib/helper";
+import { useDispatch } from "react-redux";
+import { hide, show } from "../../state/loading/loadingSlice";
 const getBase64 = (file) =>
     new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.readAsDataURL(file);
+        reader.readAsArrayBuffer(file);
         reader.onload = () => resolve(reader.result);
         reader.onerror = (error) => reject(error);
     });
-
-const maxImagesLength = 10
 
 const UploadComponent = ({ turnedOnProfile }) => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState("");
     const [fileList, setFileList] = useState([]);
-    const [ files, setFiles ] = useState([])
-    const email = getLocal("email")
+    const dispatch = useDispatch();
+    const { message } = App.useApp();
+    const username = getLocal("email").split("@")[0];
 
-    const handlePreview = async (file) => {
+    useEffect(() => {
+        const fetchAndSetFileList = async () => {
+            try {
+                const result = await R2.get(username);
+                if (result) {
+                    const items = await Promise.all(result.map(item => item));
+                    const updatedFileList = items.map(async res => {
+                        const url = await res.url;
+                        return {
+                            uid: res.content.Key,
+                            name: res.content.Key,
+                            status: 'done',
+                            url: url,
+                        };
+                    });
+                    setFileList(await Promise.all(updatedFileList));
+                }
+            } catch (error) {
+                message.error(`Error loading images from server beacuse ${error}`);
+            }
+        };
+    
+        fetchAndSetFileList();
+    }, []);
+
+    const onFileRemove = (file) => {
+        if (file.originFileObj) {
+            message.success("Successfully deleted image");
+            return;
+        }
+
+        dispatch(show());
+        R2.delete(file.name)
+            .then((res) => {
+                message.success("Successfully deleted image");
+            })
+            .catch((err) => {
+                message.error(`${err.message}`);
+            })
+            .finally(() => {
+                dispatch(hide());
+            });
+    };
+
+    const onFileChange = ({ fileList: newFileList }) => {
+        setFileList(newFileList);
+    };
+
+    const handleUpload = async () => {
+        dispatch(show())
+        for (let file of fileList) {
+            if (!file.originFileObj) {
+                continue;
+            }
+
+            try {
+                const image = await getBase64(file.originFileObj);
+                const result = await R2.upload(
+                    `${username}/${file.name}`,
+                    image,
+                    file.type
+                );
+
+                if (result.$metadata.httpStatusCode === 200) {
+                    message.success("Successfully uploaded image");
+                }
+            } catch (err) {
+                message.error(
+                    `Failed to upload image because of ${err}. Please try again.`
+                );
+            }
+        }
+
+        dispatch(hide())
+    };
+
+    const onFilePreview = async (file) => {
         if (!file.url && !file.preview) {
-            console.log(file)
             file.preview = await getBase64(file.originFileObj);
         }
         setPreviewImage(file.url || file.preview);
         setPreviewOpen(true);
     };
 
-    const handleChange = ({ fileList : newFileList, file }) => {
-        if(files.length > newFileList.length){
-            setFiles(prev => prev.filter(item => item.uid !== file.uid))
-        }
-        else {
-            setFiles(prev => [...prev, file])
-        }
-        setFileList(newFileList)
-    }
-
-    const uploadButton = (
-        <button
-            style={{
-                border: 0,
-                background: "none",
-            }}
-            type="button"
-        >
-            <PlusOutlined />
-            <div
-                style={{
-                    marginTop: 8,
-                }}
-            >
-                Upload
-            </div>
-        </button>
-    );
-    const { message } = App.useApp();
-    const username = email.split("@")[0]
-
-    const handleUpload = async () => {
-        for(let file of files){
-            const image = await getBase64(file)
-            R2.upload(`${username}//${file.name}`, image, file.type)
-                    .then(result => console.log(result))
-                    .catch((err) => console.error(err))
-        }
-
-        message.success("Successfully upload image");
-    }
-
-    useEffect(() => {
-        R2.get(username).then(res => {
-            console.log(res)
-        })
-    }, [])
-
     return (
         <>
             <Upload
                 listType="picture-card"
                 fileList={fileList}
-                onPreview={handlePreview}
-                onChange={handleChange}
-                beforeUpload={(file) => {
-                    setFileList([...fileList, file])
-                    return false;
-                }}
+                onPreview={onFilePreview}
+                onChange={onFileChange}
+                beforeUpload={() => false}
+                onRemove={onFileRemove}
             >
-                {fileList.length >= maxImagesLength ? null : uploadButton}
+                <button
+                    style={{
+                        border: 0,
+                        background: "none",
+                    }}
+                    type="button"
+                >
+                    <PlusOutlined />
+                    <div
+                        style={{
+                            marginTop: 8,
+                        }}
+                    >
+                        Upload
+                    </div>
+                </button>
             </Upload>
             {previewImage && (
                 <Image
@@ -105,7 +146,13 @@ const UploadComponent = ({ turnedOnProfile }) => {
                     src={previewImage}
                 />
             )}
-            <Button type="primary" onClick={() => handleUpload()} style={{ marginTop: "50px" }}>Cập nhật</Button>
+            <Button
+                type="primary"
+                onClick={() => handleUpload()}
+                style={{ marginTop: "50px", textAlign: "center" }}
+            >
+                Cập nhật Albums
+            </Button>
         </>
     );
 };

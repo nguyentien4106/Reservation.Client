@@ -21,5 +21,11 @@ namespace Reservation.Server.Controllers
         {
             return await _collaboratorService.GetUserAsync(email);
         }
+
+        [HttpPost]
+        public async Task<AppResponse<RegisterDTO>> Register(RegisterDTO dto)
+        {
+            return new AppResponse<RegisterDTO>().SetSuccessResponse(dto);
+        }
     }
 }

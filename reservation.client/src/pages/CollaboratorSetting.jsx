@@ -1,49 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
 import {
-    Button,
-    Form,
-    Input,
-    InputNumber,
-    Upload,
-    Typography,
-    DatePicker,
-    Switch,
+    Grid,
 } from "antd";
 import AuthorizeView from "../components/AuthorizeView";
 import { getLocal } from "../lib/helper";
 import DataService from "../lib/DataService";
 import UploadComponent from "../components/collaborator/UploadComponent";
 import Profile from "../components/collaborator/Profile";
-const { Text } = Typography;
-
-const layout = {
-    labelCol: {
-        span: 8,
-    },
-    wrapperCol: {
-        span: 16,
-    },
-};
-
-/* eslint-disable no-template-curly-in-string */
-const validateMessages = {
-    required: "${label} phải nhập!",
-    types: {
-        email: "${label} is not a valid email!",
-        number: "${label} is not a valid number!",
-    },
-};
-/* eslint-enable no-template-curly-in-string */
-
-const onFinish = (values) => {
-    console.log(values);
-};
+const { useBreakpoint } = Grid;
 
 const UserServicesRegister = () => {
     const [user, setUser] = useState(null);
     const email = getLocal("email");
-    const [turnOn, setTurnOn] = useState(false);
+    const [turnOn, setTurnOn] = useState(true);
+    const { screens } = useBreakpoint();
 
     useEffect(() => {
         DataService.get("Collaborator/GetUser?email=" + email).then((res) => {
@@ -56,18 +26,32 @@ const UserServicesRegister = () => {
         setTurnOn(on);
     };
 
+    const onFinish = (values) => {
+        DataService.post("Collaborator/Register", values).then((res) => {
+            console.log(res);
+        });
+    };
+
     return (
         <AuthorizeView>
             <div
                 style={{
                     display: "flex",
                     justifyContent: "space-around",
+                    gap: 20,
                 }}
+                className="collaborator-setting"
             >
-                <div style={{ flex: 1 }}>
+                <div
+                    style={{
+                        flex: 3,
+                        backgroundColor: "#E8E8E8",
+                        borderRadius: 30,
+                    }}
+                >
                     <h2
                         style={{
-                            marginLeft: "30%",
+                            textAlign: "center"
                         }}
                     >
                         Hồ sơ
@@ -77,13 +61,27 @@ const UserServicesRegister = () => {
                         turnedOnProfile={turnedOnProfile}
                     />
                 </div>
-                <div style={{ flex: 1 }}>
-                    {turnOn && (
-                        <>
-                            <h2>Albums </h2>
-                            <UploadComponent />
-                        </>
-                    )}
+                <div
+                    style={{
+                        flex: 2,
+                        backgroundColor: "#E8E8E8",
+                        borderRadius: 30,
+                    }}
+                >
+                    <h2
+                        style={{
+                            // marginLeft: "30%",
+                            textAlign: "center"
+                        }}
+                    >
+                        Albums{" "}
+                    </h2>
+                    <div style={{
+                        paddingLeft: 16,
+                        paddingRight: 16
+                    }}>
+                        <UploadComponent />
+                    </div>
                 </div>
             </div>
         </AuthorizeView>
