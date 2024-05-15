@@ -8,6 +8,6 @@
 
         public string? Description { get; set; }
 
-        public List<CollaboratorProfile> CollaboratorProfiles { get; set; } = [];
+        public List<CollaboratorService> CollaboratorServices { get; set; } = [];
     }
 }

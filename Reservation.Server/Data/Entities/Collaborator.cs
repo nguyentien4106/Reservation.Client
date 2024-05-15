@@ -2,7 +2,7 @@
 
 namespace Reservation.Server.Data.Entities
 {
-    public class CollaboratorProfile
+    public class Collaborator
     {
         public Guid Id { get; set; }
 
@@ -36,7 +36,7 @@ namespace Reservation.Server.Data.Entities
         [Required]
         public string Title { get; set; }
 
-        public List<Service> Services { get; set; } = [];
+        public List<CollaboratorService> CollaboratorServices { get; set; } = [];
 
         public string? Status { get; set; }
 

@@ -62,16 +62,12 @@ function Login() {
                 message.error(generateMessages(data.messages))
             }
             else{
-                console.log(data)
-
-                setLocal("refreshToken", data.data.refreshToken)
                 setLocal("accessToken", data.data.accessToken)
                 setLocal("email", values.email)
 
-                Cookie.set("accessToken", data.data.accessToken, 1)
-                Cookie.set("refreshToken", data.data.refreshToken, 5)
-
-                dispatch(setAuth({ email : values.email}))
+                Cookie.setAccessToken(data.data.accessToken)
+                Cookie.setRefreshToken(data.data.refreshToken)
+                // dispatch(setAuth({ email : values.email}))
                 navigate('/')
             }
 

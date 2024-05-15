@@ -18,6 +18,7 @@ const UserServicesRegister = () => {
     useEffect(() => {
         DataService.get("Collaborator/GetUser?email=" + email).then((res) => {
             const { data } = res.data;
+            console.log('user', data)
             setUser(data);
         });
     }, []);

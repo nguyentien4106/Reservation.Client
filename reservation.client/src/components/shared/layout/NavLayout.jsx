@@ -18,7 +18,7 @@ const { useBreakpoint } = Grid;
 export default function NavLayout({ isAuth }) {
     const { token } = useToken();
     const screens = useBreakpoint();
-    console.log('screens', screens)
+    
     const menuItems = [
         {
             key: "collaborator",

@@ -1,58 +1,57 @@
 import axios from "axios";
 import { getLocal, setLocal } from "./helper";
 import { Cookie } from "./cookies";
+import { AUTH_PATH } from "../constant/urls";
 
 const BASE_URL = "https://localhost:7080/"
 
 const service = axios.create()
 
+const authUrls = [AUTH_PATH.login, AUTH_PATH.logout, AUTH_PATH.refreshToken]
+
 const beforeRequest = request => {
-    if(request.url.includes("Auth/Login") || request.url.includes("Auth/Logout")|| request.url.includes("Auth/RegenerateToken")){
+    if(authUrls.some(item => request.url.includes(item))){
         return request
     }
-    const refreshToken = Cookie.get("refreshToken")
-    console.log('refresh', refreshToken)
-    console.log('refresh', request)
 
+    const refreshToken = Cookie.get("refreshToken")
     if(!refreshToken){
-        // window.location.href = "/"
         setLocal("email", "")
+        window.location.href = "/"
+        return
     }
 
     const accessToken = Cookie.get("accessToken")
-    console.log(accessToken)
-
     if(!accessToken){
-        service.get(`Auth/RegenerateToken?email=${getLocal("email")}`).then(res => {
+        service.post(AUTH_PATH.refreshToken, {
+            AccessToken: getLocal("accessToken"),
+            refreshToken: refreshToken
+        }).then(res => {
             const { data } = res
-            console.log(data)
-            Cookie.set("accessToken", data.accessToken)
-            Cookie.set("refreshToken", data.refreshToken)
+
+            Cookie.setAccessToken(data.accessToken)
+            Cookie.setRefreshToken(data.refreshToken)
         })
     }
 
-
+    return request
 }
 
 service.interceptors.request.use(beforeRequest, function (error) {
     return Promise.reject(error);
-
 })
 
 service.interceptors.response.use(response => {
-    console.log(response)
     return response
 }, error => {
-    console.log(error)
     return Promise.reject(error);
-
 })
 
 export default class DataService{
     static post(url, data, options){
         return service.post(BASE_URL + url, data, {
             headers: {
-                Authorization: `Bearer ${Cookie.get("accessToken")}`
+                Authorization: `Bearer ${Cookie.getAccessToken()}`
             }
         })
     }
@@ -60,7 +59,7 @@ export default class DataService{
     static get(url){
         return service.get(BASE_URL + url, {
             headers: {
-                Authorization: `Bearer ${Cookie.get("accessToken")}`
+                Authorization: `Bearer ${Cookie.getAccessToken()}`
             }
         })
     }

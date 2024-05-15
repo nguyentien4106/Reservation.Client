@@ -7,6 +7,6 @@ namespace Reservation.Server.Data
     {
         public DateTimeOffset JoinedDate { get; set; }
     
-        public CollaboratorProfile? CollaboratorProfile { get; set; }
+        public Collaborator? CollaboratorProfile { get; set; }
     }
 }
