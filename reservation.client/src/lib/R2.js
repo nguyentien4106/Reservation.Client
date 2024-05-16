@@ -54,7 +54,7 @@ const get = async (username) => {
         .send(
             new ListObjectsV2Command({
                 Bucket: cloudflareR2BucketName,
-                Prefix: username,
+                Prefix: `${username}/`,
             })
         )
         .then((objects) => {

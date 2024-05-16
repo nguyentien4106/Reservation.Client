@@ -8,7 +8,10 @@ import { COLLABORATOR_PATH } from "../constant/urls";
 import { App } from "antd";
 
 const UserServicesRegister = () => {
-    const [collaborator, setCollaborator] = useState({});
+    const [collaborator, setCollaborator] = useState({
+        id: "",
+        applicationUserId: ""
+    });
     const [province, setProvince] = useState("")
     const email = getLocal("email");
     const { message } = App.useApp()
@@ -23,11 +26,11 @@ const UserServicesRegister = () => {
     }, []);
 
     const onFinish = (values) => {
-        const services = values.collaboratorServices && values.collaboratorServices.map(item => ({ serviceId: item, collaboratorId: collaborator.id}))
+        const services = values.collaboratorServices && values.collaboratorServices.map(item => ({ serviceId: item, collaboratorId: collaborator?.id}))
 
-        const params = {...values, applicationUserId: collaborator.applicationUserId, collaboratorServices: services, city: values.city}
+        const params = {...values, applicationUserId: collaborator?.applicationUserId, collaboratorServices: services, city: values.city}
 
-        const url = collaborator.id ? COLLABORATOR_PATH.update : COLLABORATOR_PATH.add
+        const url = collaborator?.id ? COLLABORATOR_PATH.update : COLLABORATOR_PATH.add
         
         DataService.post(url, params).then((res) => {
             const { data } = res

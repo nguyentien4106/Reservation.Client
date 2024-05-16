@@ -7,7 +7,7 @@ const BASE_URL = "https://localhost:7080/"
 
 const service = axios.create()
 
-const authUrls = [AUTH_PATH.login, AUTH_PATH.logout, AUTH_PATH.refreshToken]
+const authUrls = [AUTH_PATH.login, AUTH_PATH.logout, AUTH_PATH.refreshToken, AUTH_PATH.register]
 
 const beforeRequest = request => {
     if(authUrls.some(item => request.url.includes(item))){

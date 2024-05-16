@@ -8,6 +8,7 @@ import { App, Button, Form, Grid, Input, theme, Typography } from "antd";
 import { LockOutlined, MailOutlined, UserOutlined, PhoneOutlined } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
 import DataService from '../lib/DataService';
+import { AUTH_PATH } from '../constant/urls';
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -21,7 +22,7 @@ const Register = () => {
 
     const onFinish = values => {
         dispatch(show())
-        DataService.post("auth/register", values).then(res => {
+        DataService.post(AUTH_PATH.register, values).then(res => {
             const { data } = res
 
             message.open({

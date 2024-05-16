@@ -63,14 +63,13 @@ export default function Profile({ onFinish, setProvince, initialValues }) {
     const [form] = Form.useForm();
 
     useEffect(() => {
-        const serviceIds = initialValues.collaboratorServices?.map(item => item.serviceId)
+        const serviceIds = initialValues?.collaboratorServices?.map(item => item.serviceId)
         const newValues = { 
             ...initialValues, 
-            birthDate: dayjs(initialValues.birthDate), 
+            birthDate: dayjs(initialValues?.birthDate), 
             collaboratorServices: serviceIds, 
         }
 
-        console.log(newValues)
         form.setFieldsValue(newValues)
 
     }, [initialValues])

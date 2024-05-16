@@ -15,7 +15,6 @@ export default function useFetchProvinces() {
                 id: item.province_id
             }))
 
-            console.log(results)
             setProvinces(results)
         }
 
