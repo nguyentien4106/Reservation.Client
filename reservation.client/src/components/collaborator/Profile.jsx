@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Input, InputNumber, DatePicker, Switch } from "antd";
+import {
+    Button,
+    Form,
+    Input,
+    InputNumber,
+    DatePicker,
+    Switch,
+    Tag,
+} from "antd";
 import { getLocal } from "../../lib/helper";
+import { Select } from "antd";
+import useFetchProvinces from "../../hooks/useFetchProvinces";
+import useFetchDistricts from "../../hooks/useFetchDistricts";
+import useFetchServices from "../../hooks/useFetchServices";
 
 const layout = {
     labelCol: {
@@ -19,8 +31,34 @@ const validateMessages = {
     },
 };
 
-export default function Profile({ onFinish, turnedOnProfile }) {
+const tagRender = (props) => {
+    const { label, closable, onClose } = props;
+    const onPreventMouseDown = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+    };
+
+    return (
+        <Tag
+            color={"green"}
+            onMouseDown={onPreventMouseDown}
+            closable={closable}
+            onClose={onClose}
+            style={{
+                marginInlineEnd: 4,
+            }}
+        >
+            {label}
+        </Tag>
+    );
+};
+
+export default function Profile({ onFinish, setProvince }) {
     const email = getLocal("email");
+    const [provinceId, setProvinceId] = useState(0);
+    const provinces = useFetchProvinces();
+    const districts = useFetchDistricts(provinceId);
+    const services = useFetchServices();
 
     return (
         <Form
@@ -33,15 +71,16 @@ export default function Profile({ onFinish, turnedOnProfile }) {
             validateMessages={validateMessages}
             initialValues={{
                 email: email,
+                isReady: true
             }}
         >
             <Form.Item
-                name="switch"
+                name="isReady"
                 label="Bật hồ sơ cho thuê ?"
                 tooltip="Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê."
                 valuePropName="checked"
             >
-                <Switch onChange={turnedOnProfile} />
+                <Switch />
             </Form.Item>
             <Form.Item
                 name={"nickname"}
@@ -49,7 +88,7 @@ export default function Profile({ onFinish, turnedOnProfile }) {
                 tooltip="Tên hiển thị trên hồ sơ"
                 rules={[
                     {
-                        required: true,
+                        required: false,
                     },
                 ]}
             >
@@ -66,24 +105,62 @@ export default function Profile({ onFinish, turnedOnProfile }) {
             >
                 <Input disabled />
             </Form.Item>
+
             <Form.Item
-                name="title"
-                label="Tự bạch"
+                name="city"
+                label="Tỉnh/Thành phố"
                 rules={[
                     {
-                        required: true,
+                        required: false,
                     },
                 ]}
             >
-                <Input min={10} />
+                <Select
+                    onChange={(id) => setProvinceId(+id)}
+                    showSearch
+                    style={{ width: 200 }}
+                    placeholder="Tỉnh"
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                        (option?.label ?? "").includes(input)
+                    }
+                    options={provinces}
+                    onSelect={(e, opts) => {
+                        setProvince(opts.label)
+                    }}
+                    
+                />
             </Form.Item>
+
+            <Form.Item
+                name="district"
+                label="Quận/Huyện"
+                rules={[
+                    {
+                        required: false,
+                    },
+                ]}
+            >
+                <Select
+                    showSearch
+                    style={{ width: 200 }}
+                    placeholder="Huyện"
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                        (option?.label ?? "").includes(input)
+                    }
+                    options={districts}
+
+                />
+            </Form.Item>
+            
             <Form.Item
                 name="phonenumber"
                 label="Phone Number"
                 tooltip="Vui lòng nhập số điện thoại chính chủ để chúng tôi có thể kiểm chứng thông tin."
                 rules={[
                     {
-                        required: true,
+                        required: false,
                     },
                 ]}
             >
@@ -91,21 +168,54 @@ export default function Profile({ onFinish, turnedOnProfile }) {
             </Form.Item>
             <Form.Item
                 name={"birthdate"}
-                label="Birthdate"
+                label="Ngày sinh"
                 rules={[
                     {
-                        required: true,
+                        required: false,
                     },
                 ]}
             >
                 <DatePicker />
             </Form.Item>
             <Form.Item
+                name={"height"}
+                label="Chiều cao"
+                rules={[
+                    {
+                        required: false,
+                    },
+                ]}
+            >
+                <InputNumber placeholder="cm"/>
+            </Form.Item>
+            <Form.Item
+                name={"weight"}
+                label="Cân nặng"
+                rules={[
+                    {
+                        required: false,
+                    },
+                ]}
+            >
+                <InputNumber placeholder="kg"/>
+            </Form.Item>
+            <Form.Item
+                name={"job"}
+                label="Nghề nghiệp"
+                rules={[
+                    {
+                        required: false,
+                    },
+                ]}
+            >
+                <Input placeholder="sinh viên"/>
+            </Form.Item>
+            <Form.Item
                 name="priceperhour"
                 label="Chi phí mỗi giờ thuê"
                 rules={[
                     {
-                        required: true,
+                        required: false,
                     },
                 ]}
             >
@@ -120,6 +230,35 @@ export default function Profile({ onFinish, turnedOnProfile }) {
                 />
             </Form.Item>
 
+            <Form.Item
+                name="collaboratorServices"
+                label="Dịch vụ cho thuê"
+                rules={[
+                    {
+                        required: false,
+                    },
+                ]}
+            >
+                <Select
+                    mode="multiple"
+                    tagRender={tagRender}
+                    style={{
+                        width: "100%",
+                    }}
+                    options={services}
+                />
+            </Form.Item>
+            <Form.Item
+                name="title"
+                label="Tự bạch"
+                rules={[
+                    {
+                        required: false,
+                    },
+                ]}
+            >
+                <Input min={10} />
+            </Form.Item>
             <Form.Item name={"introduction"} label="Phần mô tả giới thiệu">
                 <Input.TextArea />
             </Form.Item>

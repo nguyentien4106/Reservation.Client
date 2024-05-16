@@ -27,5 +27,11 @@
         public DateTime? JoinedDate { get; set; }
 
         public List<Guid> Services { get; set; } = new();
+
+        public int? Height { get; set; }
+
+        public int? Weight { get; set; }
+
+
     }
 }

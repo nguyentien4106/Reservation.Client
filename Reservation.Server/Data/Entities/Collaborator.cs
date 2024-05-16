@@ -11,13 +11,13 @@ namespace Reservation.Server.Data.Entities
         public ApplicationUser ApplicationUser { get; set; } = null!;
 
         [Required]
-        public string NickName { get; set; }
+        public string NickName { get; set; } =string.Empty;
 
         public bool? IsReady { get; set; }
 
         [Required]
         [Length(10, 11)]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = string.Empty;
 
         public string? Email{ get; set;}
 
@@ -33,12 +33,18 @@ namespace Reservation.Server.Data.Entities
 
         public string? Introduction { get; set; }
 
+        public int? Height { get; set; }
+
+        public int? Weight { get; set; }
+
+        public string? Job { get; set; }
+
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         public List<CollaboratorService> CollaboratorServices { get; set; } = [];
 
-        public string? Status { get; set; }
+        public int? Status { get; set; }
 
     }
 }

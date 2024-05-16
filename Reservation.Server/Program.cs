@@ -11,6 +11,9 @@ using Reservation.Server.Serivces.Email;
 using System.Security.Claims;
 using System.Text;
 using Reservation.Server.Serivces.UserServiceRegister;
+using Reservation.Server.Serivces.Service;
+using Reservation.Server.Serivces.Home;
+using Microsoft.OpenApi.Models;
 
 namespace Reservation.Server
 {
@@ -44,6 +47,10 @@ namespace Reservation.Server
             builder.Services.AddTransient<IAuthService, AuthService>();
             builder.Services.AddTransient<IEmailService, EmailService>();
             builder.Services.AddTransient<ICollaboratorService, CollaboratorService>();
+            builder.Services.AddTransient<IService, ServiceImpl>();
+            builder.Services.AddTransient<IHomeService, HomeService>();
+
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
             builder.Services.AddControllers();
 
@@ -76,7 +83,34 @@ namespace Reservation.Server
                 });
             });
 
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(opt =>
+            {
+                opt.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
+                opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "bearer"
+                });
+
+                opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type=ReferenceType.SecurityScheme,
+                                Id="Bearer"
+                            }
+                        },
+                        new string[]{}
+                    }
+                });
+            });
 
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 

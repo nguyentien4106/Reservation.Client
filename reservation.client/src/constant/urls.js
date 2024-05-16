@@ -5,3 +5,7 @@ export const AUTH_PATH = {
     refreshToken: "Auth/RefreshToken",
     confirmemail: "Auth/ConfirmEmail"
 }
+
+export const SERVICE_PATH = {
+    getAll: "Service/GetAll"
+}

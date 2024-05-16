@@ -1,34 +1,28 @@
 import React, { useEffect, useState } from "react";
-import {
-    Grid,
-} from "antd";
 import AuthorizeView from "../components/AuthorizeView";
 import { getLocal } from "../lib/helper";
 import DataService from "../lib/DataService";
 import UploadComponent from "../components/collaborator/UploadComponent";
 import Profile from "../components/collaborator/Profile";
-const { useBreakpoint } = Grid;
 
 const UserServicesRegister = () => {
-    const [user, setUser] = useState(null);
+    const [userId, setUserId] = useState(null);
+    const [province, setProvince] = useState("")
     const email = getLocal("email");
-    const [turnOn, setTurnOn] = useState(true);
-    const { screens } = useBreakpoint();
 
     useEffect(() => {
         DataService.get("Collaborator/GetUser?email=" + email).then((res) => {
             const { data } = res.data;
-            console.log('user', data)
-            setUser(data);
+            console.log('userid', data)
+            setUserId(data);
         });
     }, []);
 
-    const turnedOnProfile = (on) => {
-        setTurnOn(on);
-    };
-
     const onFinish = (values) => {
-        DataService.post("Collaborator/Register", values).then((res) => {
+        const services = values.collaboratorServices && values.collaboratorServices.map(item => ({ serviceId: item, collaboratorId: userId}))
+
+        const params = {...values, applicationUserId: userId, collaboratorServices: services, province: province}
+        DataService.post("Collaborator/Register", params).then((res) => {
             console.log(res);
         });
     };
@@ -59,7 +53,7 @@ const UserServicesRegister = () => {
                     </h2>
                     <Profile
                         onFinish={onFinish}
-                        turnedOnProfile={turnedOnProfile}
+                        setProvince={setProvince}
                     />
                 </div>
                 <div
@@ -71,11 +65,10 @@ const UserServicesRegister = () => {
                 >
                     <h2
                         style={{
-                            // marginLeft: "30%",
                             textAlign: "center"
                         }}
                     >
-                        Albums{" "}
+                        Albums
                     </h2>
                     <div style={{
                         paddingLeft: 16,
