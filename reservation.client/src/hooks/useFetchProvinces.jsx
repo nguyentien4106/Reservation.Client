@@ -11,9 +11,11 @@ export default function useFetchProvinces() {
             const response = await axios.get(API_URL)
             const results = response.data.results.map(item => ({
                 label: item.province_name,
-                value: item.province_id
+                value: item.province_name,
+                id: item.province_id
             }))
 
+            console.log(results)
             setProvinces(results)
         }
 

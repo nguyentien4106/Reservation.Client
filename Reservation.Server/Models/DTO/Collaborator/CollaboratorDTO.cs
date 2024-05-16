@@ -41,5 +41,6 @@ namespace Reservation.Server.Models.DTO.Collaborator
         public int? Height { get; set; }
 
         public string? Job { get; set; }
+
     }
 }

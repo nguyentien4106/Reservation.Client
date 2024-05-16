@@ -14,6 +14,7 @@ using Reservation.Server.Serivces.UserServiceRegister;
 using Reservation.Server.Serivces.Service;
 using Reservation.Server.Serivces.Home;
 using Microsoft.OpenApi.Models;
+using Reservation.Server.Middleware;
 
 namespace Reservation.Server
 {
@@ -116,6 +117,7 @@ namespace Reservation.Server
 
             var app = builder.Build();
 
+            app.UseMiddleware<GlobalExceptionMiddleware>();
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.MapIdentityApi<ApplicationUser>();

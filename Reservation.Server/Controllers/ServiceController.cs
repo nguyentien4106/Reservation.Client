@@ -18,5 +18,10 @@ namespace Reservation.Server.Controllers
             return await _service.GetAllAsync();
         }
 
+        [HttpPost]
+        public async Task<AppResponse<bool>> Add(ServiceDTO dto)
+        {
+            return await _service.AddAsync(dto);
+        }
     }
 }

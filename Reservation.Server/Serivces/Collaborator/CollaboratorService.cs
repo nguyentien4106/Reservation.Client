@@ -20,12 +20,12 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             return new AppResponse<List<CollaboratorDTO>>();
         }
 
-        public async Task<AppResponse<CollaboratorDTO>> GetProfileAsync(string id)
+        public async Task<AppResponse<CollaboratorDTO>> GetProfileAsync(string email)
         {
             var collaborator = await _context.Collaborators
                 .Include(item => item.CollaboratorServices)
                 .ThenInclude(cs => cs.Service)
-                .FirstOrDefaultAsync(collaborator => collaborator.ApplicationUserId == id);
+                .FirstOrDefaultAsync(collaborator => collaborator.Email == email);
 
             if(collaborator == null)
             {
@@ -46,31 +46,39 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             return new AppResponse<string>().SetSuccessResponse(user.Id);
         }
 
-        public async Task<AppResponse<CollaboratorDTO>> RegisterAsync(CollaboratorDTO dto)
+        public async Task<AppResponse<string>> RegisterAsync(CollaboratorDTO dto)
+        {
+            var newCollaborator = _mapper.Map<Collaborator>(dto);
+            newCollaborator.Status = (int)ProfileStatus.Reviewing;
+
+            await _context.Collaborators.AddAsync(newCollaborator);
+            await _context.SaveChangesAsync();
+
+            return new AppResponse<string>().SetSuccessResponse("Add new Successfully!");
+        }
+
+        public async Task<AppResponse<string>> UpdateAsync(CollaboratorDTO dto)
         {
             if (string.IsNullOrEmpty(dto.ApplicationUserId))
             {
-                return new AppResponse<CollaboratorDTO>().SetErrorResponse("user", "User not found");
+                return new AppResponse<string>().SetErrorResponse("user", "User not found");
             }
 
-            var collaborator = await _context.Collaborators.FirstOrDefaultAsync(item => item.ApplicationUserId == dto.ApplicationUserId);
-            
-            if (collaborator != null)
+            var collaborator = await _context.Collaborators.Include(item => item.CollaboratorServices).SingleOrDefaultAsync(item => item.ApplicationUserId == dto.ApplicationUserId);
+
+            if (collaborator == null)
             {
-                _context.CollaboratorServices.RemoveRange(collaborator.CollaboratorServices);
-                Update(collaborator, dto);
+                return new AppResponse<string>().SetErrorResponse("user", "Collaborator is not existed");
 
-                await _context.SaveChangesAsync(); 
-                return new AppResponse<CollaboratorDTO>().SetErrorResponse("user", "Already exists in system.");
             }
 
-            //var collaborator = _mapper.Map<Collaborator>(dto);
-            //collaborator.Status = (int)ProfileStatus.Reviewing;
+            _context.CollaboratorServices.RemoveRange(collaborator.CollaboratorServices);
+            var collaboratorServices = _mapper.Map<List<Data.Entities.CollaboratorService>>(dto.CollaboratorServices);
+            _context.CollaboratorServices.AddRange(collaboratorServices);
 
-            //await _context.Collaborators.AddAsync(collaborator);
-            //await _context.SaveChangesAsync();
-
-            return new AppResponse<CollaboratorDTO>().SetSuccessResponse(dto);
+            Update(collaborator, dto);
+            await _context.SaveChangesAsync();
+            return new AppResponse<string>().SetSuccessResponse("Update Successfully!");
         }
 
         private void Update(Collaborator entity, CollaboratorDTO newValue)
@@ -78,6 +86,16 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             entity.IsReady = newValue.IsReady;
             entity.NickName = newValue.NickName;
             entity.PhoneNumber = newValue.PhoneNumber;
+            entity.Email = newValue.Email;
+            entity.City = newValue.City;
+            entity.District = newValue.District;
+            entity.BirthDate = newValue.BirthDate;
+            entity.PricePerHour = newValue.PricePerHour;
+            entity.Introduction = newValue.Introduction;
+            entity.Title = newValue.Title;
+            entity.Weight = newValue.Weight;
+            entity.Height = newValue.Height;
+            entity.Job = newValue.Job;
         }
     }
 

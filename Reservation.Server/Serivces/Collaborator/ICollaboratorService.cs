@@ -12,6 +12,8 @@ namespace Reservation.Server.Serivces.UserServiceRegister
 
         Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync();
 
-        Task<AppResponse<CollaboratorDTO>> RegisterAsync(CollaboratorDTO dto);
+        Task<AppResponse<string>> RegisterAsync(CollaboratorDTO dto);
+
+        Task<AppResponse<string>> UpdateAsync(CollaboratorDTO dto);
     }
 }

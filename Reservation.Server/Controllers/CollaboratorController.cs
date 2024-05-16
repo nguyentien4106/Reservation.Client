@@ -24,15 +24,21 @@ namespace Reservation.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<AppResponse<CollaboratorDTO>> Register(CollaboratorDTO dto)
+        public async Task<AppResponse<string>> Add(CollaboratorDTO dto)
         {
             return await _collaboratorService.RegisterAsync(dto);
         }
 
-        [HttpGet]
-        public async Task<AppResponse<CollaboratorDTO>> GetProfile(string id)
+        [HttpPost]
+        public async Task<AppResponse<string>> Update(CollaboratorDTO dto)
         {
-            return await _collaboratorService.GetProfileAsync(id);
+            return await _collaboratorService.UpdateAsync(dto);
+        }
+
+        [HttpGet]
+        public async Task<AppResponse<CollaboratorDTO>> GetProfile(string email)
+        {
+            return await _collaboratorService.GetProfileAsync(email);
         }
 
         [HttpGet]

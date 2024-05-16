@@ -1,29 +1,41 @@
 import React, { useEffect, useState } from "react";
 import AuthorizeView from "../components/AuthorizeView";
-import { getLocal } from "../lib/helper";
+import { generateMessages, getLocal } from "../lib/helper";
 import DataService from "../lib/DataService";
 import UploadComponent from "../components/collaborator/UploadComponent";
 import Profile from "../components/collaborator/Profile";
+import { COLLABORATOR_PATH } from "../constant/urls";
+import { App } from "antd";
 
 const UserServicesRegister = () => {
-    const [userId, setUserId] = useState(null);
+    const [collaborator, setCollaborator] = useState({});
     const [province, setProvince] = useState("")
     const email = getLocal("email");
+    const { message } = App.useApp()
+    const [initialValues, setInitialValues] = useState({})
 
     useEffect(() => {
-        DataService.get("Collaborator/GetUser?email=" + email).then((res) => {
+        DataService.get(COLLABORATOR_PATH.getProfile + email).then((res) => {
             const { data } = res.data;
-            console.log('userid', data)
-            setUserId(data);
+            setCollaborator(data);
+            setInitialValues(data)
         });
     }, []);
 
     const onFinish = (values) => {
-        const services = values.collaboratorServices && values.collaboratorServices.map(item => ({ serviceId: item, collaboratorId: userId}))
+        const services = values.collaboratorServices && values.collaboratorServices.map(item => ({ serviceId: item, collaboratorId: collaborator.id}))
 
-        const params = {...values, applicationUserId: userId, collaboratorServices: services, province: province}
-        DataService.post("Collaborator/Register", params).then((res) => {
-            console.log(res);
+        const params = {...values, applicationUserId: collaborator.applicationUserId, collaboratorServices: services, city: values.city}
+
+        const url = collaborator.id ? COLLABORATOR_PATH.update : COLLABORATOR_PATH.add
+        
+        DataService.post(url, params).then((res) => {
+            const { data } = res
+            message.open({
+                type: data.isSucceed ? "success" : "error",
+                content:  data.isSucceed ? data.data : generateMessages(data.messages),
+                duration: 5
+            })
         });
     };
 
@@ -54,6 +66,7 @@ const UserServicesRegister = () => {
                     <Profile
                         onFinish={onFinish}
                         setProvince={setProvince}
+                        initialValues={initialValues}
                     />
                 </div>
                 <div
