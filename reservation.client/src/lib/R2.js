@@ -39,8 +39,9 @@ const upload = async (fileName, fileStream, type) => {
     return await s3Client.send(cmd);
 };
 
-const get = async (username) => {
+const get = async (username, isAvatar = false) => {
     const SevenDays = 60 * 60 * 24 * 7;
+    const prefix = `${username}/${isAvatar ? "avatar" : "albums"}`
     const getUrl = async (content) =>
         await getSignedUrl(
             s3Client,
@@ -54,7 +55,8 @@ const get = async (username) => {
         .send(
             new ListObjectsV2Command({
                 Bucket: cloudflareR2BucketName,
-                Prefix: `${username}/`,
+                Prefix: prefix,
+                MaxKeys: isAvatar ? 1 : undefined
             })
         )
         .then((objects) => {

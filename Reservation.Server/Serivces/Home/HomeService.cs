@@ -14,7 +14,7 @@ namespace Reservation.Server.Serivces.Home
 
         public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync()
         {
-            var collaborators = await _context.Collaborators.Where(item => item.Status == (int)ProfileStatus.Verified && item.IsReady == true).ToListAsync();
+            var collaborators = await _context.Collaborators.Where(item => item.IsReady == true).ToListAsync();
 
             return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(_mapper.Map<List<CollaboratorDTO>>(collaborators));
         }

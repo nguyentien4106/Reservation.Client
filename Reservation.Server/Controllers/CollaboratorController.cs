@@ -26,7 +26,7 @@ namespace Reservation.Server.Controllers
         [HttpPost]
         public async Task<AppResponse<string>> Add(CollaboratorDTO dto)
         {
-            return await _collaboratorService.RegisterAsync(dto);
+            return await _collaboratorService.AddAsync(dto);
         }
 
         [HttpPost]
@@ -36,10 +36,12 @@ namespace Reservation.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<AppResponse<CollaboratorDTO>> GetProfile(string email)
+        public async Task<AppResponse<CollaboratorDTO>> GetProfile(Guid? collaboratorId)
         {
-            return await _collaboratorService.GetProfileAsync(email);
+            return await _collaboratorService.GetProfileAsync(collaboratorId);
         }
+
+
 
         [HttpGet]
         public async Task<AppResponse<List<CollaboratorDTO>>> GetAll()

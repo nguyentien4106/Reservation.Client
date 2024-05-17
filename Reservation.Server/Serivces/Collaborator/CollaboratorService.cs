@@ -17,15 +17,25 @@ namespace Reservation.Server.Serivces.UserServiceRegister
 
         public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync()
         {
-            return new AppResponse<List<CollaboratorDTO>>();
+            var collaborators = await _context.Collaborators
+                .Include(item => item.CollaboratorServices)
+                .ThenInclude(item => item.Service)
+                .ToListAsync();
+
+            return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(_mapper.Map<List<CollaboratorDTO>>(collaborators));
         }
 
-        public async Task<AppResponse<CollaboratorDTO>> GetProfileAsync(string email)
+        public async Task<AppResponse<CollaboratorDTO>> GetProfileAsync(Guid? collaboratorId)
         {
+            if(collaboratorId == null || !collaboratorId.HasValue)
+            {
+                return new AppResponse<CollaboratorDTO>().SetSuccessResponse(new (), "id", $"{collaboratorId} not found!");
+            }
+
             var collaborator = await _context.Collaborators
                 .Include(item => item.CollaboratorServices)
                 .ThenInclude(cs => cs.Service)
-                .FirstOrDefaultAsync(collaborator => collaborator.Email == email);
+                .FirstOrDefaultAsync(collaborator => collaborator.Id == collaboratorId);
 
             if(collaborator == null)
             {
@@ -46,7 +56,7 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             return new AppResponse<string>().SetSuccessResponse(user.Id);
         }
 
-        public async Task<AppResponse<string>> RegisterAsync(CollaboratorDTO dto)
+        public async Task<AppResponse<string>> AddAsync(CollaboratorDTO dto)
         {
             var newCollaborator = _mapper.Map<Collaborator>(dto);
             newCollaborator.Status = (int)ProfileStatus.Reviewing;
@@ -59,16 +69,16 @@ namespace Reservation.Server.Serivces.UserServiceRegister
 
         public async Task<AppResponse<string>> UpdateAsync(CollaboratorDTO dto)
         {
-            if (string.IsNullOrEmpty(dto.ApplicationUserId))
+            if (!dto.Id.HasValue)
             {
                 return new AppResponse<string>().SetErrorResponse("user", "User not found");
             }
 
-            var collaborator = await _context.Collaborators.Include(item => item.CollaboratorServices).SingleOrDefaultAsync(item => item.ApplicationUserId == dto.ApplicationUserId);
+            var collaborator = await _context.Collaborators.Include(item => item.CollaboratorServices).SingleOrDefaultAsync(item => item.Id == dto.Id);
 
             if (collaborator == null)
             {
-                return new AppResponse<string>().SetErrorResponse("user", "Collaborator is not existed");
+                return new AppResponse<string>().SetErrorResponse("user", $"Collaborator is not existed with ${dto.Id}");
 
             }
 

@@ -15,19 +15,20 @@ namespace Reservation.Server.Serivces.ManageCollaborator
 
         public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(int type)
         {
-            Func<Collaborator, bool> prediction = type switch
-            {
-                (int)CollaboratorGetType.All => (Collaborator item) => true,
-                (int)CollaboratorGetType.ReadyAndReviewing => (Collaborator item) => item.IsReady == true && item.Status == (int)ProfileStatus.Reviewing,
-                _ => (Collaborator item) => item.IsReady == false,
-            };
+            //Func<Collaborator, bool> prediction = type switch
+            //{
+            //    (int)CollaboratorGetType.All => (Collaborator item) => true,
+            //    (int)CollaboratorGetType.ReadyAndReviewing => (Collaborator item) => item.IsReady == true && item.Status == (int)ProfileStatus.Reviewing,
+            //    _ => (Collaborator item) => item.IsReady == false,
+            //};
 
-            var collaborators = _context.Collaborators
-                .Include(item => item.CollaboratorServices)
-                .ThenInclude(item => item.Service)
-                .Where(prediction)
-                .ToList();
+            //var collaborators = _context.Collaborators
+            //    .Include(item => item.CollaboratorServices)
+            //    .ThenInclude(item => item.Service)
+            //    .Where(prediction)
+            //    .ToList();
 
+            var collaborators = await _context.Collaborators.ToListAsync();
             return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(_mapper.Map<List<CollaboratorDTO>>(collaborators));
         }
     }

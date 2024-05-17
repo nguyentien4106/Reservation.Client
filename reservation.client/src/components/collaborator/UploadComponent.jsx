@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { App, Button, Image, Upload } from "antd";
 import { R2 } from "../../lib/R2";
-import { getLocal } from "../../lib/helper";
 import { useDispatch } from "react-redux";
 import { hide, show } from "../../state/loading/loadingSlice";
+import { ProfileContext } from "../../context/useProfileContext";
+import { getUserName } from "../../lib/helper";
+
 const getBase64 = (file) =>
     new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -13,18 +15,21 @@ const getBase64 = (file) =>
         reader.onerror = (error) => reject(error);
     });
 
-const UploadComponent = ({ turnedOnProfile }) => {
+const UploadComponent = ({ max, buttonTitle, collaborator, isAvatar = false }) => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState("");
+    const [userName, setUserName] = useState("")
     const [fileList, setFileList] = useState([]);
     const dispatch = useDispatch();
     const { message } = App.useApp();
-    const username = getLocal("email").split("@")[0];
-
+    const profile = useContext(ProfileContext)
     useEffect(() => {
         const fetchAndSetFileList = async () => {
             try {
-                const result = await R2.get(username);
+                console.log(userName, isAvatar, collaborator)
+                if(!userName) return
+                const result = await R2.get(userName, isAvatar);
+
                 if (result) {
                     const items = await Promise.all(result.map(item => item));
                     const updatedFileList = items.map(async res => {
@@ -44,7 +49,20 @@ const UploadComponent = ({ turnedOnProfile }) => {
         };
     
         fetchAndSetFileList();
-    }, []);
+    }, [userName]);
+
+    useEffect(() => {
+        if(isAvatar){
+            setUserName(getUserName(profile.collaborator.email))
+        }
+        
+    }, [profile])
+
+    useEffect(() => {
+        if(isAvatar){
+            handleUpload()
+        }
+    }, [fileList])
 
     const onFileRemove = (file) => {
         if (file.originFileObj) {
@@ -65,36 +83,41 @@ const UploadComponent = ({ turnedOnProfile }) => {
             });
     };
 
-    const onFileChange = ({ fileList: newFileList }) => {
+    const onFileChange = async ({ fileList: newFileList }) => {
+        if(isAvatar && fileList.length){
+            const result = await R2.delete(fileList[0].name)
+        }
         setFileList(newFileList);
     };
 
     const handleUpload = async () => {
+        if(!fileList.length){
+            return
+        }
+
         dispatch(show())
         for (let file of fileList) {
-            if (!file.originFileObj) {
+            if (!file.originFileObj || !file.type.startsWith("image")) {
                 continue;
             }
 
             try {
                 const image = await getBase64(file.originFileObj);
+                const fileName = `${userName}/${isAvatar ? `avatar.${file.type.split("/")[1]}` : `albums/${file.name}`}`
+
                 const result = await R2.upload(
-                    `${username}/${file.name}`,
+                    fileName,
                     image,
                     file.type
                 );
-
-                if (result.$metadata.httpStatusCode === 200) {
-                    message.success("Successfully uploaded image");
-                }
             } catch (err) {
                 message.error(
                     `Failed to upload image because of ${err}. Please try again.`
                 );
             }
         }
-
         dispatch(hide())
+        message.success("Successfully uploaded image");
     };
 
     const onFilePreview = async (file) => {
@@ -114,6 +137,8 @@ const UploadComponent = ({ turnedOnProfile }) => {
                 onChange={onFileChange}
                 beforeUpload={() => false}
                 onRemove={onFileRemove}
+                maxCount={max ? max : 1000}
+                accept="image/*"
             >
                 <button
                     style={{
@@ -146,13 +171,15 @@ const UploadComponent = ({ turnedOnProfile }) => {
                     src={previewImage}
                 />
             )}
-            <Button
+            {
+                !isAvatar && <Button
                 type="primary"
                 onClick={() => handleUpload()}
                 style={{ marginTop: "50px", textAlign: "center" }}
             >
-                Cập nhật Albums
+                {buttonTitle}
             </Button>
+            }
         </>
     );
 };

@@ -8,11 +8,11 @@ namespace Reservation.Server.Serivces.UserServiceRegister
     {
         Task<AppResponse<string>> GetUserIdAsync(string email);
 
-        Task<AppResponse<CollaboratorDTO>> GetProfileAsync(string id);
+        Task<AppResponse<CollaboratorDTO>> GetProfileAsync(Guid? collaboratorId);
 
         Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync();
 
-        Task<AppResponse<string>> RegisterAsync(CollaboratorDTO dto);
+        Task<AppResponse<string>> AddAsync(CollaboratorDTO dto);
 
         Task<AppResponse<string>> UpdateAsync(CollaboratorDTO dto);
     }

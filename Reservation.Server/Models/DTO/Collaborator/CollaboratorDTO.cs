@@ -42,5 +42,7 @@ namespace Reservation.Server.Models.DTO.Collaborator
 
         public string? Job { get; set; }
 
+        public string? Sex { get; set; }
+
     }
 }

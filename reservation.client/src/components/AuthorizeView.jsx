@@ -2,27 +2,43 @@ import React, { useState, createContext } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { getLocal } from '../lib/helper';
 import { Typography  } from 'antd';
+import useFetchUser from '../hooks/useFetchUser';
+import { ROLES } from '../constant/settings';
 const { Text, Link } = Typography;
 
 const UserContext = createContext({});
 
 function AuthorizeView(props) {
-    const authorized = getLocal("email") ? true : false
     const navigate = useNavigate();
+    const user = useFetchUser();
 
-    if(authorized) {
+    if(!user){
+        return (
+            <>
+                <Text >Bạn cần đăng nhập để đăng ký dịch vụ</Text>{" "}
+    
+                <Link onClick={() => navigate("/login")}>Sign in</Link>
+    
+                {/* <Navigate to="/login" /> */}
+            </>
+        )
+    }
+
+    if(ROLES[user.role] >= props.role) {
         return (
             <>
                 {props.children}
             </>
         );
     } 
+
+    
     
     return (
         <>
-            <Text >Bạn cần đăng nhập để đăng ký dịch vụ</Text>{" "}
+            <Text>Bạn không có quyền truy cập tài nguyên này. Xin thử lại sau!</Text>{" "}
 
-            <Link onClick={() => navigate("/login")}>Sign in</Link>
+            {/* <Link onClick={() => navigate("/login")}>Sign in</Link> */}
 
             {/* <Navigate to="/login" /> */}
         </>

@@ -102,7 +102,7 @@ namespace Reservation.Server.Serivces.Auth
         {
             if (user.Identity?.IsAuthenticated ?? false)
             {
-                var username = user.Claims.First(x => x.Type == "UserName").Value;
+                var username = user.Claims.First(x => x.Type == "userName").Value;
                 var appUser = _context.Users.First(x => x.UserName == username);
                 if (appUser != null) { await _userManager.UpdateSecurityStampAsync(appUser); }
                 return new AppResponse<bool>().SetSuccessResponse(true);
@@ -158,11 +158,19 @@ namespace Reservation.Server.Serivces.Auth
                               join r in _context.Roles on ur.RoleId equals r.Id
                               select r)
               .Where(r => !string.IsNullOrEmpty(r.Name))
-              .Select(r => new Claim(ClaimTypes.Role, r.Name!))
+              .Select(r => new Claim("role", r.Name!))
               .Distinct()
               .ToList();
 
+            var collaboratorId = (from cl in _context.Collaborators
+                                 where cl.ApplicationUserId == user.Id
+                                 select cl)
+                .Select(r => new Claim("collaboratorId", r.Id.ToString()!))
+                .Distinct()
+                .ToList();
+                              
             claims.AddRange(roleClaims);
+            claims.AddRange(collaboratorId);
 
             return claims;
         }

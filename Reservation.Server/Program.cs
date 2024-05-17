@@ -34,6 +34,7 @@ namespace Reservation.Server
             builder.Services.AddIdentityApiEndpoints<ApplicationUser>(opts =>
             {
                 opts.SignIn.RequireConfirmedEmail = false;
+                opts.User.RequireUniqueEmail = true;
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

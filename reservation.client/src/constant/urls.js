@@ -13,5 +13,14 @@ export const SERVICE_PATH = {
 export const COLLABORATOR_PATH = {
     add: "Collaborator/Add",
     update: "Collaborator/Update",
-    getProfile: "Collaborator/GetProfile?email="
+    getProfile: "Collaborator/GetProfile?collaboratorId=",
+    getAll: "Collaborator/GetAll"
+}
+
+export const HOME_PATH = {
+    getAll: "Home/GetAll"
+}
+
+export const MANAGE_COLLABORATOR_PATH = {
+    getAll: "ManageCollaborator/GetAll"
 }

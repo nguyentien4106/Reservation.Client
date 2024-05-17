@@ -9,16 +9,17 @@ const service = axios.create()
 
 const authUrls = [AUTH_PATH.login, AUTH_PATH.logout, AUTH_PATH.refreshToken, AUTH_PATH.register]
 
+const AUTH_REQUEST = "Auth/"
 const beforeRequest = request => {
-    if(authUrls.some(item => request.url.includes(item))){
+    if(request.url.includes(AUTH_REQUEST)){
         return request
     }
 
+    const controller = new AbortController();
     const refreshToken = Cookie.get("refreshToken")
+    
     if(!refreshToken){
-        setLocal("email", "")
-        window.location.href = "/"
-        return
+        return request
     }
 
     const accessToken = Cookie.get("accessToken")

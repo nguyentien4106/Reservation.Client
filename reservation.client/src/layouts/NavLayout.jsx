@@ -1,24 +1,26 @@
 import React, { useState } from "react";
-
 import { Button, Grid, Menu, Space, theme } from "antd";
-
 import { MenuOutlined } from "@ant-design/icons";
-
 import { useNavigate } from "react-router-dom";
-import LogoutLink from "../../LogoutLink";
-import DataService from '../../../lib/DataService';
-import { getLocal, setLocal } from "../../../lib/helper";
-import { useDispatch } from "react-redux";
-import { hide, show } from "../../../state/loading/loadingSlice";
-import { Cookie } from "../../../lib/cookies";
+import UserComponent from "./UserComponent";
+import { Cookie } from "../lib/cookies";
+import { jwtDecode } from "jwt-decode";
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
 
-export default function NavLayout({ isAuth }) {
+export default function NavLayout() {
     const { token } = useToken();
     const screens = useBreakpoint();
+    const navigate = useNavigate()
+    const [current, setCurrent] = useState("");
     
+    const accessToken = Cookie.getAccessToken()
+    let user;
+    if(accessToken){
+        user = jwtDecode(accessToken)
+    }
+
     const menuItems = [
         {
             key: "collaborator",
@@ -35,17 +37,21 @@ export default function NavLayout({ isAuth }) {
                 {
                     key: "setting",
                     label: "Cài đặt",
-                    onClick: () => navigate("/collaborator-setting")
+                    onClick: () => navigate("/collaborator")
                 }
             ]
         },
         {
             key: "donate",
             label: "Donate",
+        },
+        {
+            key: "manage",
+            label: "Quản lí collaborator",
+            onClick: () => navigate("/manage-collaborator")
         }
     ];
 
-    const [current, setCurrent] = useState("");
     const onClick = (e) => {
         setCurrent(e.key);
     };
@@ -88,35 +94,16 @@ export default function NavLayout({ isAuth }) {
         }
     };
 
-    const navigate = useNavigate()
 
-    const dispacth = useDispatch()
-
-    const handleLogout = (e) => {
-        e.preventDefault();
-        dispacth(show())
-        DataService.post("Auth/Logout").then(res => {
-            console.log("lougout", res)
-            // setLocal("accessToken", "")
-            // setLocal("refreshToken", "")
-            setLocal("email", "")
-            Cookie.remove("accessToken")
-            Cookie.remove("refreshToken")
-        })
-        .finally(() => {
-            dispacth(hide())
-        })
-    }
-
-    const email = getLocal("email")
-    
     const renderAuth = () => {
-        return isAuth ? <LogoutLink email={email} handleLogout={handleLogout}/>
+        return user ? <UserComponent user={user}/>
             : <Space>
                 <Button type="text" style={{ backgroundColor: "white" }} onClick={() => navigate("/login")}>Log in</Button>
                 <Button type="primary" onClick={() => navigate("/register")}>Sign up</Button>
             </Space>
     }
+
+    
 
     return (
         <>
@@ -128,7 +115,6 @@ export default function NavLayout({ isAuth }) {
                     ThueNguoiYeu.Com
                 </div>
                 <Menu
-                    className="layout-menu"
                     style={styles.menu}
                     mode="horizontal"
                     items={menuItems}
