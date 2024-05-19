@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 const API_URL = "https://vapi.vnappmob.com/api/province/district/"
 
-export default function useFetchDistricts(province_id) {
+export default function useFetchDistricts(province_id, hasAll) {
     const [districts, setDistricts] = useState([])
     
     useEffect(() => {
@@ -14,6 +14,12 @@ export default function useFetchDistricts(province_id) {
                 value: item.district_name
             }))
 
+            if(hasAll){
+                results.unshift({
+                    label: "All",
+                    value: -1
+                })
+            }
             setDistricts(results)
         }
 

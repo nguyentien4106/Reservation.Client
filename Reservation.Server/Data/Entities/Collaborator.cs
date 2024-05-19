@@ -48,5 +48,7 @@ namespace Reservation.Server.Data.Entities
 
         public string? Sex { get; set; }
 
+        public string? AdditionalServices { get; set; }
+
     }
 }

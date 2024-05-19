@@ -7,14 +7,17 @@ import {
     DatePicker,
     Switch,
     Tag,
+    message,
 } from "antd";
 import { Select } from "antd";
-import useFetchProvinces from "../../hooks/useFetchProvinces";
-import useFetchDistricts from "../../hooks/useFetchDistricts";
-import useFetchServices from "../../hooks/useFetchServices";
+import useFetchProvinces from "../../../hooks/useFetchProvinces";
+import useFetchDistricts from "../../../hooks/useFetchDistricts";
+import useFetchServices from "../../../hooks/useFetchServices";
 import dayjs from "dayjs";
-import UploadComponent from "./UploadComponent";
-import { ProfileContext } from "../../context/useProfileContext";
+import { ProfileContext } from "../../../context/useProfileContext";
+import AvatarComponent from "./AvatarComponent";
+import { COLLABORATOR_PATH } from "../../../constant/urls";
+import DataService from "../../../lib/DataService";
 
 const layout = {
     labelCol: {
@@ -55,8 +58,44 @@ const tagRender = (props) => {
     );
 };
 
-export default function Profile({ onFinish, initialValues, user }) {
+const items = [
+    {
+        name: "isReady",
+        label: "Bật hồ sơ cho thuê ?",
+        tooltip: "Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê.",
+        value: <Switch/>
+    },
+    {
+        name: "isReady",
+        label: "Bật hồ sơ cho thuê ?",
+        tooltip: "Ảnh này sẽ được dùng làm avatar hiển thị cho người muốn thuê thấy. Vậy nên hãy dùng ảnh đẹp nhất của mình nhé."
+    },
+    {
+        name: "isReady",
+        label: "Bật hồ sơ cho thuê ?",
+        tooltip: "Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê."
+    },
+    {
+        name: "isReady",
+        label: "Bật hồ sơ cho thuê ?",
+        tooltip: "Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê."
+    },
+    {
+        name: "isReady",
+        label: "Bật hồ sơ cho thuê ?",
+        tooltip: "Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê."
+    },
+    {
+        name: "isReady",
+        label: "Bật hồ sơ cho thuê ?",
+        tooltip: "Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê."
+    },
+
+]
+
+export default function LeaseInfoComponent({ user, collaboratorId, initialValues }) {
     const [provinceId, setProvinceId] = useState(0);
+    const [hasAvatar, setHasAvatar] = useState(false)
     const provinces = useFetchProvinces();
     const districts = useFetchDistricts(provinceId);
     const services = useFetchServices();
@@ -67,6 +106,7 @@ export default function Profile({ onFinish, initialValues, user }) {
         const serviceIds = initialValues?.collaboratorServices?.map(
             (item) => item.serviceId
         );
+
         const newValues = {
             ...initialValues,
             birthDate: dayjs(initialValues?.birthDate),
@@ -75,6 +115,42 @@ export default function Profile({ onFinish, initialValues, user }) {
 
         form.setFieldsValue(newValues);
     }, [initialValues]);
+
+    
+    const onFinish = (values) => {
+        if(!hasAvatar){
+            message.error("Bạn cần phải upload ảnh đại diện trước.")
+        }
+        const services =
+            values.collaboratorServices &&
+            values.collaboratorServices.map((item) => ({
+                serviceId: item,
+                collaboratorId: collaboratorId,
+            }));
+
+        const params = {
+            ...values,
+            applicationUserId: user?.id,
+            collaboratorServices: services,
+            city: values.city,
+            id: collaboratorId
+        };
+
+        const url = collaboratorId && collaboratorId != "00000000-0000-0000-0000-000000000000"
+            ? COLLABORATOR_PATH.update
+            : COLLABORATOR_PATH.add;
+
+            DataService.post(url, params).then((res) => {
+            const { data } = res;
+            message.open({
+                type: data.isSucceed ? "success" : "error",
+                content: data.isSucceed
+                    ? data.data
+                    : generateMessages(data.messages),
+                duration: 5,
+            });
+        });
+    };
 
     return (
         <>
@@ -96,7 +172,6 @@ export default function Profile({ onFinish, initialValues, user }) {
                     name="isReady"
                     label="Bật hồ sơ cho thuê ?"
                     tooltip="Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê."
-                    valuePropName="checked"
                 >
                     <Switch />
                 </Form.Item>
@@ -109,12 +184,9 @@ export default function Profile({ onFinish, initialValues, user }) {
                         textAlign: "center"
                     }}
                 >
-                    <UploadComponent
-                        max={1}
-                        buttonTitle={"Cập nhật Avatar"}
-                        isAvatar={true}
-                    />
+                    <AvatarComponent setHasAvatar={setHasAvatar}/>
                 </Form.Item>
+
                 <Form.Item
                     name={"nickName"}
                     label="Nick Name"
@@ -334,9 +406,11 @@ export default function Profile({ onFinish, initialValues, user }) {
                         offset: 8,
                     }}
                 >
-                    <Button type="primary" htmlType="submit">
-                        Cập nhật hồ sơ
-                    </Button>
+                    {
+                        profile?.allowUpdate && <Button type="primary" htmlType="submit">
+                            Cập nhật hồ sơ
+                        </Button>
+                    }
                 </Form.Item>
             </Form>
         </>

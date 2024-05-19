@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import AuthorizeView from "../components/AuthorizeView";
-import { ROLES } from "../constant/settings";
-import DataService from "../lib/DataService";
-import { COLLABORATOR_PATH } from "../constant/urls";
-import DataTable from "../components/manageCollaborator/DataTable";
+import { GET_COLLABORATOR_TYPES, ROLES } from "@/constant/settings";
+import DataService from "@/lib/DataService";
+import { COLLABORATOR_PATH } from "@/constant/urls";
+import DataTable from "@/components/manage/DataTable";
 import { useDispatch } from "react-redux";
-import { hide, show } from "../state/loading/loadingSlice";
+import { hide, show } from "@/state/loading/loadingSlice";
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
+import AuthorizeView from "@/components/auth/AuthorizeView";
 
 export default function ManageCollaborator() {
     const [collaborators, setCollaborators] = useState([])
@@ -16,7 +16,7 @@ export default function ManageCollaborator() {
 
     useEffect(() => {
         dispatch(show())
-        DataService.get(COLLABORATOR_PATH.getAll).then(response => {
+        DataService.get(COLLABORATOR_PATH.getAll + GET_COLLABORATOR_TYPES.readyAndReviewing).then(response => {
             setCollaborators(response.data.data)
         })
         .catch(err => {

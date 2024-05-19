@@ -14,7 +14,8 @@ export const COLLABORATOR_PATH = {
     add: "Collaborator/Add",
     update: "Collaborator/Update",
     getProfile: "Collaborator/GetProfile?collaboratorId=",
-    getAll: "Collaborator/GetAll"
+    getAll: "Collaborator/GetAll?type=",
+    changeStatus: "Collaborator/ChangeStatus"
 }
 
 export const HOME_PATH = {

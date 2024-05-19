@@ -1,0 +1,32 @@
+.collaborator-infor__container{
+    display: flex;
+    padding-left: 10%;
+    padding-right: 10%;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.text-header{
+    font-family: Poppins,Source Sans Pro,Helvetica Neue,Arial,sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.text-value{
+    color: #f0564a;
+}
+
+.service-panel{
+    margin: 0 8px 6px 0;
+    border-radius: 10px;
+    color: "white";
+    float: left;
+    min-width: 100px;
+    text-align: center;
+    background-color: #ada08f;
+    height: 35px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+}

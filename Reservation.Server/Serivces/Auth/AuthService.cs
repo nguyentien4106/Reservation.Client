@@ -54,7 +54,7 @@ namespace Reservation.Server.Serivces.Auth
                 return new AppResponse<bool>().SetErrorResponse(GetRegisterErrors(result));
 
             }
-
+            await _userManager.AddToRoleAsync(user, "USER");
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var callbackUrl = $"{tokenSettings.Audience}/ConfirmEmail?email={request.Email}&code={code}";
 
@@ -162,15 +162,25 @@ namespace Reservation.Server.Serivces.Auth
               .Distinct()
               .ToList();
 
-            var collaboratorId = (from cl in _context.Collaborators
+            if(roleClaims.Count == 0)
+            {
+                roleClaims.Add(new Claim("role", "USER"));
+            }
+
+            var collaboratorIds = (from cl in _context.Collaborators
                                  where cl.ApplicationUserId == user.Id
                                  select cl)
                 .Select(r => new Claim("collaboratorId", r.Id.ToString()!))
                 .Distinct()
                 .ToList();
+
+            if (collaboratorIds.Count == 0)
+            {
+                collaboratorIds.Add(new("collaboratorId", Guid.Empty.ToString()));
+            }
                               
             claims.AddRange(roleClaims);
-            claims.AddRange(collaboratorId);
+            claims.AddRange(collaboratorIds);
 
             return claims;
         }

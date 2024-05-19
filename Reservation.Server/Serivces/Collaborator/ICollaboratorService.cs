@@ -10,10 +10,12 @@ namespace Reservation.Server.Serivces.UserServiceRegister
 
         Task<AppResponse<CollaboratorDTO>> GetProfileAsync(Guid? collaboratorId);
 
-        Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync();
+        Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(int type);
 
         Task<AppResponse<string>> AddAsync(CollaboratorDTO dto);
 
         Task<AppResponse<string>> UpdateAsync(CollaboratorDTO dto);
+
+        Task<AppResponse<string>> ChangeStatusAsync(Guid? collaboratorId, int status);
     }
 }

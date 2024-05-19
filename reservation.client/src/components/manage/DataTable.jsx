@@ -1,17 +1,31 @@
 import React from "react";
-import { Space, Table, Tag, Typography } from "antd";
+import { App, Space, Table, Tag, Typography } from "antd";
 const { Column } = Table;
 import { Link } from "react-router-dom";
+import DataService from "../../lib/DataService";
+import { COLLABORATOR_PATH } from "../../constant/urls";
+import { generateMessages } from "../../lib/helper";
 
 const ActionTypes = {
-    Deny: 0,
-    Approved: 1,
+    Denied: -1,
+    Verified: 2,
 };
 
 const DataTable = ({ collaborators }) => {
-    console.log(collaborators);
-    const handleAction = (collaboratorId, type) => {
-        console.log(collaboratorId, type);
+    const { message } = App.useApp();
+
+    const handleAction = (collaboratorId, status) => {
+        DataService.post(COLLABORATOR_PATH.changeStatus, {
+            collaboratorId: collaboratorId,
+            status: status
+        }).then(res => {
+            if(res.data.isSucceed){
+                message.success(res.data.data)
+            }
+            else{
+                message.error(generateMessages(res.data.messages))
+            }
+        }).catch(err => console.log(err))
     };
 
     return (
@@ -21,7 +35,7 @@ const DataTable = ({ collaborators }) => {
                 dataIndex="collaboratorId"
                 render={(text, collaborator) => {
                     return (
-                        <Link to={`/collaborator/${collaborator.id}`}>
+                        <Link to={`/collaborator/${collaborator.id}`} target="_blank">
                             Details
                         </Link>
                     );
@@ -49,11 +63,11 @@ const DataTable = ({ collaborators }) => {
                                 onClick={() =>
                                     handleAction(
                                         collaborator.id,
-                                        ActionTypes.Approved
+                                        ActionTypes.Verified
                                     )
                                 }
                             >
-                                Approved
+                                Verified
                             </a>
                         </Tag>
                         <Tag color={"red"}>
@@ -61,11 +75,11 @@ const DataTable = ({ collaborators }) => {
                                 onClick={() =>
                                     handleAction(
                                         collaborator.id,
-                                        ActionTypes.Deny
+                                        ActionTypes.Denied
                                     )
                                 }
                             >
-                                Deny
+                                Denied
                             </a>
                         </Tag>
                     </Space>

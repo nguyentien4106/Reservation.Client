@@ -6,6 +6,7 @@ using Reservation.Server.Data;
 using Reservation.Server.Models.DTO.Auth;
 using Reservation.Server.Models.DTO.Collaborator;
 using Reservation.Server.Models.DTO.UserServicesRegister;
+using Reservation.Server.Models.Request;
 using Reservation.Server.Serivces.UserServiceRegister;
 
 namespace Reservation.Server.Controllers
@@ -36,18 +37,24 @@ namespace Reservation.Server.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<AppResponse<CollaboratorDTO>> GetProfile(Guid? collaboratorId)
         {
             return await _collaboratorService.GetProfileAsync(collaboratorId);
         }
 
-
-
         [HttpGet]
-        public async Task<AppResponse<List<CollaboratorDTO>>> GetAll()
+        [AllowAnonymous]
+        public async Task<AppResponse<List<CollaboratorDTO>>> GetAll(int type)
         {
-            return await _collaboratorService.GetAllAsync();
+            return await _collaboratorService.GetAllAsync(type);
 
+        }
+
+        [HttpPost]
+        public async Task<AppResponse<string>> ChangeStatus(ChangeStatusRequest request)
+        {
+            return await _collaboratorService.ChangeStatusAsync(request.CollaboratorId, request.Status);
         }
     }
 }

@@ -1,20 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useDispatch } from "react-redux";
-import { hide, show } from "../state/loading/loadingSlice";
-import { generateMessages, setLocal } from "../lib/helper";
-
+import { hide, show } from "@/state/loading/loadingSlice";
+import { generateMessages, setLocal } from "@/lib/helper";
 import { App, Button, Checkbox, Form, Grid, Input, theme, Typography } from "antd";
-
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { setAuth } from "../state/auth/authSlice";
-import { Cookie } from "../lib/cookies";
-import DataService from "../lib/DataService";
+import { Cookie } from "@/lib/cookies";
+import DataService from "@/lib/DataService";
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
-const BASE_URL = "https://localhost:7080/"
-
 
 function Login() {
     const navigate = useNavigate();

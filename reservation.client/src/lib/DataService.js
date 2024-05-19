@@ -14,8 +14,6 @@ const beforeRequest = request => {
     if(request.url.includes(AUTH_REQUEST)){
         return request
     }
-
-    const controller = new AbortController();
     const refreshToken = Cookie.get("refreshToken")
     
     if(!refreshToken){

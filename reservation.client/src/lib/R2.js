@@ -26,6 +26,18 @@ const s3Client = new S3Client({
     },
 });
 
+const SevenDays = 60 * 60 * 24 * 7;
+
+const getUrl = async (content) =>
+    await getSignedUrl(
+        s3Client,
+        new GetObjectCommand({
+            Bucket: cloudflareR2BucketName,
+            Key: content.Key,
+        }),
+        { expiresIn: SevenDays }
+    );
+
 const upload = async (fileName, fileStream, type) => {
     const uploadParams = {
         Bucket: cloudflareR2BucketName,
@@ -39,37 +51,43 @@ const upload = async (fileName, fileStream, type) => {
     return await s3Client.send(cmd);
 };
 
-const get = async (username, isAvatar = false) => {
-    const SevenDays = 60 * 60 * 24 * 7;
-    const prefix = `${username}/${isAvatar ? "avatar" : "albums"}`
-    const getUrl = async (content) =>
-        await getSignedUrl(
-            s3Client,
-            new GetObjectCommand({
-                Bucket: cloudflareR2BucketName,
-                Key: content.Key,
-            }),
-            { expiresIn: SevenDays }
-        );
-    const objects = s3Client
-        .send(
-            new ListObjectsV2Command({
-                Bucket: cloudflareR2BucketName,
-                Prefix: prefix,
-                MaxKeys: isAvatar ? 1 : undefined
-            })
-        )
-        .then((objects) => {
-            return (
-                objects.Contents &&
-                objects.Contents.map(async (content) => ({
-                    url: getUrl(content),
-                    content: content,
-                }))
-            );
-        });
+const get = async (username) => {
+    const prefix = `${username}/albums`
 
-    return objects;
+    const objects = await s3Client.send(
+                                        new ListObjectsV2Command({
+                                            Bucket: cloudflareR2BucketName,
+                                            Prefix: prefix
+                                        })
+                                    )
+        
+
+    const images = objects.Contents && objects.Contents.map(async (content) => ({
+        url: await getUrl(content),
+        content: content,
+    }))
+
+    return Promise.all(images ?? [])
+};
+
+const getAvatar = async (username) => {
+    const prefix = `${username}/avatar`
+
+
+    const objects = await s3Client.send(
+        new ListObjectsV2Command({
+            Bucket: cloudflareR2BucketName,
+            Prefix: prefix,
+            MaxKeys: 1
+        })
+    )
+
+    const urls = objects.Contents && objects.Contents.map(async (content) => ({
+        url: await getUrl(content),
+        content: content,
+    }))
+
+    return urls && urls.length && urls[0];
 };
 
 const deleteObject = async (object) => {
@@ -83,7 +101,6 @@ const deleteObject = async (object) => {
         return response
     } catch (err) {
 
-        console.log(err)
         throw err.message
     }
 };
@@ -92,4 +109,5 @@ export const R2 = {
     upload: upload,
     get: get,
     delete: deleteObject,
+    getAvatar: getAvatar
 };

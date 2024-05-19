@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { hide, show } from '../state/loading/loadingSlice'
-import axios from 'axios'
-import { App } from 'antd'
+import { hide, show } from '@/state/loading/loadingSlice'
 import { Button, Result } from 'antd';
-import DataService from '../lib/DataService'
-
-const BASE_URL = "https://localhost:7080/"
+import DataService from '@/lib/DataService'
 
 function ConfirmEmail() {
     const [ searchParams, setSearchParams ] = useSearchParams()
@@ -26,7 +22,6 @@ function ConfirmEmail() {
 
         DataService.get(`Auth/ConfirmEmail?email=${email}&code=${code}`)
             .then(res => {
-                console.log(res.data)
                 setSucceed(res.data.isSucceed)
                 setEmail(res.data.data)
             }).finally(() => {

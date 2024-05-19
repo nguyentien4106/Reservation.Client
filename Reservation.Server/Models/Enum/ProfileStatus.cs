@@ -2,6 +2,7 @@
 {
     public enum ProfileStatus
     {
+        Denied = -1,
         Created,
         Reviewing,
         Verified,

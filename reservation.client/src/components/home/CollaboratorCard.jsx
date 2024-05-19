@@ -1,58 +1,63 @@
-import React, { useState } from "react";
-import {
-    EditOutlined,
-    EllipsisOutlined,
-    SettingOutlined,
-} from "@ant-design/icons";
-import { Avatar, Card, Skeleton, Switch } from "antd";
+import React, { Suspense, lazy, useEffect, useState } from 'react';
+import { Card, Spin, Typography } from 'antd';
+import { R2 } from '../../lib/R2';
+import { getAge, getUserName } from '../../lib/helper';
+import CoverImage from './CoverImage'
+import { useNavigate } from 'react-router-dom';
 const { Meta } = Card;
 
-const CollaboratorCard = () => {
-    const [loading, setLoading] = useState(false);
-    const onChange = (checked) => {
-        setLoading(!checked);
-    };
+const { Text } = Typography
+
+const CollaboratorCard = ({ collaborator, services }) => {
+    const [loading, setLoading] = useState(true)
+    const [url, setUrl] = useState("")
+
+    useEffect(() => {
+        R2.getAvatar(getUserName(collaborator.email)).then(res => {
+            setUrl(res.url)
+        }).finally(() => {
+            setLoading(false)
+        })
+    }, [])
+
+    const servicesTitle = collaborator?.collaboratorServices.map(item => item.name).join(", ")
+    const title = `${collaborator.nickName} - ${getAge(collaborator.birthDate)} Tuổi`
+
+    const metaTitle = (
+        <>
+            <Text>{collaborator.city}</Text>
+            <br></br>
+            <Text>{servicesTitle}</Text>
+        </>
+    )
+    const image = (
+        <Suspense fallback={<Spin />}>
+            <CoverImage src={url} price={collaborator.pricePerHour}/>
+        </Suspense>
+    )
+
+    const navigate = useNavigate()
+
+
+    const handleChoose = () => {
+        navigate(`/${collaborator.id}`)
+    }
 
     return (
-        <>
-            <Switch checked={!loading} onChange={onChange} />
-            <Card
-                style={{
-                    width: 300,
-                    marginTop: 16,
-                }}
-                loading={loading}
-            >
-                <Meta
-                    avatar={
-                        <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=1" />
-                    }
-                    title="Card title"
-                    description="This is the description"
-                />
-            </Card>
-            <Card
-                style={{
-                    width: 300,
-                    marginTop: 16,
-                }}
-                actions={[
-                    <SettingOutlined key="setting" />,
-                    <EditOutlined key="edit" />,
-                    <EllipsisOutlined key="ellipsis" />,
-                ]}
-            >
-                <Skeleton loading={loading} avatar active>
-                    <Meta
-                        avatar={
-                            <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=2" />
-                        }
-                        title="Card title"
-                        description="This is the description"
-                    />
-                </Skeleton>
-            </Card>
-        </>
+        <Card
+            loading={loading}
+            hoverable
+            style={{ width: 260 }}
+            cover={image}
+            onClick={handleChoose}
+            title={title}
+        >
+            <Meta 
+                title={metaTitle}
+                description={collaborator.title}
+            />
+        </Card>
     );
-};
+}
+
 export default CollaboratorCard;

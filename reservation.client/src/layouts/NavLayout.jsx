@@ -80,7 +80,7 @@ export default function NavLayout() {
         },
         menu: {
             backgroundColor: "transparent",
-            color: "white",
+            // color: "white",
             borderBottom: "none",
             lineHeight: screens.sm ? "4rem" : "3.5rem",
             marginLeft: screens.md ? "0px" : `-${token.size}px`,

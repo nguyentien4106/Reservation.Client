@@ -1,12 +1,7 @@
 import React from 'react'
-import LogoutLink from '../components/LogoutLink'
-import { getLocal } from '../lib/helper'
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Popover, Space } from 'antd';
-import { Cookie } from '../lib/cookies';
-import { jwtDecode } from 'jwt-decode';
-import DataService from '../lib/DataService';
-import { useDispatch } from 'react-redux';
+import LogoutLink from '@/components/auth/LogoutLink';
 
 function UserComponent({ user }) {
 

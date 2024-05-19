@@ -9,7 +9,10 @@ namespace Reservation.Server.Profile
     {
         public AutoMapperProfile()
         {
-            CreateMap<CollaboratorService, CollaboratorServiceDTO>().ReverseMap();
+            CreateMap<CollaboratorService, CollaboratorServiceDTO>()
+                .ForMember(item => item.Name, opt => opt.MapFrom(src => src.Service.Name));
+
+            CreateMap<CollaboratorServiceDTO, CollaboratorService>();
 
             CreateMap<Collaborator, CollaboratorDTO>()
             .ForMember(dest => dest.CollaboratorServices, opt => opt.MapFrom(src => src.CollaboratorServices));

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Reservation.Server.Data;
@@ -6,20 +7,30 @@ using Reservation.Server.Data.Entities;
 using Reservation.Server.Models.DTO.Auth;
 using Reservation.Server.Models.DTO.Collaborator;
 using Reservation.Server.Models.Enum;
+using System.Linq.Expressions;
 
 namespace Reservation.Server.Serivces.UserServiceRegister
 {
-    public class CollaboratorService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IMapper mapper) : ICollaboratorService
+    public class CollaboratorService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IMapper mapper) 
+        : ICollaboratorService
     {
         private readonly ApplicationDbContext _context = context;
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly IMapper _mapper = mapper;
 
-        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync()
+        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(int type)
         {
+            Expression<Func<Collaborator, bool>> predict = type switch
+            {
+                (int)CollaboratorGetType.All => (Collaborator c) => true,
+                (int)CollaboratorGetType.ReadyAndReviewing => (Collaborator c) => c.IsReady == true && c.Status == (int)ProfileStatus.Reviewing,
+                _ => (Collaborator c) => c.IsReady == false,
+            };
+
             var collaborators = await _context.Collaborators
                 .Include(item => item.CollaboratorServices)
                 .ThenInclude(item => item.Service)
+                .Where(predict)
                 .ToListAsync();
 
             return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(_mapper.Map<List<CollaboratorDTO>>(collaborators));
@@ -27,17 +38,18 @@ namespace Reservation.Server.Serivces.UserServiceRegister
 
         public async Task<AppResponse<CollaboratorDTO>> GetProfileAsync(Guid? collaboratorId)
         {
-            if(collaboratorId == null || !collaboratorId.HasValue)
+            if (collaboratorId == null || !collaboratorId.HasValue)
             {
-                return new AppResponse<CollaboratorDTO>().SetSuccessResponse(new (), "id", $"{collaboratorId} not found!");
+                return new AppResponse<CollaboratorDTO>().SetSuccessResponse(new(), "id", $"{collaboratorId} not found!");
             }
 
             var collaborator = await _context.Collaborators
+                .Include(item => item.ApplicationUser)
                 .Include(item => item.CollaboratorServices)
                 .ThenInclude(cs => cs.Service)
                 .FirstOrDefaultAsync(collaborator => collaborator.Id == collaboratorId);
 
-            if(collaborator == null)
+            if (collaborator == null)
             {
                 return new AppResponse<CollaboratorDTO>().SetErrorResponse("id", "User not found!");
             }
@@ -106,8 +118,31 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             entity.Weight = newValue.Weight;
             entity.Height = newValue.Height;
             entity.Job = newValue.Job;
+            entity.Sex = newValue.Sex;
+        }
+
+        public async Task<AppResponse<string>> ChangeStatusAsync(Guid? collaboratorId, int status)
+        {
+            if( collaboratorId == null || !collaboratorId.HasValue)
+            {
+                return new AppResponse<string>().SetErrorResponse("id", "The Collaborator went wrong!");
+            }
+
+            var collaborator = await _context.Collaborators.SingleOrDefaultAsync(item => item.Id == collaboratorId);
+            
+            if(collaborator == null)
+            {
+                return new AppResponse<string>().SetErrorResponse("id", "There is no collaborator with ID given");
+            }
+
+            collaborator.Status = status;
+
+            await _context.SaveChangesAsync();
+
+            return new AppResponse<string>().SetSuccessResponse("Approved Successfully!");
+
         }
     }
 
-   
+
 }

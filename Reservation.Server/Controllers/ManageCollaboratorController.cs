@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Reservation.Server.Models.DTO.Auth;
 using Reservation.Server.Models.DTO.Collaborator;
+using Reservation.Server.Models.Enum;
 using Reservation.Server.Serivces.ManageCollaborator;
 
 namespace Reservation.Server.Controllers
@@ -17,7 +18,7 @@ namespace Reservation.Server.Controllers
         [HttpGet]
         public async Task<AppResponse<List<CollaboratorDTO>>> GetAll()
         {
-            return await _manageCollaboratorService.GetAllAsync(0);
+            return await _manageCollaboratorService.GetAllAsync((int)CollaboratorGetType.All);
         }
     }
 }

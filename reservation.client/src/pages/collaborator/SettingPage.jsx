@@ -1,41 +1,23 @@
 import React, { useEffect, useState } from "react";
-import AuthorizeView from "../components/AuthorizeView";
-import { generateMessages, getLocal } from "../lib/helper";
-import DataService from "../lib/DataService";
-import UploadComponent from "../components/collaborator/UploadComponent";
-import Profile from "../components/collaborator/Profile";
-import { COLLABORATOR_PATH } from "../constant/urls";
+import AuthorizeView from "../../components/auth/AuthorizeView";
+import { generateMessages, getUser } from "../../lib/helper";
+import DataService from "../../lib/DataService";
+import { COLLABORATOR_PATH } from "../../constant/urls";
 import { App } from "antd";
-import useFetchUser from "../hooks/useFetchUser";
-import { ROLES } from "../constant/settings";
+import { ROLES } from "../../constant/settings";
 import { useParams } from "react-router-dom";
-import { ProfileContext } from "../context/useProfileContext";
+import { ProfileContext } from "../../context/useProfileContext";
+import LeaseAlbumComponent from "../../components/collaborator/setting/LeaseAlbumComponent";
+import LeaseInfoComponent from "../../components/collaborator/setting/LeaseInfoComponent";
 
-const UserServicesRegister = () => {
-    const [collaborator, setCollaborator] = useState({
-        id: "",
-        applicationUserId: "",
-    });
-    const [collaboratorId, setCollaboratorId] = useState("")
-    const user = useFetchUser();
+const SettingPage = () => {
+    const { id } = useParams();
+    const user = getUser();
+    const [collaborator, setCollaborator] = useState({ id: "" });
+    const [hasAvatar, setHasAvatar] = useState(false)
     const { message } = App.useApp();
     const [initialValues, setInitialValues] = useState({});
-    const { id } = useParams();
-
-    useEffect(() => {
-        let newCollaboratorId;
-        if (user) {
-            newCollaboratorId = user.collaboratorId;
-        }
-
-        if (id) {
-            newCollaboratorId = id;
-        }
-
-        setCollaboratorId(newCollaboratorId)
-
-       
-    }, [id, user]);
+    const collaboratorId = id ? id : user?.collaboratorId
 
     useEffect(() => {
         if (collaboratorId) {
@@ -43,47 +25,15 @@ const UserServicesRegister = () => {
                 (res) => {
                     const { data } = res.data;
                     setCollaborator(data);
-                    setInitialValues(data);
+                    setInitialValues(data ?? {email: user.userName});
                 }
             );
         }
     }, [collaboratorId])
 
-    const onFinish = (values) => {
-        const services =
-            values.collaboratorServices &&
-            values.collaboratorServices.map((item) => ({
-                serviceId: item,
-                collaboratorId: collaboratorId,
-            }));
-
-        const params = {
-            ...values,
-            applicationUserId: user?.id,
-            collaboratorServices: services,
-            city: values.city,
-            id: collaboratorId
-        };
-
-        const url = collaboratorId
-            ? COLLABORATOR_PATH.update
-            : COLLABORATOR_PATH.add;
-
-        DataService.post(url, params).then((res) => {
-            const { data } = res;
-            message.open({
-                type: data.isSucceed ? "success" : "error",
-                content: data.isSucceed
-                    ? data.data
-                    : generateMessages(data.messages),
-                duration: 5,
-            });
-        });
-    };
-
     return (
         <AuthorizeView role={ROLES.USER}>
-            <ProfileContext.Provider value={{ collaborator}}>
+            <ProfileContext.Provider value={{ collaborator, allowUpdate: !id }}>
                 <div
                     style={{
                         display: "flex",
@@ -106,8 +56,10 @@ const UserServicesRegister = () => {
                         >
                             Hồ sơ
                         </h2>
-                        <Profile
-                            onFinish={onFinish}
+                        <LeaseInfoComponent
+                            // onFinish={onFinish}
+                            user={user}
+                            collaboratorId={collaboratorId}
                             initialValues={initialValues}
                         />
                     </div>
@@ -131,10 +83,9 @@ const UserServicesRegister = () => {
                                 paddingRight: 16,
                             }}
                         >
-                            <UploadComponent
+                            <LeaseAlbumComponent
                                 max={1000}
                                 buttonTitle={"Cập nhật Albums"}
-                                collaborator={collaborator}
                             />
                         </div>
                     </div>
@@ -144,4 +95,4 @@ const UserServicesRegister = () => {
     );
 };
 
-export default () => <UserServicesRegister />;
+export default SettingPage;
