@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import useFetchProvinces from '../../hooks/useFetchProvinces';
 import { Space, Select, Typography } from 'antd';
 import useFetchDistricts from '../../hooks/useFetchDistricts';
-import useFetchServices from '../../hooks/useFetchServices';
 const { Text } = Typography;
 const hasAll = true
 
 const getFilterItem = ({ label, onSelect, defaultValue, options, mode, width = 200 }) => (
-    <Space direction="vertical">
+    <Space direction="vertical" key={label}>
+
         <Text>{label}</Text>
         <Select
             showSearch
@@ -29,6 +29,10 @@ function FilterArea({ services }) {
     const [provinceId, setProvinceId] = useState(-1)
     const provinces = useFetchProvinces(hasAll)
     const districts = useFetchDistricts(provinceId, hasAll)
+    services.unshift({
+        label: "All",
+        value: -1
+    })
 
     const onProvinceSelect = (e, province) => {
         setProvinceId(province.id);
@@ -54,6 +58,7 @@ function FilterArea({ services }) {
             mode: "multiple"
         },
     ]
+    
     return (
         <Space>
             {

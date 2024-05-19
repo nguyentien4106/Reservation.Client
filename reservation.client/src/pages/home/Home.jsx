@@ -1,13 +1,12 @@
-import { App, Button, Space, Spin } from "antd";
-import DataService from "../lib/DataService.js";
+import { App, Space, Spin } from "antd";
+import DataService from "../../lib/DataService.js";
 import { Suspense, lazy, useEffect, useState } from "react";
-import { COLLABORATOR_PATH, HOME_PATH } from "../constant/urls.js";
-import { GET_COLLABORATOR_TYPES } from "../constant/settings.js";
-import { getUserName } from "../lib/helper.js";
-import FilterArea from "../components/home/FilterArea.jsx";
-import useFetchServices from "../hooks/useFetchServices.jsx";
+import { COLLABORATOR_PATH, HOME_PATH } from "../../constant/urls.js";
+import { GET_COLLABORATOR_TYPES } from "../../constant/settings.js";
+import FilterArea from "../../components/home/FilterArea.jsx";
+import useFetchServices from "../../hooks/useFetchServices.jsx";
 
-const CollaboratorCard = lazy(() => import("../components/home/CollaboratorCard.jsx"))
+const CollaboratorCard = lazy(() => import("../../components/home/collaborators/CollaboratorCard.jsx"))
 
 function Home() {
     const { message } = App.useApp();
@@ -23,8 +22,9 @@ function Home() {
     }, [])
 
     const card = collaborator => (
-        <Suspense fallback={<Spin />}>
+        <Suspense key={collaborator.id} fallback={<Spin />}>
             <CollaboratorCard 
+                key={collaborator.id}
                 collaborator={collaborator} 
                 services={services}
             />
@@ -36,7 +36,7 @@ function Home() {
             flexDirection: "column",
             gap: 50
         }}>
-            <FilterArea services={services}></FilterArea>
+            <FilterArea services={services} />
             <Space size="middle">
                 {
                     collaborators && collaborators.map(collaborator => card(collaborator))

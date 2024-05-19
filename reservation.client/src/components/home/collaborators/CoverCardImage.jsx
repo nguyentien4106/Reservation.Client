@@ -1,8 +1,8 @@
 import React from 'react'
 import { Image, Typography } from 'antd';
-import { showMoney } from '../../lib/helper';
+import { showMoney } from '@/lib/helper';
 
-const CoverImage = ({ src, price }) => (
+const CoverCardImage = ({ src, price }) => (
   <div className='collaborator'>
     <Image
       height={240}
@@ -20,4 +20,4 @@ const CoverImage = ({ src, price }) => (
 
 );
 
-export default CoverImage
+export default CoverCardImage

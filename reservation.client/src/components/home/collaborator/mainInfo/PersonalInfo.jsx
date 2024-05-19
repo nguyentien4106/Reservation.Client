@@ -1,12 +1,11 @@
 import React, { useContext } from 'react'
-import { CollaboratorInforProfile } from '../CollaboratorInfor'
+import { ContainerInfoProfile } from '../../../../pages/home/collaborator/CollaboratorPage'
 import { Space, Tag, Flex, Divider, Typography } from 'antd'
-import { getAge, getYear } from '../../../lib/helper'
-import MainInforBookingInfo from './MainInforBookingInfo'
+import { getAge, getYear } from '../../../../lib/helper'
 const { Text } = Typography
 
 const getItem = ({ label, value }) => (
-    <Space direction='vertical' style={{ flexGrow: 1, width: "33%" }}>
+    <Space key={label} direction='vertical' style={{ flexGrow: 1, width: "33%" }}>
         <Text className='text-header'>{label}</Text>
         <Text className='text-value'>{value}</Text>
     </Space>
@@ -39,11 +38,12 @@ const items = collaborator => [
     },
 
 ]
-function MainInforHeader() {
-    const collaborator = useContext(CollaboratorInforProfile)
+
+function PersonalInfo() {
+    const collaborator = useContext(ContainerInfoProfile)
 
     const servicePanel = service => (
-        <div className='service-panel text-header'>
+        <div className='service-panel text-header' key={service}>
             <Text style={{ color: "white" }}>{service}</Text>
         </div>
     )
@@ -73,10 +73,9 @@ function MainInforHeader() {
                     }
                 </Flex>
             </Space>
-            <Divider />
-            <MainInforBookingInfo />
+            
         </>
     )
 }
 
-export default MainInforHeader
+export default PersonalInfo

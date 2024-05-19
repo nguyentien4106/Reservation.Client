@@ -58,40 +58,6 @@ const tagRender = (props) => {
     );
 };
 
-const items = [
-    {
-        name: "isReady",
-        label: "Bật hồ sơ cho thuê ?",
-        tooltip: "Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê.",
-        value: <Switch/>
-    },
-    {
-        name: "isReady",
-        label: "Bật hồ sơ cho thuê ?",
-        tooltip: "Ảnh này sẽ được dùng làm avatar hiển thị cho người muốn thuê thấy. Vậy nên hãy dùng ảnh đẹp nhất của mình nhé."
-    },
-    {
-        name: "isReady",
-        label: "Bật hồ sơ cho thuê ?",
-        tooltip: "Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê."
-    },
-    {
-        name: "isReady",
-        label: "Bật hồ sơ cho thuê ?",
-        tooltip: "Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê."
-    },
-    {
-        name: "isReady",
-        label: "Bật hồ sơ cho thuê ?",
-        tooltip: "Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê."
-    },
-    {
-        name: "isReady",
-        label: "Bật hồ sơ cho thuê ?",
-        tooltip: "Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê."
-    },
-
-]
 
 export default function LeaseInfoComponent({ user, collaboratorId, initialValues }) {
     const [provinceId, setProvinceId] = useState(0);

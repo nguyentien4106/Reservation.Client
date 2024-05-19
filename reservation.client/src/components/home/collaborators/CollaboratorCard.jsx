@@ -1,9 +1,9 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Card, Spin, Typography } from 'antd';
-import { R2 } from '../../lib/R2';
-import { getAge, getUserName } from '../../lib/helper';
-import CoverImage from './CoverImage'
+import { R2 } from '../../../lib/R2';
+import { getAge, getUserName } from '../../../lib/helper';
 import { useNavigate } from 'react-router-dom';
+import CoverCardImage from './CoverCardImage';
 const { Meta } = Card;
 
 const { Text } = Typography
@@ -32,12 +32,11 @@ const CollaboratorCard = ({ collaborator, services }) => {
     )
     const image = (
         <Suspense fallback={<Spin />}>
-            <CoverImage src={url} price={collaborator.pricePerHour}/>
+            <CoverCardImage src={url} price={collaborator.pricePerHour}/>
         </Suspense>
     )
 
     const navigate = useNavigate()
-
 
     const handleChoose = () => {
         navigate(`/${collaborator.id}`)

@@ -1,6 +1,6 @@
 
 import { BrowserRouter, Route, Routes, createBrowserRouter } from 'react-router-dom';
-import Home from './pages/Home';
+import Home from './pages/home/Home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ConfirmEmail from './pages/auth/ConfirmEmail';
@@ -15,37 +15,43 @@ import { getLocal } from './lib/helper';
 import ErrorPage from './pages/common/ErrorPage';
 import SettingPage from './pages/collaborator/SettingPage';
 import ManageCollaborator from './pages/manage/ManageCollaborator';
-import CollaboratorInfor from './components/home/CollaboratorInfor';
+import CollaboratorInfor from './pages/home/collaborator/CollaboratorPage';
 
-// const router = createBrowserRouter([
-//     {
-//         path: "/",
-//         element: <AppLayout></AppLayout>,
-//         children: [
-//             {
-//                 path: '/login',
-//                 element: <Login></Login>
-//             }
-//         ]
-//     },
-//     // {
-//     //     path: "/login",
-//     //     element: <Login></Login>
-//     // },
-//     {
-//         path: "/register",
-//         element: <Register></Register>
-//     },
-//     {
-//         path: "/ConfirmEmail",
-//         element: <ConfirmEmail></ConfirmEmail>
-//     }
-// ]) 
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <AppLayout></AppLayout>,
+        errorElement: <ErrorPage />,
+        children: [
+            {
+                path: '/login',
+                element: <Login></Login>
+            },
+            {
+                path: "/register",
+                element: <Register />
+            },
+            {
+                path: "/confirmemail",
+                element: <ConfirmEmail />
+            },
+            {
+                path: "/collaborator",
+                element: <SettingPage />,
+                children: [
+                    {
+                        path: ":id",
+                        element: <SettingPage />
+                    }
+                ]
+            }
+        ]
+    },
+]) 
 
 function App() {
     const isLoading = useSelector(state => state.loading.isLoading)
     const [msg, contextHolder] = message.useMessage()
-    const isAuth = getLocal("email") ? true : false
 
     return (
         <>
@@ -54,7 +60,7 @@ function App() {
             <AntdApp>
                 <BrowserRouter>
                     <Routes>
-                        <Route path='/' element={<AppLayout isAuth={isAuth} />}>
+                        <Route path='/' element={<AppLayout />}>
                             <Route index={true} element={<Home />} />
                             <Route
                                 path=':id'
@@ -71,6 +77,7 @@ function App() {
                             </Route>
 
                             {/* <Route path='manage-collaborator' element={<ManageCollaborator />} /> */}
+                            <Route path='/error' element={<ErrorPage />} />
                             <Route path='*' element={<ErrorPage />} />
                         </Route>
                     </Routes>

@@ -7,7 +7,7 @@ import { Cookie } from '../lib/cookies';
 
 const { Header, Content } = Layout;
 
-const AppLayout = ({ isAuth }) => {
+const AppLayout = () => {
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
@@ -22,7 +22,7 @@ const AppLayout = ({ isAuth }) => {
                         justifyContent: "space-around"
                     }}
                 >
-                    <NavLayout isAuth={isAuth}/>
+                    <NavLayout />
                 </Header>
                 <Content
                     style={{

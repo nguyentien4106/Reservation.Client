@@ -2,11 +2,12 @@ import { Image, Spin } from 'antd'
 import React, { useContext, useEffect, useState } from 'react'
 import { R2 } from '../../../lib/R2'
 import { getUserName } from '../../../lib/helper'
-import { CollaboratorInforProfile } from '../CollaboratorInfor'
+import { ContainerInfoProfile } from '@/pages/home/collaborator/CollaboratorPage'
+
 function AvatarImage() {
     const [avatarUrl, setAvatarUrl] = useState('')
     const [loading, setLoading] = useState(true)
-    const collaborator = useContext(CollaboratorInforProfile)
+    const collaborator = useContext(ContainerInfoProfile)
 
     useEffect(() => {
         if (!collaborator) {
@@ -30,7 +31,8 @@ function AvatarImage() {
                     preview={false}
                     src={avatarUrl}
                     style={{
-                        borderRadius: "50%"
+                        borderRadius: "50%",
+                        marginTop: "20px"
                     }}
                 />
             }
