@@ -1,31 +1,29 @@
 import React, { lazy } from "react";
-import useLazy from "./useLazy";
-
-const Login = lazy(() => import("@/pages/auth/Login"));
-const Register = lazy(() => import("@/pages/auth/Register"));
-const ConfirmEmail = lazy(() => import("@/pages/auth/ConfirmEmail"));
-const ResetPassword = lazy(() => import("@/pages/auth/ResetPassword"));
-const ForgotPassword = lazy(() => import("@/pages/auth/ForgotPassword"));
+import Login from "../pages/auth/Login";
+import Register from "../pages/auth/Register";
+import ConfirmEmail from "../pages/auth/ConfirmEmail";
+import ResetPassword from "../pages/auth/ResetPassword"
+import ForgotPassword from "../pages/auth/ForgotPassword"
 
 export default [
     {
         path: "/login",
-        element: useLazy(<Login />),
+        element: <Login />,
     },
     {
         path: "/register",
-        element: useLazy(<Register/>),
+        element: <Register/>,
     },
     {
         path: "/confirmemail",
-        element: useLazy(<ConfirmEmail />),
+        element: <ConfirmEmail />,
     },
     {
         path: "/reset-password",
-        element: useLazy(<ResetPassword />),
+        element: (<ResetPassword />),
     },
     {
         path: "/forgot-password",
-        element: useLazy(<ForgotPassword />),
+        element: (<ForgotPassword />),
     },
 ];

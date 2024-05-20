@@ -56,11 +56,9 @@ const Register = () => {
         }
     };
 
-    useEffect(() => {
-        if(getUser()){
-            navigate("/")
-        }
-    }, [])
+    if(getUser()){
+        navigate("/")
+    }
 
     const onFinish = values => {
         dispatch(show())

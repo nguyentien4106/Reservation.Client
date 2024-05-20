@@ -30,6 +30,7 @@ function Home() {
             />
         </Suspense>
     )
+    
     return (
         <div style={{
             display: "flex",

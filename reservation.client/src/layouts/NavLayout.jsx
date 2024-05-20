@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Grid, Menu, Space, theme } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import UserComponent from "./UserComponent";
 import { Cookie } from "../lib/cookies";
 import { jwtDecode } from "jwt-decode";
 import { getUser } from "../lib/helper";
+import { menuItems } from "./helper";
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -15,46 +16,46 @@ export default function NavLayout() {
     const screens = useBreakpoint();
     const navigate = useNavigate()
     const [current, setCurrent] = useState("");
+    const user = getUser();
     
-    const accessToken = Cookie.getAccessToken()
-    let user;
-    if(accessToken){
-        user = jwtDecode(accessToken)
-    }
 
-    const menuItems = [
-        {
-            key: "collaborator",
-            label: "Cộng tác viên",
-            children: [
-                {
-                    key: "overall",
-                    label: "Tổng quan",
-                    onClick: () => navigate("/collaborator-overall")
+    // const menuItems = [
+    //     {
+    //         key: "collaborator",
+    //         label: "Cộng tác viên",
+    //         children: [
+    //             {
+    //                 key: "overall",
+    //                 label: "Tổng quan",
+    //                 onClick: () => navigate("/collaborator-overall")
 
-                },
-                {
-                    key: "customer",
-                    label: "Khách hàng",
-                    onClick: () => navigate("/collaborator-customer")
-                },
-                {
-                    key: "setting",
-                    label: "Cài đặt",
-                    onClick: () => navigate("/collaborator-setting")
-                }
-            ]
-        },
-        {
-            key: "donate",
-            label: "Donate",
-        },
-        {
-            key: "manage",
-            label: "Quản lí collaborator",
-            onClick: () => navigate("/manage-collaborator")
-        }
-    ];
+    //             },
+    //             {
+    //                 key: "customer",
+    //                 label: "Khách hàng đã thuê",
+    //                 onClick: () => navigate("/collaborator-customer")
+    //             },
+    //             {
+    //                 key: "setting",
+    //                 label: "Hồ sơ cho thuê",
+    //                 onClick: () => navigate("/collaborator-setting")
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         key: "donate",
+    //         label: "Donate",
+    //     },
+    //     {
+    //         key: "manage",
+    //         label: "Quản lí collaborator",
+    //         onClick: () => navigate("/manage-collaborator")
+    //     }
+    // ];
+
+    useEffect(() => {
+        console.log(user)
+    }, [user])
 
     const onClick = (e) => {
         setCurrent(e.key);
@@ -98,9 +99,8 @@ export default function NavLayout() {
         }
     };
 
-
     const renderAuth = () => {
-        return getUser() ? <UserComponent user={getUser()}/>
+        return user ? <UserComponent user={user}/>
             : <Space>
                 <Button type="text" style={{ backgroundColor: "white" }} onClick={() => navigate("/login")}>Log in</Button>
                 <Button type="primary" onClick={() => navigate("/register")}>Sign up</Button>
@@ -119,7 +119,7 @@ export default function NavLayout() {
                 <Menu
                     style={styles.menu}
                     mode="horizontal"
-                    items={menuItems}
+                    items={menuItems(navigate, true)}
                     theme="light"
                     onClick={onClick}
                     selectedKeys={screens.md ? [current] : ""}

@@ -39,7 +39,7 @@ const CollaboratorCard = ({ collaborator, services }) => {
     const navigate = useNavigate()
 
     const handleChoose = () => {
-        navigate(`/${collaborator.id}`)
+        navigate(`/collaborators/${collaborator.id}`)
     }
 
     return (

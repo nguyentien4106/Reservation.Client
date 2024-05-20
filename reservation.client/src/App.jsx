@@ -6,7 +6,7 @@ import Loading from './components/common/Loading';
 import { useSelector } from 'react-redux';
 import { message } from 'antd';
 import { App as AntdApp } from 'antd'
-import router from './routes';
+import routes from './routes';
 
 function App() {
     const isLoading = useSelector(state => state.loading.isLoading)
@@ -17,7 +17,7 @@ function App() {
             {contextHolder}
             {isLoading && <Loading />}
             <AntdApp>
-                <RouterProvider router={createBrowserRouter(router)} />
+                <RouterProvider router={createBrowserRouter(routes)} />
             </AntdApp>
         </>
     );

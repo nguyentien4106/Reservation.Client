@@ -6,13 +6,17 @@ import donateRoute from './donateRoute';
 import homeRoute from './homeRoute';
 import accountRoute from './accountRoute';
 
-const router = [
+const routes = [
     {
         path: '/',
         element: <AppLayout />,
         errorElement: <ErrorPage />,
         children: [...homeRoute, ...authRoute, ...collaboratorRoute, ...donateRoute, ...accountRoute],
     },
+    {
+        path: '/error',
+        element: <ErrorPage />
+    }
 ];
 
-export default router;
+export default routes;

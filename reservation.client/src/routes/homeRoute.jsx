@@ -1,16 +1,14 @@
 import React, { lazy } from "react";
-import useLazy from "./useLazy";
-
-const Home = lazy(() => import("@/pages/home/Home"));
-const CollaboratorPage = lazy(() => import("@/pages/home/collaborator/CollaboratorPage"))
+import Home from "@/pages/home/Home"
+import CollaboratorPage from "@/pages/home/collaborator/CollaboratorPage"
 
 export default [
     {
         path: "/",
-        element: useLazy(<Home />),
+        element: <Home />,
     },
     {
-        path: "/:id",
-        element: useLazy(<CollaboratorPage />)
+        path: "/collaborators/:id",
+        element: <CollaboratorPage />
     }
 ];

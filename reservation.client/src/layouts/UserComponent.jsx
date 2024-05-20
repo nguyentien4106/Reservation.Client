@@ -5,13 +5,14 @@ import LogoutLink from '@/components/auth/LogoutLink';
 import { Link } from 'react-router-dom';
 
 function UserComponent({ user }) {
+    console.log(user)
     const content = (
         <div style={{
             display: 'flex',
             flexDirection: "column",
             width: "100%"
         }}>
-            <Link to={"/account"}>{user.userName}</Link>
+            <Link to={"/account-info"}>{user.userName}</Link>
             <LogoutLink />
         </div>
     )

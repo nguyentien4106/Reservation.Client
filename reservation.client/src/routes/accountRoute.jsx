@@ -1,11 +1,14 @@
 import React, { lazy } from "react";
-import useLazy from "./useLazy";
-const Account = lazy(() => import("@/pages/account/Account"));
+import Account from "../pages/account/Account";
+import ChangePassword from "../components/account/ChangePassword";
 
 export default [
     {
-        path: "/account",
-        element: useLazy(<Account />),
+        path: '/account-info',
+        element: <Account />
+    }, 
+    {
+        path: "/account-change-password",
+        element: <ChangePassword />
     },
-    
 ];

@@ -17,7 +17,7 @@ function AvatarComponent({ setHasAvatar }) {
                 if (!userName) return
 
                 const result = await R2.getAvatar(userName);
-                if (!result) return
+                if (!result.length) return
                 setFileList([{
                     uid: result.content.Key,
                     name: result.content.Key,

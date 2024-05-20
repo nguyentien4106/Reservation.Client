@@ -8,6 +8,7 @@ import { Cookie } from "@/lib/cookies";
 import DataService from "@/lib/DataService";
 import { getUser } from "../../lib/helper";
 import { useEffect } from "react";
+import { AUTH_PATH } from "../../constant/urls";
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
@@ -50,16 +51,15 @@ function Login() {
         }
     };
 
-    useEffect(() => {
-        if(getUser()){
-            navigate("/")
-        }
-    }, [])
+    if(getUser()){
+        navigate("/")
+    }
 
     const onFinish = (values) => {
         dispatch(show())
-        DataService.post("Auth/Login", values).then(res => {
+        DataService.post(AUTH_PATH.login, values).then(res => {
             const { data } = res
+            console.log(data)
             if (!data.isSucceed) {
                 message.error(generateMessages(data.messages))
             }
@@ -70,6 +70,7 @@ function Login() {
                 Cookie.setAccessToken(data.data.accessToken)
                 Cookie.setRefreshToken(data.data.refreshToken)
                 navigate('/')
+                console.log('a')
             }
 
         }).finally(() => {
