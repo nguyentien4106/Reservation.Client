@@ -1,17 +1,17 @@
 import React from 'react'
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Popover, Space } from 'antd';
+import { Avatar, Popover } from 'antd';
 import LogoutLink from '@/components/auth/LogoutLink';
+import { Link } from 'react-router-dom';
 
 function UserComponent({ user }) {
-
     const content = (
         <div style={{
             display: 'flex',
             flexDirection: "column",
             width: "100%"
         }}>
-            <a>{user.userName}</a>
+            <Link to={"/account"}>{user.userName}</Link>
             <LogoutLink />
         </div>
     )
@@ -23,10 +23,9 @@ function UserComponent({ user }) {
                 content={content}
             >
                 <Avatar 
-                    size={64} 
+                    size={48} 
                     icon={<UserOutlined />} 
-                    onClick={() => console.log('click')}
-                    style={{ backgroundColor: '#fde3cf' }}
+                    style={{ backgroundColor: 'rgb(203 159 125)' }}
                 />
 
             </Popover>

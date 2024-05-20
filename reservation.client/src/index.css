@@ -2,19 +2,13 @@
   cursor: pointer;
   border-radius: 10px;
   font-size: 24px;
-  color: white;
+  /* color: white; */
 }
-/* 
-.ant-menu-item-only-child{
-    color: white !important;
-} */
-.ant-menu-submenu-title{
-    color: white !important;
-}
-.ant-menu-item-selected{
+
+/* .ant-menu-item-selected{
     background-color: red;
     color: red;
-}
+} */
 
 @media only screen and (max-width: 600px) {
     main {

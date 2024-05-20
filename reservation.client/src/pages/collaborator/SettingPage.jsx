@@ -14,7 +14,6 @@ const SettingPage = () => {
     const { id } = useParams();
     const user = getUser();
     const [collaborator, setCollaborator] = useState({ id: "" });
-    const [hasAvatar, setHasAvatar] = useState(false)
     const { message } = App.useApp();
     const [initialValues, setInitialValues] = useState({});
     const collaboratorId = id ? id : user?.collaboratorId
@@ -27,7 +26,12 @@ const SettingPage = () => {
                     setCollaborator(data);
                     setInitialValues(data ?? {email: user.userName});
                 }
-            );
+            ).catch((err) => {
+                console.log(err)
+                if(err.response.status == 400){
+                    message.error("Không tìm thấy hồ sơ theo đường dẫn này. Hãy thử lại !")
+                }
+            })
         }
     }, [collaboratorId])
 

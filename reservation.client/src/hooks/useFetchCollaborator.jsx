@@ -11,7 +11,6 @@ function UseFetchCollaborator(collaboratorId) {
         DataService.get(COLLABORATOR_PATH.getProfile + collaboratorId)
         .then(res => {
             const { data } = res.data
-            console.log('col', data)
             setCollaborator(data)
         }).catch(err => {
             navigate("/error")

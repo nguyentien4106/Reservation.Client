@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import UserComponent from "./UserComponent";
 import { Cookie } from "../lib/cookies";
 import { jwtDecode } from "jwt-decode";
+import { getUser } from "../lib/helper";
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -28,16 +29,19 @@ export default function NavLayout() {
             children: [
                 {
                     key: "overall",
-                    label: "Tổng quan"
+                    label: "Tổng quan",
+                    onClick: () => navigate("/collaborator-overall")
+
                 },
                 {
-                    key: "customers",
-                    label: "Khách hàng"
+                    key: "customer",
+                    label: "Khách hàng",
+                    onClick: () => navigate("/collaborator-customer")
                 },
                 {
                     key: "setting",
                     label: "Cài đặt",
-                    onClick: () => navigate("/collaborator")
+                    onClick: () => navigate("/collaborator-setting")
                 }
             ]
         },
@@ -96,14 +100,12 @@ export default function NavLayout() {
 
 
     const renderAuth = () => {
-        return user ? <UserComponent user={user}/>
+        return getUser() ? <UserComponent user={getUser()}/>
             : <Space>
                 <Button type="text" style={{ backgroundColor: "white" }} onClick={() => navigate("/login")}>Log in</Button>
                 <Button type="primary" onClick={() => navigate("/register")}>Sign up</Button>
             </Space>
     }
-
-    
 
     return (
         <>

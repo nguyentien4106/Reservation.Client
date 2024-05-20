@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import NavLayout from './NavLayout';
 import { jwtDecode } from 'jwt-decode';
 import { Cookie } from '../lib/cookies';
-
+import AppHeader from './Header'
 const { Header, Content } = Layout;
 
 const AppLayout = () => {
@@ -15,15 +15,7 @@ const AppLayout = () => {
     return (
         <>
             <Layout style={{ minWidth: "100%", height: "100vh" }}  >
-                <Header
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: "space-around"
-                    }}
-                >
-                    <NavLayout />
-                </Header>
+                <AppHeader />
                 <Content
                     style={{
                         padding: '0 16px',
