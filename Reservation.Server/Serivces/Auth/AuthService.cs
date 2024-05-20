@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using NuGet.Common;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
+using Reservation.Server.Models.Request;
 
 namespace Reservation.Server.Serivces.Auth
 {
@@ -43,7 +44,7 @@ namespace Reservation.Server.Serivces.Auth
                 Email = request.Email,
                 PhoneNumber = request.PhoneNumber,
                 PhoneNumberConfirmed = true,
-                EmailConfirmed = true,
+                //EmailConfirmed = true,
                 JoinedDate = DateTime.UtcNow,
             };
 
@@ -54,11 +55,19 @@ namespace Reservation.Server.Serivces.Auth
                 return new AppResponse<bool>().SetErrorResponse(GetRegisterErrors(result));
 
             }
-            await _userManager.AddToRoleAsync(user, "USER");
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = $"{tokenSettings.Audience}/ConfirmEmail?email={request.Email}&code={code}";
-
             await _userManager.AddToRoleAsync(user, UserRole);
+
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            string url = $"{tokenSettings.Audience}/confirm-email";
+            var param = new Dictionary<string, string>()
+            {
+                { "token", code },
+                { "email", request.Email },
+            };
+
+            var callbackUrl = new Uri(QueryHelpers.AddQueryString(url, param));
+
 
             var emailContent = new EmailContent
             {
@@ -225,5 +234,59 @@ namespace Reservation.Server.Serivces.Auth
             return new AppResponse<UserLoginResponse>().SetSuccessResponse(new UserLoginResponse() { AccessToken = token.AccessToken, RefreshToken = token.RefreshToken });
         }
 
+        public async Task<AppResponse<string>> ForgotPasswordAsync(ForgotPasswordRequest request, string path)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            {
+                // Do not reveal that the user does not exist or is not confirmed
+                return new AppResponse<string>().SetErrorResponse("user", "User not found !");
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            string url = $"{tokenSettings.Audience}/reset-password";
+            var param = new Dictionary<string, string>()
+            {
+                { "token", token },
+                { "email", request.Email },
+            };
+
+            var callbackUrl = new Uri(QueryHelpers.AddQueryString(url, param));
+
+            var emailContent = new EmailContent()
+            {
+                ToName = request.Email,
+                ToEmail = request.Email,
+                Subject = "Reset password",
+                Content = $"Please reset your password by clicking <a href='{callbackUrl}'>here</a>."
+            };
+            _emailServicee.SendMail(emailContent);
+
+            return new AppResponse<string>().SetSuccessResponse(token, "", "Please check your email to reset your password!");
+        }
+
+        public async Task<AppResponse<string>> ResetPasswordAsync(ResetPasswordRequest model)
+        {
+            if(string.IsNullOrEmpty(model.Token)|| string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
+            {
+                return new AppResponse<string>().SetErrorResponse("", $"null {model.Token} {model.Email}");
+
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // Do not reveal that the user does not exist
+                return new AppResponse<string>().SetErrorResponse("", "User not found!");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+            {
+                return new AppResponse<string>().SetSuccessResponse("Reset password successfully!");
+            }
+
+            return new AppResponse<string>().SetErrorResponse("", result.ToString());
+        }
     }
 }

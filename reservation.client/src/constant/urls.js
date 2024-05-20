@@ -3,7 +3,9 @@ export const AUTH_PATH = {
     login: "Auth/Login",
     logout: "Auth/Logout",
     refreshToken: "Auth/RefreshToken",
-    confirmemail: "Auth/ConfirmEmail"
+    confirmEmail: "Auth/ConfirmEmail",
+    resetPassword: "Auth/ResetPassword",
+    forgotPassword: "Auth/ForgotPassword"
 }
 
 export const SERVICE_PATH = {

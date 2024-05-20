@@ -89,6 +89,7 @@ namespace Reservation.Server
 
             builder.Services.AddSwaggerGen(opt =>
             {
+                opt.CustomSchemaIds(type => type.FullName);
                 opt.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
                 opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {

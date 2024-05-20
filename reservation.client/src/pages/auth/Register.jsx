@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { generateMessages } from '@/lib/helper';
 import { useDispatch } from 'react-redux';
@@ -9,6 +9,7 @@ import { LockOutlined, MailOutlined, UserOutlined, PhoneOutlined } from "@ant-de
 import { useNavigate } from 'react-router-dom';
 import DataService from '@/lib/DataService';
 import { AUTH_PATH } from '@/constant/urls';
+import { getUser } from '../../lib/helper';
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -19,22 +20,6 @@ const Register = () => {
     const { message } = App.useApp()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
-    const onFinish = values => {
-        dispatch(show())
-        DataService.post(AUTH_PATH.register, values).then(res => {
-            const { data } = res
-
-            message.open({
-                type: data.isSucceed ? "success" : "error",
-                content: generateMessages(data.messages),
-                duration: 10
-            })
-
-        }).finally(() => {
-            dispatch(hide())
-        })
-    };
     const { token } = useToken();
     const screens = useBreakpoint();
 
@@ -71,6 +56,28 @@ const Register = () => {
         }
     };
 
+    useEffect(() => {
+        if(getUser()){
+            navigate("/")
+        }
+    }, [])
+
+    const onFinish = values => {
+        dispatch(show())
+        DataService.post(AUTH_PATH.register, values).then(res => {
+            const { data } = res
+
+            message.open({
+                type: data.isSucceed ? "success" : "error",
+                content: generateMessages(data.messages),
+                duration: 10
+            })
+
+        }).finally(() => {
+            dispatch(hide())
+        })
+    };
+
     return (
         <section style={styles.section}>
             <div style={styles.container}>
@@ -103,17 +110,6 @@ const Register = () => {
                     requiredMark="optional"
                 >
                     <Form.Item
-                        name="name"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please input your Name!",
-                            },
-                        ]}
-                    >
-                        <Input prefix={<UserOutlined />} placeholder="Name" />
-                    </Form.Item>
-                    <Form.Item
                         name="email"
                         rules={[
                             {
@@ -136,9 +132,41 @@ const Register = () => {
                         ]}
                     >
                         <Input.Password
+                            minLength={8}
                             prefix={<LockOutlined />}
                             type="password"
                             placeholder="Password"
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        name="confirm"
+                        dependencies={["password"]}
+                        hasFeedback
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please confirm your password!",
+                            },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (
+                                        !value ||
+                                        getFieldValue("password") === value
+                                    ) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(
+                                        new Error(
+                                            "The new password that you entered do not match!"
+                                        )
+                                    );
+                                },
+                            }),
+                        ]}
+                    >
+                        <Input.Password 
+                            placeholder="Confirm password"
+                            prefix={<LockOutlined />}
                         />
                     </Form.Item>
                     <Form.Item

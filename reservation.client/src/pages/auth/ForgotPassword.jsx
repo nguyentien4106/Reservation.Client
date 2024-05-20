@@ -6,16 +6,14 @@ import { App, Button, Checkbox, Form, Grid, Input, theme, Typography } from "ant
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Cookie } from "@/lib/cookies";
 import DataService from "@/lib/DataService";
-import { getUser } from "../../lib/helper";
-import { useEffect } from "react";
+import { AUTH_PATH } from "../../constant/urls";
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
 
-function Login() {
+function ForgotPassword() {
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    const { message } = App.useApp();
     const { token } = useToken();
     const screens = useBreakpoint();
     const styles = {
@@ -49,33 +47,22 @@ function Login() {
             fontSize: screens.md ? token.fontSizeHeading2 : token.fontSizeHeading3
         }
     };
-
-    useEffect(() => {
-        if(getUser()){
-            navigate("/")
-        }
-    }, [])
+    const { message } = App.useApp();
 
     const onFinish = (values) => {
         dispatch(show())
-        DataService.post("Auth/Login", values).then(res => {
-            const { data } = res
-            if (!data.isSucceed) {
-                message.error(generateMessages(data.messages))
-            }
-            else{
-                setLocal("accessToken", data.data.accessToken)
-                setLocal("email", values.email)
-
-                Cookie.setAccessToken(data.data.accessToken)
-                Cookie.setRefreshToken(data.data.refreshToken)
-                navigate('/')
-            }
-
-        }).finally(() => {
+        DataService.post(AUTH_PATH.forgotPassword, {
+            email: values.email
+        }).then(res => {
+            message.open({
+                type: res.data.isSucceed ? "success" : "error",
+                content: generateMessages(res.data.messages),
+                duration: 5
+            })
+        })
+        .finally(()=> {
             dispatch(hide())
         })
-
     };
 
     
@@ -105,16 +92,14 @@ function Login() {
                         />
                     </svg>
 
-                    <Title style={styles.title}>Sign in</Title>
+                    <Title style={styles.title}></Title>
                     <Text style={styles.text}>
-                        Welcome back to Reservation Partner Service! Please enter your details below to
-                        sign in.
+                        Please enter your details below to reset your password.
                     </Text>
                 </div>
                 <Form
                     name="normal_login"
                     initialValues={{
-                        remember: true,
                     }}
                     onFinish={onFinish}
                     layout="vertical"
@@ -135,36 +120,18 @@ function Login() {
                             placeholder="Email"
                         />
                     </Form.Item>
-                    <Form.Item
-                        name="password"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please input your Password!",
-                            },
-                        ]}
-                    >
-                        <Input.Password
-                            prefix={<LockOutlined />}
-                            type="password"
-                            placeholder="Password"
-                        />
-                    </Form.Item>
-                    <Form.Item>
-                        <Form.Item name="remember" valuePropName="checked" noStyle>
-                            <Checkbox>Remember me</Checkbox>
-                        </Form.Item>
-                        <a style={styles.forgotPassword} onClick={() => navigate("/forgot-password")}>
-                            Forgot password?
-                        </a>
-                    </Form.Item>
+
                     <Form.Item style={{ marginBottom: "0px" }}>
                         <Button block="true" type="primary" htmlType="submit">
-                            Log in
+                            Submit
                         </Button>
                         <div style={styles.footer}>
                             <Text style={styles.text}>Don't have an account?</Text>{" "}
                             <Link onClick={() => navigate('/register')}>Sign up now</Link>
+                        </div>
+                        <div style={styles.footer}>
+                            <Text style={styles.text}>You have an account?</Text>{" "}
+                            <Link onClick={() => navigate('/login')}>Log in now</Link>
                         </div>
                     </Form.Item>
                 </Form>
@@ -173,4 +140,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default ForgotPassword;

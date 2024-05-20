@@ -16,6 +16,8 @@ import ErrorPage from './pages/common/ErrorPage';
 import SettingPage from './pages/collaborator/SettingPage';
 import ManageCollaborator from './pages/manage/ManageCollaborator';
 import CollaboratorInfor from './pages/home/collaborator/CollaboratorPage';
+import ResetPassword from './pages/auth/ResetPassword';
+import ForgotPassword from './pages/auth/ForgotPassword';
 
 const router = createBrowserRouter([
     {
@@ -34,6 +36,10 @@ const router = createBrowserRouter([
             {
                 path: "/confirmemail",
                 element: <ConfirmEmail />
+            },
+            {
+                path: "/reset-password",
+                element: <ResetPassword />
             },
             {
                 path: "/collaborator",
@@ -67,8 +73,10 @@ function App() {
                                 element={<CollaboratorInfor />}
                             />
                             <Route path='login' element={<Login />} />
+                            <Route path='forgot-password' element={<ForgotPassword />} />
+                            <Route path='reset-password' element={<ResetPassword />} />
                             <Route path='register' element={<Register />} />
-                            <Route path='confirmemail' element={<ConfirmEmail />} />
+                            <Route path='confirm-email' element={<ConfirmEmail />} />
                             <Route path='collaborator' element={<SettingPage />}>
                                 <Route
                                     path=':id'
