@@ -96,9 +96,9 @@ const Register = () => {
                         <path d="M4.92505 17.6H14.525V27.2001H4.92505V17.6Z" fill="white" />
                     </svg>
 
-                    <Title style={styles.title}>Sign up</Title>
+                    <Title style={styles.title}>Đăng ký</Title>
                     <Text style={styles.text}>
-                        Join us! Create an account to get started.
+                        Tham gia ngay! Tạo một tài khoản để tiếp tục.
                     </Text>
                 </div>
                 <Form
@@ -121,7 +121,7 @@ const Register = () => {
                     </Form.Item>
                     <Form.Item
                         name="password"
-                        extra="Password needs to be at least 8 characters."
+                        extra="Password cần tối thiểu 8 ký tự."
                         rules={[
                             {
                                 required: true,
@@ -184,11 +184,11 @@ const Register = () => {
                     </Form.Item>
                     <Form.Item style={{ marginBottom: "0px" }}>
                         <Button block type="primary" htmlType="submit">
-                            Sign up
+                            Đăng ký
                         </Button>
                         <div style={styles.signup}>
-                            <Text style={styles.text}>Already have an account?</Text>{" "}
-                            <Link onClick={() => navigate("/login")}>Sign in</Link>
+                            <Text style={styles.text}>Đã có tài khoản?</Text>{" "}
+                            <Link onClick={() => navigate("/login")}>Đăng nhập</Link>
                         </div>
                     </Form.Item>
                 </Form>

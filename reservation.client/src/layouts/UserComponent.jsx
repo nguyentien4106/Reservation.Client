@@ -12,7 +12,7 @@ function UserComponent({ user }) {
             flexDirection: "column",
             width: "100%"
         }}>
-            <Link to={"/account-info"}>{user.userName}</Link>
+            <Link to={"/account"}>{user.userName}</Link>
             <LogoutLink />
         </div>
     )

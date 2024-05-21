@@ -15,12 +15,12 @@ const MenuItems = () => {
                 {
                     key: 'info',
                     label: 'Thông tin tài khoản',
-                    onClick: () => navigate("/account-info")
+                    onClick: () => navigate("/account")
                 },
                 {
                     key: 'password',
                     label: 'Mật khẩu',
-                    onClick: () => navigate("/account-change-password")
+                    onClick: () => navigate("/account/change-password")
                 },
             ],
         }

@@ -53,7 +53,7 @@ const upload = async (fileName, fileStream, type) => {
 
 const get = async (username) => {
     const prefix = `${username}/albums`
-    return []
+    // return []
     const objects = await s3Client.send(
                                         new ListObjectsV2Command({
                                             Bucket: cloudflareR2BucketName,
@@ -71,7 +71,7 @@ const get = async (username) => {
 };
 
 const getAvatar = async (username) => {
-    return []
+    // return []
     const prefix = `${username}/avatar`
 
 

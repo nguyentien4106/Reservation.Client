@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Layout, theme, Button } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
-import NavLayout from './NavLayout';
+// import NavLayout from './NavLayout';
 import { jwtDecode } from 'jwt-decode';
 import { Cookie } from '../lib/cookies';
 import AppHeader from './Header'

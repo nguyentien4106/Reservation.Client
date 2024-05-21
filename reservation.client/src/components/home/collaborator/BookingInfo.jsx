@@ -15,8 +15,8 @@ function BookingInfo() {
     }
 
     return (
-        <Flex className='booking-info' vertical>
-            <Text className='price-booking-info'>{showMoney(collaborator?.pricePerHour) + " /h"}</Text>
+        <Flex vertical>
+            <Text className='price-booking-info' style={{ textAlign: "center" }}>{showMoney(collaborator?.pricePerHour) + " /h"}</Text>
             <button className='button-booking' onClick={handleShowPhone}>{phoneInfo}</button>
         </Flex>
     )

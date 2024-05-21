@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-
 import { Button, Grid, Menu, Space, theme } from "antd";
-
 import { MenuOutlined } from "@ant-design/icons";
 import { getUser } from "../lib/helper";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +27,7 @@ export default function Header() {
             <Space>
                 <Button
                     type="text"
-                    style={{ backgroundColor: "white" }}
+                    style={{ backgroundColor: "rgb(169 169 181)" }}
                     onClick={() => navigate("/login")}
                 >
                     Log in
@@ -53,7 +51,7 @@ export default function Header() {
                             setCurrent("");
                         }}
                     >
-                        ThueNguoiYeu.Com
+                        ThueNguoiYeu.vn
                     </div>
                     <Menu
                         style={styles.menu}

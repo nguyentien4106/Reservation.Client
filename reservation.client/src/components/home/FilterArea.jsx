@@ -60,7 +60,7 @@ function FilterArea({ services }) {
     ]
     
     return (
-        <Space>
+        <Space className='filter-area'>
             {
                 filterItems.map(item => getFilterItem(item))
             }

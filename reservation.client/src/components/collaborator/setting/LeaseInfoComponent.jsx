@@ -86,6 +86,7 @@ export default function LeaseInfoComponent({ user, collaboratorId, initialValues
     const onFinish = (values) => {
         if(!hasAvatar){
             message.error("Bạn cần phải upload ảnh đại diện trước.")
+            return
         }
         const services =
             values.collaboratorServices &&
@@ -102,16 +103,19 @@ export default function LeaseInfoComponent({ user, collaboratorId, initialValues
             id: collaboratorId
         };
 
+        console.log(params)
+
         const url = collaboratorId && collaboratorId != "00000000-0000-0000-0000-000000000000"
             ? COLLABORATOR_PATH.update
             : COLLABORATOR_PATH.add;
 
             DataService.post(url, params).then((res) => {
             const { data } = res;
+            console.log(data)
             message.open({
                 type: data.isSucceed ? "success" : "error",
                 content: data.isSucceed
-                    ? data.data
+                    ? "Cập nhập hồ sơ cho thuê thành công !"
                     : generateMessages(data.messages),
                 duration: 5,
             });
@@ -348,6 +352,13 @@ export default function LeaseInfoComponent({ user, collaboratorId, initialValues
                         }}
                         options={services}
                     />
+                </Form.Item>
+
+                <Form.Item
+                    name="otherServices"
+                    label="Các dịch vụ khác"
+                >
+                    <Input />
                 </Form.Item>
 
                 <Form.Item

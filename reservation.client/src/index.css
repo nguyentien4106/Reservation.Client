@@ -1,7 +1,7 @@
 .demo-logo{
   cursor: pointer;
   border-radius: 10px;
-  font-size: 24px;
+  font-size: 22px;
   /* color: white; */
 }
 
@@ -46,4 +46,9 @@
     align-self: center;
     padding-left: 20px;
     padding-right: 20px;
+}
+
+
+.text-center{
+    text-align: center;
 }

@@ -15,11 +15,13 @@ function CollaboratorPage() {
     return (
         <ContainerInfoProfile.Provider value={collaborator}>
             <div className='collaborator-infor__container'>
-                <AvatarImage style={{ flex: 1, marginTop: "20px" }} />
-                <div style={{ flex: 3 }}>
+                <div className='avatar'>
+                    <AvatarImage style={{ flex: 1, marginTop: "50px" }} />
+                </div>
+                <div style={{ flex: 3 }} className='personal-info'>
                     <MainInfo />
                 </div>
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1 }} className='booking-info'>
                     <BookingInfo />
                 </div>
             </div>

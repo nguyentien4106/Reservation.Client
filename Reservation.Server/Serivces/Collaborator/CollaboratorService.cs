@@ -72,11 +72,12 @@ namespace Reservation.Server.Serivces.UserServiceRegister
         {
             var newCollaborator = _mapper.Map<Collaborator>(dto);
             newCollaborator.Status = (int)ProfileStatus.Reviewing;
+            newCollaborator.JoinedDate = DateTime.Now;
 
             await _context.Collaborators.AddAsync(newCollaborator);
             await _context.SaveChangesAsync();
 
-            return new AppResponse<string>().SetSuccessResponse("Add new Successfully!");
+            return new AppResponse<string>().SetSuccessResponse(newCollaborator.Id.ToString());
         }
 
         public async Task<AppResponse<string>> UpdateAsync(CollaboratorDTO dto)
@@ -119,6 +120,7 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             entity.Height = newValue.Height;
             entity.Job = newValue.Job;
             entity.Sex = newValue.Sex;
+            entity.OtherServices = newValue.OtherServices;
         }
 
         public async Task<AppResponse<string>> ChangeStatusAsync(Guid? collaboratorId, int status)

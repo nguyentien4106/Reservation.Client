@@ -3,7 +3,7 @@ import { ContainerInfoProfile } from '../../../../pages/home/collaborator/Collab
 import { Flex, Divider, Typography, Image } from 'antd'
 import { R2 } from '../../../../lib/R2'
 import { getUserName } from '../../../../lib/helper'
-const { Text } = Typography
+const { Text, Title } = Typography
 
 function IntroductionInfo() {
     const collaborator = useContext(ContainerInfoProfile)
@@ -24,12 +24,12 @@ function IntroductionInfo() {
 
     return (
         <>
-            <h1>Thông tin</h1>
+            <Title className='text-center'>Thông tin</Title>
             <Text>{collaborator?.title}</Text>
             <Divider />
             <Flex gap={20} wrap>
                 {
-                    images && images.map(image => <Image key={image} src={image} height={250} />)
+                    images && images.map(image => <Image key={image} src={image} width={140}/>)
                 }
             </Flex>
             <Divider />

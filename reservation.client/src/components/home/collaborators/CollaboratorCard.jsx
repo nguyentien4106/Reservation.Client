@@ -46,7 +46,7 @@ const CollaboratorCard = ({ collaborator, services }) => {
         <Card
             loading={loading}
             hoverable
-            style={{ width: 260 }}
+            style={{ width: "100%" }}
             cover={image}
             onClick={handleChoose}
             title={title}

@@ -106,10 +106,9 @@ function Login() {
                         />
                     </svg>
 
-                    <Title style={styles.title}>Sign in</Title>
+                    <Title style={styles.title}>Đăng nhập</Title>
                     <Text style={styles.text}>
-                        Welcome back to Reservation Partner Service! Please enter your details below to
-                        sign in.
+                        Chào mừng bạn đến với dịch vụ thuê người yêu.
                     </Text>
                 </div>
                 <Form
@@ -152,11 +151,11 @@ function Login() {
                         />
                     </Form.Item>
                     <Form.Item>
-                        <Form.Item name="remember" valuePropName="checked" noStyle>
+                        {/* <Form.Item name="remember" valuePropName="checked" noStyle>
                             <Checkbox>Remember me</Checkbox>
-                        </Form.Item>
+                        </Form.Item> */}
                         <a style={styles.forgotPassword} onClick={() => navigate("/forgot-password")}>
-                            Forgot password?
+                            Quên mật khẩu?
                         </a>
                     </Form.Item>
                     <Form.Item style={{ marginBottom: "0px" }}>
@@ -164,8 +163,8 @@ function Login() {
                             Log in
                         </Button>
                         <div style={styles.footer}>
-                            <Text style={styles.text}>Don't have an account?</Text>{" "}
-                            <Link onClick={() => navigate('/register')}>Sign up now</Link>
+                            <Text style={styles.text}>Bạn chưa có tài khoản?</Text>{" "}
+                            <Link onClick={() => navigate('/register')}>Đăng ký ngay</Link>
                         </div>
                     </Form.Item>
                 </Form>

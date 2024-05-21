@@ -6,6 +6,7 @@
     margin-top: 30px;
     background-color: rgb(232, 232, 232);
     border-radius: 30px;
+    padding-top: 100px;
 }
 
 .text-header{
@@ -34,7 +35,6 @@
 }
 
 .booking-info{
-    margin-top: 100px;
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -65,4 +65,48 @@
     line-height: normal;
     letter-spacing: normal;
     color: #f0564a;
+}
+
+.booking-info{
+    border: 1px solid rgb(184, 182, 182);
+    border-radius: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.personal-info{
+    border: 1px solid rgb(184, 182, 182);
+    border-radius: 20px;
+    padding-left: 20px;
+}
+
+.avatar-container{
+    border: 1px solid rgb(184, 182, 182);
+    border-radius: 50%;
+}
+
+
+@media (max-width: 600px) {
+    .collaborator-infor__container{
+        flex-direction: column;
+        align-items: center;
+        padding-top: 20px;
+
+    }
+
+    .avatar{
+        order: 1;
+    }
+    
+    .personal-info{
+        order: 2;
+    }
+    
+    .booking-info{
+        order: 1;
+        height: 100px;
+        width: 100%;
+    }
 }

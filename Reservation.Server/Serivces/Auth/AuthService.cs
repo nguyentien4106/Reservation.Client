@@ -288,5 +288,30 @@ namespace Reservation.Server.Serivces.Auth
 
             return new AppResponse<string>().SetErrorResponse("", result.ToString());
         }
+
+        public async Task<AppResponse<IdentityResult>> ChangePasswordAsync(ChangePasswordRequest request)
+        {
+            var user = await _userManager.FindByIdAsync(request.UserId);
+
+            if(user == null)
+            {
+                return new AppResponse<IdentityResult>().SetErrorResponse("", "User not found!");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+
+            if(result.Succeeded)
+            {
+                return new AppResponse<IdentityResult>().SetSuccessResponse(result);
+            }
+
+            var dictResult = new Dictionary<string, string[]>();
+            foreach(var item in result.Errors)
+            {
+                dictResult.Add(item.Code, [item.Description]);
+            }
+
+            return new AppResponse<IdentityResult>().SetErrorResponse(dictResult);
+        }
     }
 }

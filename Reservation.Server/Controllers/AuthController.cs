@@ -74,5 +74,11 @@ namespace Reservation.Server.Controllers
 
             return await _authService.ResetPasswordAsync(request);
         }
+
+        [HttpPost]
+        public async Task<AppResponse<IdentityResult>> ChangePassword(ChangePasswordRequest request)
+        {
+            return await _authService.ChangePasswordAsync(request);
+        }
     }
 }

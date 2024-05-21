@@ -17,12 +17,12 @@ function AvatarComponent({ setHasAvatar }) {
                 if (!userName) return
 
                 const result = await R2.getAvatar(userName);
-                if (!result.length) return
+                if (!result) return
                 setFileList([{
-                    uid: result.content.Key,
-                    name: result.content.Key,
+                    uid: result.content?.Key,
+                    name: result.content?.Key,
                     status: 'done',
-                    url: result.url,
+                    url: result?.url,
                 }]);
                 setHasAvatar(true)
 
@@ -52,9 +52,10 @@ function AvatarComponent({ setHasAvatar }) {
         }
         else {
             const uploadAvatar = async () => {
-                const { originFileObj, type } = change.fileList[0]
+                const { originFileObj, type, name } = change.fileList[0]
+                console.log(change.fileList[0])
                 const image = await getBase64(originFileObj);
-                const fileName = `${userName}/avatar.${type.split("/")[1]}`
+                const fileName = `${userName}/avatar/${name}`
                 R2.upload(fileName, image, type).then(res => {
                     const isSucceed = res.$metadata.httpStatusCode == 200
                     message.open({

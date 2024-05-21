@@ -4,6 +4,7 @@ import Register from "../pages/auth/Register";
 import ConfirmEmail from "../pages/auth/ConfirmEmail";
 import ResetPassword from "../pages/auth/ResetPassword"
 import ForgotPassword from "../pages/auth/ForgotPassword"
+import { Route } from "react-router-dom";
 
 export default [
     {
@@ -27,3 +28,13 @@ export default [
         element: (<ForgotPassword />),
     },
 ];
+
+export const AuthRoutes = (
+    <>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/confirmemail" element={<ConfirmEmail />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+    </>
+)

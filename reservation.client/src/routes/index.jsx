@@ -1,10 +1,10 @@
 import AppLayout from '@/layouts/AppLayout';
 import ErrorPage from '@/pages/common/ErrorPage'
-import authRoute from './authRoute';
-import collaboratorRoute from './collaboratorRoute';
-import donateRoute from './donateRoute';
-import homeRoute from './homeRoute';
-import accountRoute from './accountRoute';
+import authRoute, { AuthRoutes } from './authRoute';
+import collaboratorRoute, { CollaboratorRoutes } from './collaboratorRoute';
+import donateRoute, { DonateRotues } from './donateRoute';
+import homeRoute, { HomeRoutes } from './homeRoute';
+import accountRoute, { AccountRoutes } from './accountRoute';
 
 const routes = [
     {
@@ -19,4 +19,13 @@ const routes = [
     }
 ];
 
+export const AppRoutes = (
+    <>
+        { HomeRoutes }
+        { AuthRoutes }
+        { CollaboratorRoutes }
+        { DonateRotues }
+        { AccountRoutes }
+    </>
+)
 export default routes;

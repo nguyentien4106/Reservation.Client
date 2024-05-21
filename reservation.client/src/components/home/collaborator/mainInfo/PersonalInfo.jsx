@@ -13,16 +13,16 @@ const getItem = ({ label, value }) => (
 
 const items = collaborator => [
     {
-        label: "Năm Sinh",
-        value: getYear(collaborator?.birthDate)
-    },
-    {
         label: "Tỉnh/Thành Phố",
         value: collaborator?.city
     },
     {
         label: "Quận/Huyện",
         value: collaborator?.district
+    }, 
+    {
+        label: "Năm Sinh",
+        value: getYear(collaborator?.birthDate)
     },
     {
         label: "Nghề Nghiệp",
@@ -49,14 +49,7 @@ function PersonalInfo() {
     )
     return (
         <>
-            <Flex gap="middle" vertical={false} justify='space-between'>
-                <h2>{collaborator?.nickName}</h2>
-                <div>
-                    {
-                        getItem("Năm sinh",)
-                    }
-                </div>
-            </Flex>
+            <h2 style={{ textAlign: "center" }}>{collaborator?.nickName}</h2>
             <Divider />
             <Flex gap="middle" wrap={true}>
                 {
@@ -66,7 +59,7 @@ function PersonalInfo() {
 
             <Divider />
             <Space direction='vertical'>
-                <Text className='text-header'>Các dịch vụ</Text>
+                <Text className='text-header text-center'>Các dịch vụ</Text>
                 <Flex gap="middle" wrap={true}>
                     {
                         collaborator?.collaboratorServices?.map(item => servicePanel(item.name))

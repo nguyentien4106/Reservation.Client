@@ -13,13 +13,13 @@ const userItems = navigate => [
             },
             {
                 key: "customer",
-                label: "Khách hàng",
+                label: "Thông tin khách khách hàng",
                 onClick: () => navigate("/collaborator-customer"),
 
             },
             {
                 key: "setting",
-                label: "Cài đặt",
+                label: "Cài đặt hồ sơ cho thuê",
                 onClick: () => navigate("/collaborator-setting"),
             },
         ],

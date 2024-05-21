@@ -1,0 +1,10 @@
+
+@media (max-width: 600px) {
+    .filter-area{
+        display: none;
+    }
+    
+    .collaborators{
+        flex-direction: column;
+    }
+}

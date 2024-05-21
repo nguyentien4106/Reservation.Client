@@ -1,10 +1,11 @@
-import { App, Space, Spin } from "antd";
+import { App, Flex, Space, Spin } from "antd";
 import DataService from "../../lib/DataService.js";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { COLLABORATOR_PATH, HOME_PATH } from "../../constant/urls.js";
 import { GET_COLLABORATOR_TYPES } from "../../constant/settings.js";
 import FilterArea from "../../components/home/FilterArea.jsx";
 import useFetchServices from "../../hooks/useFetchServices.jsx";
+import "./index.css"
 
 const CollaboratorCard = lazy(() => import("../../components/home/collaborators/CollaboratorCard.jsx"))
 
@@ -32,19 +33,15 @@ function Home() {
     )
     
     return (
-        <div style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 50
-        }}>
+        <Flex vertical gap={50} wrap >
             <FilterArea services={services} />
-            <Space size="middle">
+            <Space size="middle" className="collaborators">
                 {
                     collaborators && collaborators.map(collaborator => card(collaborator))
                 }
             </Space>
 
-        </div>
+        </Flex>
     );
 }
 

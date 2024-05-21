@@ -2,7 +2,7 @@ import React from "react";
 import MenuItems from "../../components/account/MenuItems";
 import { Space, Typography } from "antd";
 import AccountLayout from "../../components/account/AccountLayout";
-
+import './index.css'
 const { Text } = Typography
 
 const getItem = ({ label, value }) => (
@@ -14,12 +14,6 @@ const getItem = ({ label, value }) => (
 
 export default function Account() {
     return (
-        <AccountLayout>
-            {/* <MenuItems/> */}
-            <h1>Values</h1>
-            {
-                getItem("")
-            }
-        </AccountLayout>
+        <h1>Account</h1>
     );
 }
