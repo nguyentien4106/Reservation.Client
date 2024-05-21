@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useDispatch } from "react-redux";
 import { hide, show } from "@/state/loading/loadingSlice";
 import { generateMessages, setLocal } from "@/lib/helper";
@@ -10,17 +10,19 @@ import {
 } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import DataService from "@/lib/DataService";
-import { getUser } from "../../lib/helper";
 import { AUTH_PATH } from "../../constant/urls";
+import { UserContext } from "../../context/useUserContext";
 
 function ChangePassword() {
     const dispatch = useDispatch();
+    const { user } = useContext(UserContext)
+
     const { message } = App.useApp();
 
     const onFinish = (values) => {
         dispatch(show());
         DataService.post(AUTH_PATH.changePassword, {
-            userId: getUser().id,
+            userId: user?.id,
             currentPassword: values.currentPassword,
             newPassword: values.newPassword,
         })
@@ -46,7 +48,7 @@ function ChangePassword() {
         <Form
             initialValues={{
                 remember: true,
-                email: getUser().userName,
+                email: user.userName,
             }}
             onFinish={onFinish}
             layout="vertical"

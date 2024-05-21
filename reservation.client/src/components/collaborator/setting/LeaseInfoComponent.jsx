@@ -18,6 +18,7 @@ import { ProfileContext } from "../../../context/useProfileContext";
 import AvatarComponent from "./AvatarComponent";
 import { COLLABORATOR_PATH } from "../../../constant/urls";
 import DataService from "../../../lib/DataService";
+import { UserContext } from "../../../context/useUserContext";
 
 const layout = {
     labelCol: {
@@ -59,14 +60,14 @@ const tagRender = (props) => {
 };
 
 
-export default function LeaseInfoComponent({ user, collaboratorId, initialValues }) {
+export default function LeaseInfoComponent({ collaboratorId, initialValues, setCollaboratorId }) {
     const [provinceId, setProvinceId] = useState(0);
     const [hasAvatar, setHasAvatar] = useState(false)
     const provinces = useFetchProvinces();
     const districts = useFetchDistricts(provinceId);
     const services = useFetchServices();
     const [form] = Form.useForm();
-    const profile = useContext(ProfileContext)
+    const { user, setUser } = useContext(UserContext)
 
     useEffect(() => {
         const serviceIds = initialValues?.collaboratorServices?.map(
@@ -103,15 +104,13 @@ export default function LeaseInfoComponent({ user, collaboratorId, initialValues
             id: collaboratorId
         };
 
-        console.log(params)
-
         const url = collaboratorId && collaboratorId != "00000000-0000-0000-0000-000000000000"
             ? COLLABORATOR_PATH.update
             : COLLABORATOR_PATH.add;
 
             DataService.post(url, params).then((res) => {
             const { data } = res;
-            console.log(data)
+            setUser(prev => Object.assign(prev, { collaboratorId: res.data.data }))
             message.open({
                 type: data.isSucceed ? "success" : "error",
                 content: data.isSucceed
@@ -134,7 +133,7 @@ export default function LeaseInfoComponent({ user, collaboratorId, initialValues
                 validateMessages={validateMessages}
                 initialValues={{
                     ...initialValues,
-                    email: profile?.collaborator?.email,
+                    email: user?.email,
                 }}
                 form={form}
             >
@@ -384,7 +383,7 @@ export default function LeaseInfoComponent({ user, collaboratorId, initialValues
                     }}
                 >
                     {
-                        profile?.allowUpdate && <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit">
                             Cập nhật hồ sơ
                         </Button>
                     }

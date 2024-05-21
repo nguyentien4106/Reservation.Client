@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Grid, Menu, Space, theme } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
-import { getUser } from "../lib/helper";
 import { useNavigate } from "react-router-dom";
 import { getStyles, menuItems } from "./helper";
 import UserComponent from "./UserComponent";
+import { UserContext } from "../context/useUserContext";
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
 
@@ -14,13 +14,14 @@ export default function Header() {
     const navigate = useNavigate()
     const [current, setCurrent] = useState("");
     const styles = getStyles(screens, token)
+    const { user } = useContext(UserContext)
 
     const onClick = (e) => {
         setCurrent(e.key);
     };
 
     const renderAuth = () => {
-        const user = getUser();
+        const { user } = useContext(UserContext);
         return user ? (
             <UserComponent user={user} />
         ) : (
@@ -56,7 +57,7 @@ export default function Header() {
                     <Menu
                         style={styles.menu}
                         mode="horizontal"
-                        items={menuItems(navigate)}
+                        items={menuItems(navigate, user?.role === "ADMIN")}
                         onClick={onClick}
                         selectedKeys={screens.md ? [current] : ""}
                         overflowedIndicator={

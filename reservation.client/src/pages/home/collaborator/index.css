@@ -4,9 +4,10 @@
     padding-right: 10%;
     gap: 30px;
     margin-top: 30px;
-    background-color: rgb(232, 232, 232);
+    background-color: rgb(192, 192, 192);
     border-radius: 30px;
     padding-top: 100px;
+    padding-bottom: 100px;
 }
 
 .text-header{

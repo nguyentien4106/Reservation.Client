@@ -3,19 +3,17 @@ import { getLocal, setLocal } from "./helper";
 import { Cookie } from "./cookies";
 import { AUTH_PATH } from "../constant/urls";
 
-const BASE_URL = "https://localhost:7080/"
+const BASE_URL = import.meta.env.VITE_BASE_URL
 
 const service = axios.create()
-
-const authUrls = [AUTH_PATH.login, AUTH_PATH.logout, AUTH_PATH.refreshToken, AUTH_PATH.register]
 
 const AUTH_REQUEST = "Auth/"
 const beforeRequest = request => {
     if(request.url.includes(AUTH_REQUEST)){
         return request
     }
+
     const refreshToken = Cookie.get("refreshToken")
-    
     if(!refreshToken){
         return request
     }
@@ -27,7 +25,6 @@ const beforeRequest = request => {
             refreshToken: refreshToken
         }).then(res => {
             const { data } = res
-
             Cookie.setAccessToken(data.accessToken)
             Cookie.setRefreshToken(data.refreshToken)
         })

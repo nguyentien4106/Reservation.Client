@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { generateMessages } from '@/lib/helper';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { hide, show } from '@/state/loading/loadingSlice';
 import { App, Button, Form, Grid, Input, theme, Typography } from "antd";
 
@@ -9,7 +9,7 @@ import { LockOutlined, MailOutlined, UserOutlined, PhoneOutlined } from "@ant-de
 import { useNavigate } from 'react-router-dom';
 import DataService from '@/lib/DataService';
 import { AUTH_PATH } from '@/constant/urls';
-import { getUser } from '../../lib/helper';
+import { UserContext } from '../../context/useUserContext';
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -22,7 +22,8 @@ const Register = () => {
     const navigate = useNavigate()
     const { token } = useToken();
     const screens = useBreakpoint();
-
+    const user = useContext(UserContext)
+    console.log(user)
     const styles = {
         container: {
             margin: "0 auto",
@@ -56,7 +57,7 @@ const Register = () => {
         }
     };
 
-    if(getUser()){
+    if(user){
         navigate("/")
     }
 

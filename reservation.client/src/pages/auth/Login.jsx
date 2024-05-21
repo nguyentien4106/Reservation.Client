@@ -7,8 +7,9 @@ import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Cookie } from "@/lib/cookies";
 import DataService from "@/lib/DataService";
 import { getUser } from "../../lib/helper";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { AUTH_PATH } from "../../constant/urls";
+import { UserContext } from "../../context/useUserContext";
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
@@ -19,6 +20,9 @@ function Login() {
     const { message } = App.useApp();
     const { token } = useToken();
     const screens = useBreakpoint();
+    const { user, setUser} = useContext(UserContext)
+    console.log(user, setUser)
+
     const styles = {
         container: {
             margin: "0 auto",
@@ -51,7 +55,7 @@ function Login() {
         }
     };
 
-    if(getUser()){
+    if(user){
         navigate("/")
     }
 
@@ -69,8 +73,8 @@ function Login() {
 
                 Cookie.setAccessToken(data.data.accessToken)
                 Cookie.setRefreshToken(data.data.refreshToken)
+                setUser(getUser())
                 navigate('/')
-                console.log('a')
             }
 
         }).finally(() => {

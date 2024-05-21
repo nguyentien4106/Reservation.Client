@@ -5,7 +5,6 @@ import LogoutLink from '@/components/auth/LogoutLink';
 import { Link } from 'react-router-dom';
 
 function UserComponent({ user }) {
-    console.log(user)
     const content = (
         <div style={{
             display: 'flex',

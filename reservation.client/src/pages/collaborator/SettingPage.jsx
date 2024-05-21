@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AuthorizeView from "../../components/auth/AuthorizeView";
-import { generateMessages, getUser } from "../../lib/helper";
 import DataService from "../../lib/DataService";
 import { COLLABORATOR_PATH } from "../../constant/urls";
 import { App } from "antd";
 import { ROLES } from "../../constant/settings";
-import { useParams } from "react-router-dom";
 import { ProfileContext } from "../../context/useProfileContext";
 import LeaseAlbumComponent from "../../components/collaborator/setting/LeaseAlbumComponent";
 import LeaseInfoComponent from "../../components/collaborator/setting/LeaseInfoComponent";
+import { UserContext } from "../../context/useUserContext";
 
 const SettingPage = () => {
-    const { id } = useParams();
-    const user = getUser();
+    const { user } = useContext(UserContext);
     const [collaborator, setCollaborator] = useState({ id: "" });
     const { message } = App.useApp();
     const [initialValues, setInitialValues] = useState({});
-    const collaboratorId = id ? id : user?.collaboratorId
+    const [collaboratorId, setCollaboratorId] = useState(user?.collaboratorId)
 
     useEffect(() => {
         if (collaboratorId) {
@@ -24,7 +22,7 @@ const SettingPage = () => {
                 (res) => {
                     const { data } = res.data;
                     setCollaborator(data);
-                    setInitialValues(data ?? {email: user.userName});
+                    setInitialValues(data ?? { email: user.userName });
                 }
             ).catch((err) => {
                 console.log(err)
@@ -37,7 +35,7 @@ const SettingPage = () => {
 
     return (
         <AuthorizeView role={ROLES.USER}>
-            <ProfileContext.Provider value={{ collaborator, allowUpdate: !id }}>
+            <ProfileContext.Provider value={{ collaborator, allowUpdate: true }}>
                 <div
                     style={{
                         display: "flex",
@@ -61,10 +59,10 @@ const SettingPage = () => {
                             Hồ sơ
                         </h2>
                         <LeaseInfoComponent
-                            // onFinish={onFinish}
                             user={user}
                             collaboratorId={collaboratorId}
                             initialValues={initialValues}
+                            setCollaboratorId={setCollaboratorId}
                         />
                     </div>
                     <div
