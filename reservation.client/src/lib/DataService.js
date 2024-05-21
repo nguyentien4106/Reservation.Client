@@ -20,11 +20,12 @@ const beforeRequest = request => {
 
     const accessToken = Cookie.get("accessToken")
     if(!accessToken){
-        service.post(AUTH_PATH.refreshToken, {
+        axios.post(BASE_URL + AUTH_PATH.refreshToken, {
             AccessToken: getLocal("accessToken"),
             refreshToken: refreshToken
         }).then(res => {
-            const { data } = res
+            const { data } = res.data
+            
             Cookie.setAccessToken(data.accessToken)
             Cookie.setRefreshToken(data.refreshToken)
         })
@@ -45,6 +46,7 @@ service.interceptors.response.use(response => {
 
 export default class DataService{
     static post(url, data, options){
+        console.log(BASE_URL + url)
         return service.post(BASE_URL + url, data, {
             headers: {
                 Authorization: `Bearer ${Cookie.getAccessToken()}`

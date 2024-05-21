@@ -4,7 +4,7 @@ import DataService from "../../lib/DataService";
 import { COLLABORATOR_PATH } from "../../constant/urls";
 import { App } from "antd";
 import { ROLES } from "../../constant/settings";
-import { ProfileContext } from "../../context/useProfileContext";
+// import { ProfileContext } from "../../context/useProfileContext";
 import LeaseAlbumComponent from "../../components/collaborator/setting/LeaseAlbumComponent";
 import LeaseInfoComponent from "../../components/collaborator/setting/LeaseInfoComponent";
 import { UserContext } from "../../context/useUserContext";
@@ -35,7 +35,7 @@ const SettingPage = () => {
 
     return (
         <AuthorizeView role={ROLES.USER}>
-            <ProfileContext.Provider value={{ collaborator, allowUpdate: true }}>
+            {/* <ProfileContext.Provider value={{ collaborator, allowUpdate: true }}> */}
                 <div
                     style={{
                         display: "flex",
@@ -92,7 +92,7 @@ const SettingPage = () => {
                         </div>
                     </div>
                 </div>
-            </ProfileContext.Provider>
+            {/* </ProfileContext.Provider> */}
         </AuthorizeView>
     );
 };

@@ -23,7 +23,7 @@ const setAccessToken = accessToken => {
 }
 
 const setRefreshToken = refresh => {
-    set("refreshToken", refresh, oneDays * 2)
+    set("refreshToken", refresh, oneDays)
 }
 
 const getAccessToken = () => {

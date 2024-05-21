@@ -3,9 +3,10 @@ import { PlusOutlined } from "@ant-design/icons";
 import { App, Button, Image, Upload } from "antd";
 import { useDispatch } from "react-redux";
 import { hide, show } from "@/state/loading/loadingSlice";
-import { ProfileContext } from "@/context/useProfileContext";
+// import { ProfileContext } from "@/context/useProfileContext";
 import { getBase64, getUserName } from "@/lib/helper";
 import { R2 } from "@/lib/R2";
+import { UserContext } from "../../../context/useUserContext";
 
 const LeaseAlbumComponent = ({ max, buttonTitle }) => {
     const dispatch = useDispatch();
@@ -13,8 +14,8 @@ const LeaseAlbumComponent = ({ max, buttonTitle }) => {
     const [previewImage, setPreviewImage] = useState("");
     const [fileList, setFileList] = useState([]);
     const { message } = App.useApp();
-    const profile = useContext(ProfileContext)
-    const userName = getUserName(profile.collaborator?.email)
+    const { user } = useContext(UserContext)
+    const userName = getUserName(user?.email)
 
     useEffect(() => {
         const fetchAndSetFileList = async () => {

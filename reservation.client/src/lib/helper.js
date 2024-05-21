@@ -15,6 +15,7 @@ export const getYear = birthDate => birthDate?.substring(0, 4)
 
 export const getUser = () => {
     const accessToken = Cookie.getAccessToken()
+    console.log("access", accessToken)
 
     return accessToken ? jwtDecode(accessToken) : null;
 }

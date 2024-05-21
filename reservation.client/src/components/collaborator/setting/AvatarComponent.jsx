@@ -1,15 +1,16 @@
 import { App, Upload, Image } from 'antd';
 import React, { useContext, useEffect, useState } from 'react'
 import { getBase64, getUserName } from '../../../lib/helper';
-import { ProfileContext } from '../../../context/useProfileContext';
+// import { ProfileContext } from '../../../context/useProfileContext';
 import { PlusOutlined } from "@ant-design/icons";
 import { R2 } from '../../../lib/R2';
+import { UserContext } from '../../../context/useUserContext';
 
 function AvatarComponent({ setHasAvatar }) {
     const [fileList, setFileList] = useState([]);
     const { message } = App.useApp();
-    const profile = useContext(ProfileContext)
-    const userName = getUserName(profile.collaborator?.email)
+    const { user } = useContext(UserContext)
+    const userName = getUserName(user?.email)
 
     useEffect(() => {
         const fetchAndSetFileList = async () => {

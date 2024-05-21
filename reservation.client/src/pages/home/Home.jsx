@@ -7,6 +7,7 @@ import FilterArea from "../../components/home/FilterArea.jsx";
 import useFetchServices from "../../hooks/useFetchServices.jsx";
 import "./index.css"
 import { UserContext } from "../../context/useUserContext.jsx";
+import { getUser } from "../../lib/helper.js";
 
 const CollaboratorCard = lazy(() => import("../../components/home/collaborators/CollaboratorCard.jsx"))
 
@@ -14,15 +15,18 @@ function Home() {
     const { message } = App.useApp();
     const [collaborators, setCollaborators] = useState([])
     const services = useFetchServices()
-    const userProfile = useContext(UserContext)
-    console.log(userProfile)
+    const { setUser } = useContext(UserContext)
     
+    const { user } = useContext(UserContext)
+    console.log(user)
     useEffect(() => {
         DataService.get(COLLABORATOR_PATH.getAll + GET_COLLABORATOR_TYPES.all).then(res => {
             const { data } = res.data
             setCollaborators(data)
         })
             .catch(err => message.error(err.message))
+            console.log(getUser())
+            setUser(getUser())
     }, [])
 
     const card = collaborator => (
