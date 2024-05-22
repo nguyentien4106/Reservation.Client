@@ -1,7 +1,7 @@
 
 @media (max-width: 600px) {
     .filter-area{
-        display: none;
+        /* display: none; */
     }
     
     .collaborators{

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Reservation.Server.Models.DTO.Auth;
 using Reservation.Server.Models.DTO.Collaborator;
@@ -8,6 +9,7 @@ namespace Reservation.Server.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
+    [AllowAnonymous]
     public class HomeController(IHomeService homeService) : ControllerBase
     {
 
@@ -17,6 +19,13 @@ namespace Reservation.Server.Controllers
         public async Task<AppResponse<List<CollaboratorDTO>>> GetAll()
         {
             return await _homeService.GetAllAsync();
+        }
+
+        [HttpGet]
+        
+        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllFilter([FromQuery] string city, string district, string sex, int maxAge)
+        {
+            return await _homeService.GetAllAsync(city, district, sex, maxAge);
         }
     }
 }

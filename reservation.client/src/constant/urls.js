@@ -23,7 +23,8 @@ export const COLLABORATOR_PATH = {
 }
 
 export const HOME_PATH = {
-    getAll: "Home/GetAll"
+    getAll: "Home/GetAll",
+    getAllFilter: "Home/GetAllFilter?"
 }
 
 export const MANAGE_COLLABORATOR_PATH = {

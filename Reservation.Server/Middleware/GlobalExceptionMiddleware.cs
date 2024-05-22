@@ -5,13 +5,9 @@ using System.Text.Json;
 
 namespace Reservation.Server.Middleware
 {
-    public class GlobalExceptionMiddleware
+    public class GlobalExceptionMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
-        public GlobalExceptionMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
+        private readonly RequestDelegate _next = next;
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
@@ -24,7 +20,8 @@ namespace Reservation.Server.Middleware
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
-        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+
+        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
