@@ -14,11 +14,12 @@ const SettingPage = () => {
     const [collaborator, setCollaborator] = useState({ id: "" });
     const { message } = App.useApp();
     const [initialValues, setInitialValues] = useState({});
-    const [collaboratorId, setCollaboratorId] = useState(user?.collaboratorId)
+    // const [collaboratorId, setCollaboratorId] = (user?.userName)
+    const email = user?.userName
 
     useEffect(() => {
-        if (collaboratorId) {
-            DataService.get(COLLABORATOR_PATH.getProfile + collaboratorId).then(
+        if (email) {
+            DataService.get(COLLABORATOR_PATH.getProfileByEmail + email).then(
                 (res) => {
                     const { data } = res.data;
                     setCollaborator(data);
@@ -31,7 +32,7 @@ const SettingPage = () => {
                 }
             })
         }
-    }, [collaboratorId])
+    }, [email])
 
     return (
         <AuthorizeView role={ROLES.USER}>
@@ -60,9 +61,8 @@ const SettingPage = () => {
                         </h2>
                         <LeaseInfoComponent
                             user={user}
-                            collaboratorId={collaboratorId}
+                            collaborator={collaborator}
                             initialValues={initialValues}
-                            setCollaboratorId={setCollaboratorId}
                         />
                     </div>
                     <div

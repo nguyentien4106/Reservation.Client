@@ -60,14 +60,14 @@ const tagRender = (props) => {
 };
 
 
-export default function LeaseInfoComponent({ collaboratorId, initialValues, setCollaboratorId }) {
+export default function LeaseInfoComponent({ initialValues, collaborator }) {
     const [provinceId, setProvinceId] = useState(0);
     const [hasAvatar, setHasAvatar] = useState(false)
     const provinces = useFetchProvinces();
     const districts = useFetchDistricts(provinceId);
     const services = useFetchServices();
     const [form] = Form.useForm();
-    const { user, setUser } = useContext(UserContext)
+    const { user } = useContext(UserContext)
 
     useEffect(() => {
         const serviceIds = initialValues?.collaboratorServices?.map(
@@ -89,11 +89,12 @@ export default function LeaseInfoComponent({ collaboratorId, initialValues, setC
             message.error("Bạn cần phải upload ảnh đại diện trước.")
             return
         }
+
         const services =
             values.collaboratorServices &&
             values.collaboratorServices.map((item) => ({
                 serviceId: item,
-                collaboratorId: collaboratorId,
+                collaboratorId: collaborator?.id,
             }));
 
         const params = {
@@ -101,16 +102,15 @@ export default function LeaseInfoComponent({ collaboratorId, initialValues, setC
             applicationUserId: user?.id,
             collaboratorServices: services,
             city: values.city,
-            id: collaboratorId
+            id: collaborator?.id
         };
 
-        const url = collaboratorId && collaboratorId != "00000000-0000-0000-0000-000000000000"
+        const url = collaborator?.id && collaborator?.id != "00000000-0000-0000-0000-000000000000"
             ? COLLABORATOR_PATH.update
             : COLLABORATOR_PATH.add;
 
             DataService.post(url, params).then((res) => {
             const { data } = res;
-            setUser(prev => Object.assign(prev, { collaboratorId: res.data.data }))
             message.open({
                 type: data.isSucceed ? "success" : "error",
                 content: data.isSucceed
@@ -133,7 +133,7 @@ export default function LeaseInfoComponent({ collaboratorId, initialValues, setC
                 validateMessages={validateMessages}
                 initialValues={{
                     ...initialValues,
-                    email: user?.email,
+                    email: user?.userName,
                 }}
                 form={form}
             >

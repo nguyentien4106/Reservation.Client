@@ -16,7 +16,7 @@ export default [
         element: <Register/>,
     },
     {
-        path: "/confirmemail",
+        path: "/confirm-email",
         element: <ConfirmEmail />,
     },
     {
@@ -33,7 +33,7 @@ export const AuthRoutes = (
     <>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/confirmemail" element={<ConfirmEmail />} />
+        <Route path="/confirm-email" element={<ConfirmEmail />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
     </>

@@ -17,6 +17,7 @@ export const COLLABORATOR_PATH = {
     add: "Collaborator/Add",
     update: "Collaborator/Update",
     getProfile: "Collaborator/GetProfile?collaboratorId=",
+    getProfileByEmail: "Collaborator/GetProfileByEmail?email=",
     getAll: "Collaborator/GetAll?type=",
     changeStatus: "Collaborator/ChangeStatus"
 }

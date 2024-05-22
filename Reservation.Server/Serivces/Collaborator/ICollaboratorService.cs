@@ -10,6 +10,8 @@ namespace Reservation.Server.Serivces.UserServiceRegister
 
         Task<AppResponse<CollaboratorDTO>> GetProfileAsync(Guid? collaboratorId);
 
+        Task<AppResponse<CollaboratorDTO>> GetProfileByEmailAsync(string? email);
+
         Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(int type);
 
         Task<AppResponse<string>> AddAsync(CollaboratorDTO dto);

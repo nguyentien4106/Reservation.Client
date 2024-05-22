@@ -16,7 +16,6 @@ function ConfirmEmail() {
     useEffect(() => {
         const email = searchParams.get("email")
         const code = decodeURIComponent(searchParams.get("token"))
-
         dispatch(show())
 
         DataService.post(AUTH_PATH.confirmEmail, {

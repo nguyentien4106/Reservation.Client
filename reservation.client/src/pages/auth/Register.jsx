@@ -22,8 +22,8 @@ const Register = () => {
     const navigate = useNavigate()
     const { token } = useToken();
     const screens = useBreakpoint();
-    const user = useContext(UserContext)
-    console.log(user)
+    const { user } = useContext(UserContext)
+
     const styles = {
         container: {
             margin: "0 auto",

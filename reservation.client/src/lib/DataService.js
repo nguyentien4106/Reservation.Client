@@ -46,7 +46,6 @@ service.interceptors.response.use(response => {
 
 export default class DataService{
     static post(url, data, options){
-        console.log(BASE_URL + url)
         return service.post(BASE_URL + url, data, {
             headers: {
                 Authorization: `Bearer ${Cookie.getAccessToken()}`

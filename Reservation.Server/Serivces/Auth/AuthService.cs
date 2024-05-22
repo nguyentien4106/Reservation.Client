@@ -62,7 +62,7 @@ namespace Reservation.Server.Serivces.Auth
             string url = $"{tokenSettings.Audience}/confirm-email";
             var param = new Dictionary<string, string>()
             {
-                { "token", code },
+                { "code", code },
                 { "email", request.Email },
             };
 

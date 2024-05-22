@@ -45,6 +45,13 @@ namespace Reservation.Server.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public async Task<AppResponse<CollaboratorDTO>> GetProfileByEmail(string? email)
+        {
+            return await _collaboratorService.GetProfileByEmailAsync(email);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<AppResponse<List<CollaboratorDTO>>> GetAll(int type)
         {
             return await _collaboratorService.GetAllAsync(type);

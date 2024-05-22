@@ -3,7 +3,6 @@ import { PlusOutlined } from "@ant-design/icons";
 import { App, Button, Image, Upload } from "antd";
 import { useDispatch } from "react-redux";
 import { hide, show } from "@/state/loading/loadingSlice";
-// import { ProfileContext } from "@/context/useProfileContext";
 import { getBase64, getUserName } from "@/lib/helper";
 import { R2 } from "@/lib/R2";
 import { UserContext } from "../../../context/useUserContext";
@@ -15,7 +14,7 @@ const LeaseAlbumComponent = ({ max, buttonTitle }) => {
     const [fileList, setFileList] = useState([]);
     const { message } = App.useApp();
     const { user } = useContext(UserContext)
-    const userName = getUserName(user?.email)
+    const userName = getUserName(user?.userName)
 
     useEffect(() => {
         const fetchAndSetFileList = async () => {
@@ -142,7 +141,7 @@ const LeaseAlbumComponent = ({ max, buttonTitle }) => {
                 />
             )}
             {
-                !profile.collaborator ? <h2 style={{ color: "red" }}>Bạn phải tạo hồ sơ để có thể update albums</h2> : profile?.allowUpdate && <Button
+                <Button
                     type="primary"
                     onClick={() => handleUpload()}
                     style={{ marginTop: "50px", textAlign: "center" }}

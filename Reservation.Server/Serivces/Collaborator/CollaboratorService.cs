@@ -144,6 +144,27 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             return new AppResponse<string>().SetSuccessResponse("Approved Successfully!");
 
         }
+
+        public async Task<AppResponse<CollaboratorDTO>> GetProfileByEmailAsync(string? email)
+        {
+            if (email == null || string.IsNullOrEmpty(email))
+            {
+                return new AppResponse<CollaboratorDTO>().SetSuccessResponse(new(), "id", $"{email} not found!");
+            }
+
+            var collaborator = await _context.Collaborators
+                .Include(item => item.ApplicationUser)
+                .Include(item => item.CollaboratorServices)
+                .ThenInclude(cs => cs.Service)
+                .FirstOrDefaultAsync(collaborator => collaborator.Email == email);
+
+            if (collaborator == null)
+            {
+                return new AppResponse<CollaboratorDTO>().SetErrorResponse("id", "User not found!");
+            }
+
+            return new AppResponse<CollaboratorDTO>().SetSuccessResponse(_mapper.Map<CollaboratorDTO>(collaborator));
+        }
     }
 
 
