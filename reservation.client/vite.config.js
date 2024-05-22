@@ -34,7 +34,7 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
     env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] : 'https://localhost:7080';
 
     // https://vitejs.dev/config/
-export default defineConfig({
+const defineConfig = ({
     plugins: [plugin()],
     resolve: {
         alias: {
@@ -79,3 +79,5 @@ export default defineConfig({
         exclude: ['js-big-decimal']
     }
 })
+
+export default defineConfig;
