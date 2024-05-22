@@ -21,7 +21,6 @@ function Login() {
     const { token } = useToken();
     const screens = useBreakpoint();
     const { user, setUser} = useContext(UserContext)
-    console.log(user, setUser)
 
     const styles = {
         container: {
@@ -63,7 +62,6 @@ function Login() {
         dispatch(show())
         DataService.post(AUTH_PATH.login, values).then(res => {
             const { data } = res
-            console.log(data)
             if (!data.isSucceed) {
                 message.error(generateMessages(data.messages))
             }
