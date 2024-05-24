@@ -35,21 +35,21 @@ function Home() {
         DataService.get(HOME_PATH.getAllFilter + params)
             .then((res) => {
                 const { data } = res.data;
-                console.log(data)
+                console.log(data);
                 setCollaborators(data);
             })
             .catch((err) => message.error(err.message))
             .finally(() => {
                 dispatch(hide());
             });
-    }
+    };
     useEffect(() => {
-        getCollaborators()
+        getCollaborators();
         setUser(getUser());
     }, []);
 
     const filterResult = () => {
-        getCollaborators()
+        getCollaborators();
     };
 
     const card = (collaborator) => (
@@ -70,8 +70,11 @@ function Home() {
                 setFilter={setFilter}
             />
             <Space size="middle" className="collaborators">
-                {collaborators &&
-                    collaborators.map((collaborator) => card(collaborator))}
+                {collaborators.length ? (
+                    collaborators.map((collaborator) => card(collaborator))
+                ) : (
+                    <h3>Không tìm thấy dữ liệu</h3>
+                )}
             </Space>
         </Flex>
     );

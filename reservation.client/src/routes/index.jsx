@@ -5,6 +5,7 @@ import collaboratorRoute, { CollaboratorRoutes } from './collaboratorRoute';
 import donateRoute, { DonateRotues } from './donateRoute';
 import homeRoute, { HomeRoutes } from './homeRoute';
 import accountRoute, { AccountRoutes } from './accountRoute';
+import { Route } from 'react-router-dom';
 
 const routes = [
     {
@@ -21,6 +22,7 @@ const routes = [
 
 export const AppRoutes = (
     <>
+        <Route path="/error" element={<ErrorPage />}/>
         { HomeRoutes }
         { AuthRoutes }
         { CollaboratorRoutes }

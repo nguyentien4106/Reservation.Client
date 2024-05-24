@@ -6,6 +6,7 @@ using Reservation.Server.Models.DTO.Auth;
 using Reservation.Server.Models.DTO.Collaborator;
 using Reservation.Server.Models.DTO.Email;
 using Reservation.Server.Models.DTO.Home;
+using Reservation.Server.Models.Enum;
 using Reservation.Server.Serivces.Email;
 
 namespace Reservation.Server.Serivces.Home
@@ -67,6 +68,7 @@ namespace Reservation.Server.Serivces.Home
             }
 
             var hireRequest = _mapper.Map<HireRequest>(request);
+            hireRequest.Status = (int)HireRequestStatus.Sent;
 
             await _context.HireRequests.AddAsync(hireRequest);
 

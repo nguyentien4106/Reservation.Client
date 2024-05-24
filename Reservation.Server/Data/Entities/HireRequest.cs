@@ -26,5 +26,7 @@
 
         public int? Times { get; set; }
 
+        public int? Status { get; set; }
+
     }
 }
