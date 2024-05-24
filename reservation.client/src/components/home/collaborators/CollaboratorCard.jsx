@@ -8,7 +8,7 @@ const { Meta } = Card;
 
 const { Text } = Typography
 
-const CollaboratorCard = ({ collaborator, services }) => {
+const CollaboratorCard = ({ collaborator }) => {
     const [loading, setLoading] = useState(true)
     const [url, setUrl] = useState("")
 
@@ -32,7 +32,7 @@ const CollaboratorCard = ({ collaborator, services }) => {
     )
     const image = (
         <Suspense fallback={<Spin />}>
-            <CoverCardImage src={url} price={collaborator.pricePerHour}/>
+            <CoverCardImage src={url} price={collaborator.pricePerHour} view={collaborator.view.count}/>
         </Suspense>
     )
 

@@ -47,12 +47,16 @@ namespace Reservation.Server.Serivces.UserServiceRegister
                 .Include(item => item.ApplicationUser)
                 .Include(item => item.CollaboratorServices)
                 .ThenInclude(cs => cs.Service)
+                .Include(item => item.View)
                 .FirstOrDefaultAsync(collaborator => collaborator.Id == collaboratorId);
 
             if (collaborator == null)
             {
                 return new AppResponse<CollaboratorDTO>().SetErrorResponse("id", "User not found!");
             }
+
+            await UpdateView(collaborator);
+
 
             return new AppResponse<CollaboratorDTO>().SetSuccessResponse(_mapper.Map<CollaboratorDTO>(collaborator));
         }
@@ -164,6 +168,26 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             }
 
             return new AppResponse<CollaboratorDTO>().SetSuccessResponse(_mapper.Map<CollaboratorDTO>(collaborator));
+        }
+
+        private async Task UpdateView(Collaborator collaborator)
+        {
+            var collaboratorView = await _context.Views.SingleOrDefaultAsync(item => item.CollaboratorId == collaborator.Id);
+            if (collaboratorView == null)
+            {
+                var view = new View()
+                {
+                    CollaboratorId = collaborator.Id,
+                    Count = 1
+                };
+                await _context.Views.AddAsync(view);
+            }
+            else
+            {
+                collaboratorView.Count += 1;
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 

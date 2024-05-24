@@ -45,5 +45,7 @@ namespace Reservation.Server.Models.DTO.Collaborator
         public string? Sex { get; set; }
 
         public string? OtherServices { get; set; }
+
+        public ViewDTO? View { get; set; }
     }
 }

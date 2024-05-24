@@ -24,7 +24,8 @@ export const COLLABORATOR_PATH = {
 
 export const HOME_PATH = {
     getAll: "Home/GetAll",
-    getAllFilter: "Home/GetAllFilter?"
+    getAllFilter: "Home/GetAllFilter?",
+    sendHireRequest: "Home/SendHireRequest"
 }
 
 export const MANAGE_COLLABORATOR_PATH = {

@@ -10,6 +10,8 @@ namespace Reservation.Server.Data.Entities
 
         public ApplicationUser ApplicationUser { get; set; } = null!;
 
+        public View View { get; set; }
+
         [Required]
         public string NickName { get; set; } =string.Empty;
 

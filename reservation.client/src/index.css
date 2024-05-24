@@ -33,21 +33,6 @@
 .collaborator div{
     width: 100%;
 }
-.collaborator-price{
-    position: absolute;
-    background-color: rgb(127, 165, 127);
-    border-radius: 10px;
-    font-weight: 500;
-    font-size: 20px;
-    color: white;
-    bottom: 3px;
-    right: 10px;
-    text-align: center;
-    align-self: center;
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
 
 .text-center{
     text-align: center;

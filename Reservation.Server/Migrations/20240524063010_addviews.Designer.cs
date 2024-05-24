@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reservation.Server.Data;
 
@@ -11,9 +12,11 @@ using Reservation.Server.Data;
 namespace Reservation.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240524063010_addviews")]
+    partial class addviews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -310,49 +313,6 @@ namespace Reservation.Server.Migrations
                     b.ToTable("CollaboratorServices");
                 });
 
-            modelBuilder.Entity("Reservation.Server.Data.Entities.HireRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("CollaboratorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Offer")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Times")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Zalo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("CollaboratorId");
-
-                    b.ToTable("HireRequests");
-                });
-
             modelBuilder.Entity("Reservation.Server.Data.Entities.Service", b =>
                 {
                     b.Property<Guid>("Id")
@@ -384,8 +344,7 @@ namespace Reservation.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CollaboratorId")
-                        .IsUnique();
+                    b.HasIndex("CollaboratorId");
 
                     b.ToTable("Views");
                 });
@@ -469,30 +428,11 @@ namespace Reservation.Server.Migrations
                     b.Navigation("Service");
                 });
 
-            modelBuilder.Entity("Reservation.Server.Data.Entities.HireRequest", b =>
-                {
-                    b.HasOne("Reservation.Server.Data.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Reservation.Server.Data.Entities.Collaborator", "Collaborator")
-                        .WithMany()
-                        .HasForeignKey("CollaboratorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Collaborator");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Reservation.Server.Data.Entities.View", b =>
                 {
                     b.HasOne("Reservation.Server.Data.Entities.Collaborator", "Collaborator")
-                        .WithOne("View")
-                        .HasForeignKey("Reservation.Server.Data.Entities.View", "CollaboratorId")
+                        .WithMany()
+                        .HasForeignKey("CollaboratorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -507,9 +447,6 @@ namespace Reservation.Server.Migrations
             modelBuilder.Entity("Reservation.Server.Data.Entities.Collaborator", b =>
                 {
                     b.Navigation("CollaboratorServices");
-
-                    b.Navigation("View")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Reservation.Server.Data.Entities.Service", b =>

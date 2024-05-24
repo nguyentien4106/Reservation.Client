@@ -4,7 +4,7 @@ import UseFetchCollaborator from '@/hooks/useFetchCollaborator'
 import AvatarImage from '../../../components/home/collaborator/AvatarImage'
 import './index.css'
 import MainInfo from '../../../components/home/collaborator/mainInfo/MainInfo'
-import BookingInfo from '../../../components/home/collaborator/BookingInfo'
+import BookingInfo from '../../../components/home/collaborator/booking/BookingInfo'
 
 export const ContainerInfoProfile = createContext({ })
 

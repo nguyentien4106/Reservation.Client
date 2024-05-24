@@ -28,32 +28,28 @@ function Home() {
     const { setUser } = useContext(UserContext);
     const dispatch = useDispatch();
 
-    useEffect(() => {
+    const getCollaborators = () => {
         dispatch(show());
-        DataService.get(COLLABORATOR_PATH.getAll + GET_COLLABORATOR_TYPES.all)
+        const params = new URLSearchParams(filter);
+
+        DataService.get(HOME_PATH.getAllFilter + params)
             .then((res) => {
                 const { data } = res.data;
+                console.log(data)
                 setCollaborators(data);
             })
             .catch((err) => message.error(err.message))
             .finally(() => {
                 dispatch(hide());
             });
+    }
+    useEffect(() => {
+        getCollaborators()
         setUser(getUser());
     }, []);
 
     const filterResult = () => {
-        const params = new URLSearchParams(filter);
-        dispatch(show());
-        DataService.get(HOME_PATH.getAllFilter + params)
-            .then((res) => {
-                console.log(res.data);
-                setCollaborators(res.data.data);
-            })
-            .catch((err) => console.log(err))
-            .finally(() => {
-                dispatch(hide())
-            })
+        getCollaborators()
     };
 
     const card = (collaborator) => (

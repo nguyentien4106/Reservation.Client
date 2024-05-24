@@ -40,6 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\DTO\Request\" />
     <Folder Include="Models\ViewModel\" />
   </ItemGroup>
 

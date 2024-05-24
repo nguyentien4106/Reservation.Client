@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Reservation.Server.Data.Entities;
 using Reservation.Server.Models.DTO.Collaborator;
+using Reservation.Server.Models.DTO.Home;
 using Reservation.Server.Models.DTO.Service;
 
 namespace Reservation.Server.Profile
@@ -23,8 +24,10 @@ namespace Reservation.Server.Profile
 
 
             CreateMap<CollaboratorDTO, Collaborator>();
-                
 
+            CreateMap<View, ViewDTO>();
+
+            CreateMap<HireRequest, HireRequestDTO>().ReverseMap();
         }
     }
 }

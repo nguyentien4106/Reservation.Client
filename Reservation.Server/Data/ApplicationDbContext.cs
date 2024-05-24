@@ -18,6 +18,10 @@ namespace Reservation.Server.Data
 
         public DbSet<CollaboratorService> CollaboratorServices { get; set; }
 
+        public DbSet<View> Views { get; set; }
+
+        public DbSet<HireRequest> HireRequests { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

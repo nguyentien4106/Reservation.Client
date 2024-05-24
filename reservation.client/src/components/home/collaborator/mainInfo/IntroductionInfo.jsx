@@ -25,7 +25,7 @@ function IntroductionInfo() {
     return (
         <>
             <Title className='text-center'>Thông tin</Title>
-            <Text>{collaborator?.title}</Text>
+            <Text className='text-value'>{collaborator?.title}</Text>
             <Divider />
             <Flex gap={20} wrap>
                 {
@@ -35,7 +35,7 @@ function IntroductionInfo() {
             <Divider />
             <Flex gap={5} vertical={true}>
                 {
-                    introductions && introductions.map((introduction, index) => <Text key={index}>{introduction}</Text>)
+                    introductions && introductions.map((introduction, index) => <Text key={index} className='text-show'>{introduction}</Text>)
                 }
             </Flex>
         </>

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { ContainerInfoProfile } from "../../../../pages/home/collaborator/CollaboratorPage";
 import { Space, Flex, Divider, Typography } from "antd";
-import { getYear } from "../../../../lib/helper";
+import { getYear, showNumber } from "../../../../lib/helper";
 const { Text } = Typography;
 
 const getItem = ({ label, value }) => (
@@ -40,6 +40,7 @@ const items = (collaborator) => [
         label: "Cân nặng",
         value: collaborator?.weight,
     },
+    
 ];
 
 function PersonalInfo() {
