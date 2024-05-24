@@ -24,10 +24,6 @@ function App() {
     const [msg, contextHolder] = message.useMessage();
     const [user, setUser] = useState(getUser());
 
-    useEffect(() => {
-        ReactGA.pageview(window.location.pathname + window.location.search);
-    }, []);
-
     return (
         <>
             {contextHolder}
