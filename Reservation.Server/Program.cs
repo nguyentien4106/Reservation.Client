@@ -21,7 +21,7 @@ namespace Reservation.Server
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +47,7 @@ namespace Reservation.Server
             });
 
             // Add services to the container.
+            builder.Services.AddScoped<ApplicationDbContextInitializer>();
             builder.Services.AddTransient<IAuthService, AuthService>();
             builder.Services.AddTransient<IEmailService, EmailService>();
             builder.Services.AddTransient<ICollaboratorService, CollaboratorService>();
@@ -132,6 +133,11 @@ namespace Reservation.Server
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            using var scope = app.Services.CreateScope();
+            var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
+            await initialiser.InitialiseAsync();
+            await initialiser.SeedAsync();
 
             app.UseHttpsRedirection();
             app.UseCors("webAppRequests");

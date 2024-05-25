@@ -14,12 +14,14 @@ import { show, hide } from "@/state/loading/loadingSlice";
 const CollaboratorCard = lazy(() =>
     import("../../components/home/collaborators/CollaboratorCard.jsx")
 );
+
 const defaultFilter = {
     city: "All",
     district: "All",
     sex: "All",
     maxAge: 50,
 };
+
 function Home() {
     const [filter, setFilter] = useState(defaultFilter);
     const { message } = App.useApp();
@@ -35,7 +37,6 @@ function Home() {
         DataService.get(HOME_PATH.getAllFilter + params)
             .then((res) => {
                 const { data } = res.data;
-                console.log(data);
                 setCollaborators(data);
             })
             .catch((err) => message.error(err.message))

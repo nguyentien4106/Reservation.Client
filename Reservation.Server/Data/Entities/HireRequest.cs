@@ -1,4 +1,7 @@
-﻿namespace Reservation.Server.Data.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Reservation.Server.Data.Entities
 {
     public class HireRequest
     {
@@ -10,7 +13,7 @@
 
         public string ApplicationUserId { get; set; }
 
-        public ApplicationUser User { get; set; } = null!;
+        public ApplicationUser ApplicationUser { get; set; }
 
         public string? Name { get;set; }
 
@@ -28,5 +31,8 @@
 
         public int? Status { get; set; }
 
+        public DateTime? CreatedDate { get; set; }
+
+        public DateTime? ConfirmedDate { get; set; }
     }
 }

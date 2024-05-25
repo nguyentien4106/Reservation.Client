@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.Elfie.Model.Strings;
 using Reservation.Server.Data;
 using Reservation.Server.Models.DTO.Auth;
 using Reservation.Server.Models.DTO.Collaborator;
+using Reservation.Server.Models.DTO.Home;
 using Reservation.Server.Models.DTO.UserServicesRegister;
 using Reservation.Server.Models.Request;
 using Reservation.Server.Serivces.UserServiceRegister;
@@ -55,13 +56,24 @@ namespace Reservation.Server.Controllers
         public async Task<AppResponse<List<CollaboratorDTO>>> GetAll(int type)
         {
             return await _collaboratorService.GetAllAsync(type);
-
         }
 
         [HttpPost]
         public async Task<AppResponse<string>> ChangeStatus(ChangeStatusRequest request)
         {
             return await _collaboratorService.ChangeStatusAsync(request.CollaboratorId, request.Status);
+        }
+
+        [HttpGet]
+        public async Task<AppResponse<List<HireRequestDTO>>> GetRequests(Guid? collaboratorId)
+        {
+            return await _collaboratorService.GetRequestsAsync(collaboratorId);
+        }
+
+        [HttpGet]
+        public async Task<AppResponse<HireRequestDTO>> ComfirmRequest(Guid? requestId, int status)
+        {
+            return await _collaboratorService.ComfirmRequestAsync(requestId, status);
         }
     }
 }

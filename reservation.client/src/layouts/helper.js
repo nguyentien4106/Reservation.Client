@@ -29,6 +29,11 @@ const userItems = navigate => [
         label: "Donate",
         onClick: () => navigate("/donate"),
     },
+    {
+        key: "response",
+        label: "Lịch sử thuê",
+        onClick: () => navigate("/donate"),
+    },
 ];
 
 const adminItems = navigate => [

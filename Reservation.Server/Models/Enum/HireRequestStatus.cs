@@ -3,7 +3,7 @@
     public enum HireRequestStatus
     {
         Sent,
-        WaitingForApproved,
+        Denied,
         Approved
     }
 }

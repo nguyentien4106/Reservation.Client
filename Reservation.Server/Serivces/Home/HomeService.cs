@@ -62,13 +62,14 @@ namespace Reservation.Server.Serivces.Home
                 return new AppResponse<bool>().SetErrorResponse("user", "User trống!");
             }
 
-            if (!request.CollaboratorId.HasValue)
-            {
-                return new AppResponse<bool>().SetErrorResponse("user", "Không tìm thấy dữ liệu của người cho thuê");
-            }
+            //if (!request.CollaboratorId)
+            //{
+            //    return new AppResponse<bool>().SetErrorResponse("user", "Không tìm thấy dữ liệu của người cho thuê");
+            //}
 
             var hireRequest = _mapper.Map<HireRequest>(request);
             hireRequest.Status = (int)HireRequestStatus.Sent;
+            hireRequest.CreatedDate = DateTime.Now;
 
             await _context.HireRequests.AddAsync(hireRequest);
 

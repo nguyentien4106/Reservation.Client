@@ -19,7 +19,9 @@ export const COLLABORATOR_PATH = {
     getProfile: "Collaborator/GetProfile?collaboratorId=",
     getProfileByEmail: "Collaborator/GetProfileByEmail?email=",
     getAll: "Collaborator/GetAll?type=",
-    changeStatus: "Collaborator/ChangeStatus"
+    changeStatus: "Collaborator/ChangeStatus",
+    getRequests: "Collaborator/GetRequests?collaboratorId=",
+    confrimRequest: "Collaborator/ComfirmRequest?"
 }
 
 export const HOME_PATH = {

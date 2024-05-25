@@ -44,6 +44,19 @@ namespace Reservation.Server.Data
                 .HasOne(cs => cs.Service)
                 .WithMany(s => s.CollaboratorServices)
                 .HasForeignKey(cs => cs.ServiceId);
+
+            builder.Entity<HireRequest>()
+                .HasKey(hr => hr.Id);
+
+            builder.Entity<HireRequest>()
+                .HasOne(hr => hr.Collaborator)
+                .WithMany(c => c.HireRequests)
+                .HasForeignKey(k => k.CollaboratorId);
+
+            builder.Entity<HireRequest>()
+                .HasOne(hr => hr.ApplicationUser)
+                .WithMany(k => k.HireRequests)
+                .HasForeignKey(c => c.ApplicationUserId);
         }
 
     }

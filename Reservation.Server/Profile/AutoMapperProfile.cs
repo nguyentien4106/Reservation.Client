@@ -27,7 +27,10 @@ namespace Reservation.Server.Profile
 
             CreateMap<View, ViewDTO>();
 
-            CreateMap<HireRequest, HireRequestDTO>().ReverseMap();
+            CreateMap<HireRequest, HireRequestDTO>();
+
+            CreateMap<HireRequestDTO, HireRequest>()
+                .ForMember(item => item.CollaboratorId, opt => opt.MapFrom(src => src.CollaboratorId));
         }
     }
 }

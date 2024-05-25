@@ -1,22 +1,30 @@
 ﻿using AutoMapper;
-using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Reservation.Server.Data;
 using Reservation.Server.Data.Entities;
 using Reservation.Server.Models.DTO.Auth;
 using Reservation.Server.Models.DTO.Collaborator;
+using Reservation.Server.Models.DTO.Email;
+using Reservation.Server.Models.DTO.Home;
 using Reservation.Server.Models.Enum;
+using Reservation.Server.Serivces.Email;
 using System.Linq.Expressions;
 
 namespace Reservation.Server.Serivces.UserServiceRegister
 {
-    public class CollaboratorService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IMapper mapper) 
+    public class CollaboratorService(
+        ApplicationDbContext context, 
+        UserManager<ApplicationUser> userManager, 
+        IMapper mapper,
+        IEmailService emailService
+    ) 
         : ICollaboratorService
     {
         private readonly ApplicationDbContext _context = context;
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly IMapper _mapper = mapper;
+        private readonly IEmailService _emailService = emailService;
 
         public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(int type)
         {
@@ -108,7 +116,7 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             return new AppResponse<string>().SetSuccessResponse("Update Successfully!");
         }
 
-        private void Update(Collaborator entity, CollaboratorDTO newValue)
+        private static void Update(Collaborator entity, CollaboratorDTO newValue)
         {
             entity.IsReady = newValue.IsReady;
             entity.NickName = newValue.NickName;
@@ -188,6 +196,58 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             }
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<AppResponse<List<HireRequestDTO>>> GetRequestsAsync(Guid? collaboratorId)
+        {
+
+            if (!collaboratorId.HasValue)
+            {
+                return new AppResponse<List<HireRequestDTO>>().SetErrorResponse("user", "Không tìm thấy User");
+            }
+
+            var requests = await _context.HireRequests.Where(item => item.CollaboratorId == collaboratorId).ToListAsync();
+
+            return new AppResponse<List<HireRequestDTO>>().SetSuccessResponse(_mapper.Map<List<HireRequestDTO>>(requests));
+             
+        }
+
+        public async Task<AppResponse<HireRequestDTO>> ComfirmRequestAsync(Guid? requestId, int status)
+        {
+            if (!requestId.HasValue)
+            {
+                return new AppResponse<HireRequestDTO>().SetErrorResponse("bind", "Không tìm thấy request");
+            }
+
+            var request = await _context.HireRequests.SingleOrDefaultAsync(item => item.Id == requestId);
+            
+            if(request == null)
+            {
+                return new AppResponse<HireRequestDTO>().SetErrorResponse("request", "Không tìm thấy request trả về");
+            }
+
+            request.Status = status;
+            request.ConfirmedDate = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            var collaborator = await _context.Collaborators.SingleOrDefaultAsync(item => item.Id == request.CollaboratorId);
+            var email = new EmailContent()
+            {
+                ToEmail = request.Email,
+                ToName = request.Name,
+                Subject = "Thông báo mới về yêu cầu cho thuê",
+                Content = $"{collaborator?.NickName ?? ""} đã xác nhận yêu cầu cho thuê của bạn đã tạo vào hồi {request.CreatedDate}. Xin hãy kiểm tra lại trang phản hồi để biết thêm thông tin chi tiết và số diện thoại của CTV. Nếu xảy ra bất cứ vấn đề xin hãy liên lạc lại chúng tôi để giải quyết yêu cầu."
+            };
+
+            var sent = _emailService.SendMail(email);
+
+            if (!sent)
+            {
+                return new AppResponse<HireRequestDTO>().SetErrorResponse("mail", "Đã xác nhận thành công nhưng chưa thể gửi email cho người yêu cầu");
+            }
+
+            return new AppResponse<HireRequestDTO>().SetSuccessResponse(_mapper.Map<HireRequestDTO>(request));
         }
     }
 

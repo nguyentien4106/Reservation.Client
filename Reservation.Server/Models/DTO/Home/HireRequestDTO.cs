@@ -1,17 +1,12 @@
-﻿using Reservation.Server.Data;
-using Reservation.Server.Models.DTO.Collaborator;
-
-namespace Reservation.Server.Models.DTO.Home
+﻿namespace Reservation.Server.Models.DTO.Home
 {
     public class HireRequestDTO
     {
-        public Guid? CollaboratorId { get; set; }
+        public Guid Id { get; set; }
 
-        public CollaboratorDTO? Collaborator { get; set; }
+        public Guid CollaboratorId { get; set; }
 
         public string ApplicationUserId { get; set; }
-
-        public ApplicationUser? User { get; set; }
 
         public string? Name { get; set; }
 
@@ -28,6 +23,12 @@ namespace Reservation.Server.Models.DTO.Home
         public string? Zalo { get; set; }
 
         public string? CollaboratorEmail { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        public DateTime? ConfirmedDate { get; set; }
+
+        public int? Status { get; set; }
 
     }
 }

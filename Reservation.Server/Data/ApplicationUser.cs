@@ -8,5 +8,7 @@ namespace Reservation.Server.Data
         public DateTimeOffset JoinedDate { get; set; }
     
         public Collaborator? CollaboratorProfile { get; set; }
+
+        public List<HireRequest> HireRequests { get; set; } = [];
     }
 }

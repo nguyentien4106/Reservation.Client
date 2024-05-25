@@ -6,6 +6,8 @@ import { createRef } from "react";
 import { Link } from "react-router-dom";
 import DataService from "../../../../lib/DataService";
 import { HOME_PATH } from "../../../../constant/urls";
+import { useDispatch } from "react-redux";
+import { hide, show } from "@/state/loading/loadingSlice";
 
 const layout = {
     labelCol: {
@@ -20,8 +22,8 @@ const HireRequestContent = ({ defaultPrice, collaboratorEmail, collaboratorId })
     const user = getUser();
     const submit = createRef(null);
     const { message } = App.useApp();
+    const dispatch = useDispatch()
 
-    console.log(user)
     if (!user) {
         return (
             <>
@@ -32,19 +34,16 @@ const HireRequestContent = ({ defaultPrice, collaboratorEmail, collaboratorId })
     }
 
     const onFinish = (values) => {
-        console.log(values);
-
         const params = Object.assign(values, {
             collaboratorEmail: collaboratorEmail,
             applicationUserId: user.id,
             collaboratorId: collaboratorId
         });
-        console.log(params);
+
+        dispatch(show())
         DataService.post(HOME_PATH.sendHireRequest, params)
             .then((res) => {
-                console.log(res);
                 const { data } = res
-
                 if(data.isSucceed){
                     message.success("Gửi yêu cầu thành công. Xin hãy kiểm tra email hoặc trang 'Thông Báo' để cập nhật")
                 }
@@ -54,6 +53,9 @@ const HireRequestContent = ({ defaultPrice, collaboratorEmail, collaboratorId })
             })
             .catch(err => {
                 message.error(generateMessages(err))
+            })
+            .finally(() =>{
+                dispatch(hide())
             });
     };
 

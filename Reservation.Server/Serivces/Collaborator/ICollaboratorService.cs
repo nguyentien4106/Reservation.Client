@@ -1,6 +1,7 @@
 ﻿using Reservation.Server.Data;
 using Reservation.Server.Models.DTO.Auth;
 using Reservation.Server.Models.DTO.Collaborator;
+using Reservation.Server.Models.DTO.Home;
 
 namespace Reservation.Server.Serivces.UserServiceRegister
 {
@@ -19,5 +20,9 @@ namespace Reservation.Server.Serivces.UserServiceRegister
         Task<AppResponse<string>> UpdateAsync(CollaboratorDTO dto);
 
         Task<AppResponse<string>> ChangeStatusAsync(Guid? collaboratorId, int status);
+
+        Task<AppResponse<List<HireRequestDTO>>> GetRequestsAsync(Guid? collaboratorId);
+
+        Task<AppResponse<HireRequestDTO>> ComfirmRequestAsync(Guid? requestId, int status);
     }
 }

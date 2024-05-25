@@ -32,7 +32,7 @@ const CollaboratorCard = ({ collaborator }) => {
     )
     const image = (
         <Suspense fallback={<Spin />}>
-            <CoverCardImage src={url} price={collaborator.pricePerHour} view={collaborator.view.count}/>
+            <CoverCardImage src={url} price={collaborator.pricePerHour} view={collaborator.view?.count ?? 0}/>
         </Suspense>
     )
 

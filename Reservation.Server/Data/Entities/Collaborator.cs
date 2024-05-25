@@ -46,6 +46,8 @@ namespace Reservation.Server.Data.Entities
 
         public List<CollaboratorService> CollaboratorServices { get; set; } = [];
 
+        public List<HireRequest> HireRequests { get; set; } = [];
+
         public int? Status { get; set; }
 
         public string? Sex { get; set; }
