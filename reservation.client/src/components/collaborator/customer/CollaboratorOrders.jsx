@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { App, Space, Table, Tag, Typography, Popconfirm } from "antd";
-import { generateMessages, showMoney } from "../../../lib/helper";
+import { App, Space, Tag, Typography, Popconfirm, Table } from "antd";
+import { generateMessages } from "@/lib/helper";
 import DataService from "@/lib/DataService";
-import { COLLABORATOR_PATH } from "../../../constant/urls";
+import { COLLABORATOR_PATH } from "@/constant/urls";
 import { useDispatch } from "react-redux";
 import { show, hide } from "@/state/loading/loadingSlice";
-import dayjs from "dayjs";
+import OrderTable from "../../common/OrderTable";
 
-const { Column } = Table;
 const { Text } = Typography
 const ActionTypes = {
     Denied: 1,
@@ -60,15 +59,16 @@ const renderAction = (customer, handleAction) => {
 
 }
 
-const CustomerTable = ({ customers }) => {
+const CollaboratorOrders = ({ src}) => {
     const { message } = App.useApp();
     const dispatch = useDispatch()
 
-    const [source, setSource] = useState([])
+    const [source, setSource] = useState(src)
 
     useEffect(() => {
-        setSource(customers)
-    }, [customers])
+        setSource(src)
+    }, [src])
+
     const handleAction = (customer, status) => {
         dispatch(show())
         const queryString = `requestId=${customer.id}&status=${status}`
@@ -93,33 +93,7 @@ const CustomerTable = ({ customers }) => {
     };
 
     return (
-        <Table dataSource={source}>
-            <Column title="Tên" dataIndex="name" />
-            <Column title="Email" dataIndex="email" />
-            <Column title="Số điện thoại" dataIndex="phoneNumber" />
-            <Column
-                title="Giá mỗi giờ"
-                render={(_, customer) => showMoney((+customer.offer))}
-            />
-            <Column title="Số giờ cần thuê" dataIndex="times" />
-            <Column
-                title="Thành tiền"
-                render={(_, customer) => showMoney((+customer.times) * (+customer.offer))}
-            />
-            <Column title="Yêu cầu thêm" dataIndex="description" />
-            <Column title="Thông tin zalo" dataIndex="zalo" />
-            <Column title="Ngày yêu cầu"
-                render={(_, customer) => dayjs(customer.createdDate).format("DD-MM-YYYY HH:mm:ss A")}
-            />
-            <Column title="Ngày xác nhận"
-                render={(_, customer) => customer.confirmedDate ? dayjs(customer.confirmedDate).format("DD-MM-YYYY HH:mm:ss A") : ""}
-            />
-            <Column
-                title="Action"
-                key="action"
-                render={(_, customer) => renderAction(customer, handleAction)}
-            />
-        </Table>
+        <OrderTable src={source} renderAction={(_, customer) => renderAction(customer, handleAction)} />
     );
 };
-export default CustomerTable;
+export default CollaboratorOrders;

@@ -21,5 +21,6 @@ export const AccountRoutes = (
             <Route index element={<Account />} />
             <Route path="change-password" element={<ChangePassword />} />
         </Route>
+
     </>
 )

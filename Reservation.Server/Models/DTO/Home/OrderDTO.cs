@@ -1,21 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Reservation.Server.Data.Entities
+﻿namespace Reservation.Server.Models.DTO.Home
 {
-    public class HireRequest
+    public class OrderDTO
     {
         public Guid Id { get; set; }
 
         public Guid CollaboratorId { get; set; }
 
-        public Collaborator Collaborator { get; set; }
+        public string? NickName { get; set; }
 
         public string ApplicationUserId { get; set; }
 
-        public ApplicationUser ApplicationUser { get; set; }
-
-        public string? Name { get;set; }
+        public string? Name { get; set; }
 
         public string? Email { get; set; }
 
@@ -23,16 +18,19 @@ namespace Reservation.Server.Data.Entities
 
         public int? Offer { get; set; }
 
+        public int? Times { get; set; }
+
         public string? Description { get; set; }
 
         public string? Zalo { get; set; }
 
-        public int? Times { get; set; }
-
-        public int? Status { get; set; }
+        public string? CollaboratorEmail { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 
         public DateTime? ConfirmedDate { get; set; }
+
+        public int? Status { get; set; }
+
     }
 }

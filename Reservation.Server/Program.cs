@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +15,7 @@ using Reservation.Server.Serivces.Home;
 using Microsoft.OpenApi.Models;
 using Reservation.Server.Middleware;
 using Reservation.Server.Serivces.ManageCollaborator;
+using Reservation.Server.Serivces.Customer;
 
 namespace Reservation.Server
 {
@@ -54,6 +54,7 @@ namespace Reservation.Server
             builder.Services.AddTransient<IService, ServiceImpl>();
             builder.Services.AddTransient<IHomeService, HomeService>();
             builder.Services.AddTransient<IManageCollaboratorService, ManageCollaboratorService>();
+            builder.Services.AddTransient<ICustomerService, CustomerService>();
 
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 

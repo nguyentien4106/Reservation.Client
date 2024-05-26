@@ -20,7 +20,9 @@ namespace Reservation.Server.Data
 
         public DbSet<View> Views { get; set; }
 
-        public DbSet<HireRequest> HireRequests { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -45,15 +47,15 @@ namespace Reservation.Server.Data
                 .WithMany(s => s.CollaboratorServices)
                 .HasForeignKey(cs => cs.ServiceId);
 
-            builder.Entity<HireRequest>()
+            builder.Entity<Order>()
                 .HasKey(hr => hr.Id);
 
-            builder.Entity<HireRequest>()
+            builder.Entity<Order>()
                 .HasOne(hr => hr.Collaborator)
                 .WithMany(c => c.HireRequests)
                 .HasForeignKey(k => k.CollaboratorId);
 
-            builder.Entity<HireRequest>()
+            builder.Entity<Order>()
                 .HasOne(hr => hr.ApplicationUser)
                 .WithMany(k => k.HireRequests)
                 .HasForeignKey(c => c.ApplicationUserId);

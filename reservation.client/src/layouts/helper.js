@@ -1,3 +1,5 @@
+import { COLLABORATOR_ROUTE_PATH, CUSTOMER_ROUTE_PATH, DONATE_ROUTE_PATH } from "../constant/paths";
+
 export const menuItems = (navigate, isAdmin) => isAdmin ? adminItems(navigate) : userItems(navigate)
 
 const userItems = navigate => [
@@ -6,33 +8,51 @@ const userItems = navigate => [
         label: "Cộng tác viên",
         children: [
             {
-                key: "overall",
+                key: "collaborator-overall",
                 label: "Tổng quan",
-                onClick: () => navigate("/collaborator-overall"),
+                onClick: () => navigate(COLLABORATOR_ROUTE_PATH.overall),
 
             },
             {
-                key: "customer",
+                key: "collaborator-customer",
                 label: "Thông tin khách khách hàng",
-                onClick: () => navigate("/collaborator-customer"),
+                onClick: () => navigate(COLLABORATOR_ROUTE_PATH.customer),
 
             },
             {
                 key: "setting",
                 label: "Cài đặt hồ sơ cho thuê",
-                onClick: () => navigate("/collaborator-setting"),
+                onClick: () => navigate(COLLABORATOR_ROUTE_PATH.setting),
             },
         ],
     },
     {
         key: "donate",
         label: "Donate",
-        onClick: () => navigate("/donate"),
+        onClick: () => navigate(DONATE_ROUTE_PATH.donate),
     },
     {
-        key: "response",
-        label: "Lịch sử thuê",
-        onClick: () => navigate("/donate"),
+        key: "customer",
+        label: "Thông tin khách hàng",
+        children: [
+            {
+                key: "customer-overall",
+                label: "Tổng quan",
+                onClick: () => navigate(CUSTOMER_ROUTE_PATH.overall),
+
+            },
+            {
+                key: "order-history",
+                label: "Lịch sử thuê",
+                onClick: () => navigate(CUSTOMER_ROUTE_PATH.orderHistory),
+
+            },
+            {
+                key: "customer-donate",
+                label: "Lịch sử donate",
+                onClick: () => navigate(CUSTOMER_ROUTE_PATH.donateHistory),
+            },
+        ],
     },
 ];
 

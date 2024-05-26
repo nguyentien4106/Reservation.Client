@@ -65,13 +65,13 @@ namespace Reservation.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<AppResponse<List<HireRequestDTO>>> GetRequests(Guid? collaboratorId)
+        public async Task<AppResponse<List<OrderDTO>>> GetRequests(Guid? collaboratorId)
         {
             return await _collaboratorService.GetRequestsAsync(collaboratorId);
         }
 
         [HttpGet]
-        public async Task<AppResponse<HireRequestDTO>> ComfirmRequest(Guid? requestId, int status)
+        public async Task<AppResponse<OrderDTO>> ComfirmRequest(Guid? requestId, int status)
         {
             return await _collaboratorService.ComfirmRequestAsync(requestId, status);
         }

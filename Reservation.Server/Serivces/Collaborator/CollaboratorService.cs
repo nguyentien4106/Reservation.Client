@@ -198,32 +198,32 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             await _context.SaveChangesAsync();
         }
 
-        public async Task<AppResponse<List<HireRequestDTO>>> GetRequestsAsync(Guid? collaboratorId)
+        public async Task<AppResponse<List<OrderDTO>>> GetRequestsAsync(Guid? collaboratorId)
         {
 
             if (!collaboratorId.HasValue)
             {
-                return new AppResponse<List<HireRequestDTO>>().SetErrorResponse("user", "Không tìm thấy User");
+                return new AppResponse<List<OrderDTO>>().SetErrorResponse("user", "Không tìm thấy User");
             }
 
-            var requests = await _context.HireRequests.Where(item => item.CollaboratorId == collaboratorId).ToListAsync();
+            var requests = await _context.Orders.Where(item => item.CollaboratorId == collaboratorId).ToListAsync();
 
-            return new AppResponse<List<HireRequestDTO>>().SetSuccessResponse(_mapper.Map<List<HireRequestDTO>>(requests));
+            return new AppResponse<List<OrderDTO>>().SetSuccessResponse(_mapper.Map<List<OrderDTO>>(requests));
              
         }
 
-        public async Task<AppResponse<HireRequestDTO>> ComfirmRequestAsync(Guid? requestId, int status)
+        public async Task<AppResponse<OrderDTO>> ComfirmRequestAsync(Guid? requestId, int status)
         {
             if (!requestId.HasValue)
             {
-                return new AppResponse<HireRequestDTO>().SetErrorResponse("bind", "Không tìm thấy request");
+                return new AppResponse<OrderDTO>().SetErrorResponse("bind", "Không tìm thấy request");
             }
 
-            var request = await _context.HireRequests.SingleOrDefaultAsync(item => item.Id == requestId);
+            var request = await _context.Orders.SingleOrDefaultAsync(item => item.Id == requestId);
             
             if(request == null)
             {
-                return new AppResponse<HireRequestDTO>().SetErrorResponse("request", "Không tìm thấy request trả về");
+                return new AppResponse<OrderDTO>().SetErrorResponse("request", "Không tìm thấy request trả về");
             }
 
             request.Status = status;
@@ -244,10 +244,10 @@ namespace Reservation.Server.Serivces.UserServiceRegister
 
             if (!sent)
             {
-                return new AppResponse<HireRequestDTO>().SetErrorResponse("mail", "Đã xác nhận thành công nhưng chưa thể gửi email cho người yêu cầu");
+                return new AppResponse<OrderDTO>().SetErrorResponse("mail", "Đã xác nhận thành công nhưng chưa thể gửi email cho người yêu cầu");
             }
 
-            return new AppResponse<HireRequestDTO>().SetSuccessResponse(_mapper.Map<HireRequestDTO>(request));
+            return new AppResponse<OrderDTO>().SetSuccessResponse(_mapper.Map<OrderDTO>(request));
         }
     }
 

@@ -9,6 +9,6 @@ namespace Reservation.Server.Data
     
         public Collaborator? CollaboratorProfile { get; set; }
 
-        public List<HireRequest> HireRequests { get; set; } = [];
+        public List<Order> HireRequests { get; set; } = [];
     }
 }

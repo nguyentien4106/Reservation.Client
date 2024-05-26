@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { generateMessages, getUser } from "../../../../lib/helper";
-
-import { Form, Input, InputNumber, Button, App } from "antd";
+import { Form, Input, InputNumber, Button, App, Modal } from "antd";
 import { createRef } from "react";
 import { Link } from "react-router-dom";
 import DataService from "../../../../lib/DataService";
@@ -18,7 +17,8 @@ const layout = {
     },
 };
 
-const HireRequestContent = ({ defaultPrice, collaboratorEmail, collaboratorId }) => {
+const OrderContent = ({ defaultPrice, collaboratorEmail, collaboratorId, modal }) => {
+    console.log(modal)
     const user = getUser();
     const submit = createRef(null);
     const { message } = App.useApp();
@@ -56,6 +56,7 @@ const HireRequestContent = ({ defaultPrice, collaboratorEmail, collaboratorId })
             })
             .finally(() =>{
                 dispatch(hide())
+                Modal.destroyAll()
             });
     };
 
@@ -158,4 +159,4 @@ const HireRequestContent = ({ defaultPrice, collaboratorEmail, collaboratorId })
         </Form>
     );
 };
-export default HireRequestContent;
+export default OrderContent;

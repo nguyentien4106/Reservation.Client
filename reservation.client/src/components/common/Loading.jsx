@@ -3,17 +3,20 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
 
 const Loading = ({ fullScreen = true, size = "large" }) => (
-  <Spin
-    fullscreen={fullScreen}
-    indicator={
-      <LoadingOutlined
+    <Spin
         style={{
-          fontSize: 48,
+            zIndex: 10000
         }}
-        spin
-      />
-    }
-    size={size}
-  />
+        fullscreen={fullScreen}
+        indicator={
+            <LoadingOutlined
+                style={{
+                    fontSize: 48,
+                }}
+                spin
+            />
+        }
+        size={size}
+    />
 );
 export default Loading;

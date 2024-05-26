@@ -6,7 +6,7 @@ import { EyeOutlined } from "@ant-design/icons";
 import DataService from "@/lib/DataService";
 import { getUser } from "../../../../lib/helper";
 import { useNavigate } from "react-router-dom";
-import HireRequestContent from "./HireRequestContent";
+import OrderContent from "./OrderContent";
 const { Text } = Typography;
 
 const defaultPhone = "Hiển thị số điện thoại";
@@ -14,9 +14,6 @@ const defaultPhone = "Hiển thị số điện thoại";
 function BookingInfo() {
     const collaborator = useContext(ContainerInfoProfile);
     const [phoneInfo, setPhoneInfo] = useState(defaultPhone);
-    const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [validate, setValidate] = useState(false);
     const [modal, contextHolder] = Modal.useModal();
 
     const user = getUser();
@@ -28,28 +25,21 @@ function BookingInfo() {
         );
     };
 
-    const handlHireRequest = () => {
+    const handleOrder = () => {
         modal.info({
             title: user ? "Thông tin yêu cầu" : "Bạn chưa đăng nhập.",
-            content: <HireRequestContent 
-                    defaultPrice={collaborator?.pricePerHour} 
-                    collaboratorEmail={collaborator?.email}
-                    collaboratorId={collaborator?.id}
+            content: <OrderContent 
+                        defaultPrice={collaborator?.pricePerHour} 
+                        collaboratorEmail={collaborator?.email}
+                        collaboratorId={collaborator?.id}
+                        modal={modal}
                     />,
             width: user ? "60%" : "30%",
             okText: "Huỷ",
             okType: "default"
         })
-    }
 
-    const handleOk = () => {
-        if (!user) {
-            navigate("/login");
-        }
-        if (validate) {
-            setOpen(false);
-        }
-    };
+    }
 
     return (
         <>
@@ -72,7 +62,7 @@ function BookingInfo() {
                 </button>
                 <button
                     className="button-booking"
-                    onClick={ handlHireRequest}
+                    onClick={ handleOrder}
                 >
                     Thuê
                 </button>

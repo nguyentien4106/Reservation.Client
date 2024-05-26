@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reservation.Server.Data;
 
@@ -11,9 +12,11 @@ using Reservation.Server.Data;
 namespace Reservation.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240525232107_addreview")]
+    partial class addreview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -310,7 +313,7 @@ namespace Reservation.Server.Migrations
                     b.ToTable("CollaboratorServices");
                 });
 
-            modelBuilder.Entity("Reservation.Server.Data.Entities.Order", b =>
+            modelBuilder.Entity("Reservation.Server.Data.Entities.HireRequest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -359,7 +362,7 @@ namespace Reservation.Server.Migrations
 
                     b.HasIndex("CollaboratorId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("HireRequests");
                 });
 
             modelBuilder.Entity("Reservation.Server.Data.Entities.Review", b =>
@@ -386,7 +389,7 @@ namespace Reservation.Server.Migrations
                     b.HasIndex("HireRequestId")
                         .IsUnique();
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("Reservation.Server.Data.Entities.Service", b =>
@@ -505,7 +508,7 @@ namespace Reservation.Server.Migrations
                     b.Navigation("Service");
                 });
 
-            modelBuilder.Entity("Reservation.Server.Data.Entities.Order", b =>
+            modelBuilder.Entity("Reservation.Server.Data.Entities.HireRequest", b =>
                 {
                     b.HasOne("Reservation.Server.Data.ApplicationUser", "ApplicationUser")
                         .WithMany("HireRequests")
@@ -526,7 +529,7 @@ namespace Reservation.Server.Migrations
 
             modelBuilder.Entity("Reservation.Server.Data.Entities.Review", b =>
                 {
-                    b.HasOne("Reservation.Server.Data.Entities.Order", "HireRequest")
+                    b.HasOne("Reservation.Server.Data.Entities.HireRequest", "HireRequest")
                         .WithOne("Review")
                         .HasForeignKey("Reservation.Server.Data.Entities.Review", "HireRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -563,7 +566,7 @@ namespace Reservation.Server.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Reservation.Server.Data.Entities.Order", b =>
+            modelBuilder.Entity("Reservation.Server.Data.Entities.HireRequest", b =>
                 {
                     b.Navigation("Review");
                 });

@@ -55,7 +55,7 @@ namespace Reservation.Server.Serivces.Home
             return DateTime.Today.Year - year;
         }
 
-        public async Task<AppResponse<bool>> SendHireRequestAsync(HireRequestDTO request)
+        public async Task<AppResponse<bool>> SendHireRequestAsync(OrderDTO request)
         {
             if (string.IsNullOrEmpty(request.ApplicationUserId))
             {
@@ -67,11 +67,11 @@ namespace Reservation.Server.Serivces.Home
             //    return new AppResponse<bool>().SetErrorResponse("user", "Không tìm thấy dữ liệu của người cho thuê");
             //}
 
-            var hireRequest = _mapper.Map<HireRequest>(request);
+            var hireRequest = _mapper.Map<Order>(request);
             hireRequest.Status = (int)HireRequestStatus.Sent;
             hireRequest.CreatedDate = DateTime.Now;
 
-            await _context.HireRequests.AddAsync(hireRequest);
+            await _context.Orders.AddAsync(hireRequest);
 
             await _context.SaveChangesAsync();
 
@@ -93,7 +93,7 @@ namespace Reservation.Server.Serivces.Home
             return new AppResponse<bool>().SetSuccessResponse(true);
         }
 
-        private static string BuildContent(HireRequestDTO request)
+        private static string BuildContent(OrderDTO request)
         {
             return $"Một khách hàng có tên {request.Name}, có số điện thoại {request.PhoneNumber}, đã đề nghị thuê bạn {request.Times} giờ với mức giá {request.Offer} mỗi giờ";
         }

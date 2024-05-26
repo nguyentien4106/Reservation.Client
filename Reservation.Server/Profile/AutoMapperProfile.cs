@@ -22,14 +22,14 @@ namespace Reservation.Server.Profile
 
             CreateMap<ServiceDTO, Service>().ForMember(item => item.CollaboratorServices, opt => opt.Ignore());
 
-
             CreateMap<CollaboratorDTO, Collaborator>();
 
             CreateMap<View, ViewDTO>();
 
-            CreateMap<HireRequest, HireRequestDTO>();
+            CreateMap<Order, OrderDTO>()
+                .ForMember(item => item.NickName, opt => opt.MapFrom(src => src.Collaborator.NickName));
 
-            CreateMap<HireRequestDTO, HireRequest>()
+            CreateMap<OrderDTO, Order>()
                 .ForMember(item => item.CollaboratorId, opt => opt.MapFrom(src => src.CollaboratorId));
         }
     }

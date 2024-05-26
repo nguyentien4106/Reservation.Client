@@ -13,7 +13,7 @@ namespace Reservation.Server.Data.Entities
         public View View { get; set; }
 
         [Required]
-        public string NickName { get; set; } =string.Empty;
+        public string NickName { get; set; } = string.Empty;
 
         public bool? IsReady { get; set; }
 
@@ -46,7 +46,7 @@ namespace Reservation.Server.Data.Entities
 
         public List<CollaboratorService> CollaboratorServices { get; set; } = [];
 
-        public List<HireRequest> HireRequests { get; set; } = [];
+        public List<Order> HireRequests { get; set; } = [];
 
         public int? Status { get; set; }
 

@@ -29,7 +29,7 @@ namespace Reservation.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<AppResponse<bool>> SendHireRequest(HireRequestDTO request)
+        public async Task<AppResponse<bool>> SendHireRequest(OrderDTO request)
         {
             return await _homeService.SendHireRequestAsync(request);
         }

@@ -6,6 +6,7 @@ import donateRoute, { DonateRotues } from './donateRoute';
 import homeRoute, { HomeRoutes } from './homeRoute';
 import accountRoute, { AccountRoutes } from './accountRoute';
 import { Route } from 'react-router-dom';
+import { CustomerRoutes } from './customerRoute';
 
 const routes = [
     {
@@ -28,6 +29,7 @@ export const AppRoutes = (
         { CollaboratorRoutes }
         { DonateRotues }
         { AccountRoutes }
+        { CustomerRoutes }
     </>
 )
 export default routes;

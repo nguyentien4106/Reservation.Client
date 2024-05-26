@@ -21,8 +21,8 @@ namespace Reservation.Server.Serivces.UserServiceRegister
 
         Task<AppResponse<string>> ChangeStatusAsync(Guid? collaboratorId, int status);
 
-        Task<AppResponse<List<HireRequestDTO>>> GetRequestsAsync(Guid? collaboratorId);
+        Task<AppResponse<List<OrderDTO>>> GetRequestsAsync(Guid? collaboratorId);
 
-        Task<AppResponse<HireRequestDTO>> ComfirmRequestAsync(Guid? requestId, int status);
+        Task<AppResponse<OrderDTO>> ComfirmRequestAsync(Guid? requestId, int status);
     }
 }

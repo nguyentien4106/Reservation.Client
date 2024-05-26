@@ -33,3 +33,7 @@ export const HOME_PATH = {
 export const MANAGE_COLLABORATOR_PATH = {
     getAll: "ManageCollaborator/GetAll"
 }
+
+export const CUSTOMER_PATH = {
+    getOrders: "Customer/GetOrders?applicationUserId="
+}

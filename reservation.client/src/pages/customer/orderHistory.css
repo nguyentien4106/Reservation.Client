@@ -1,0 +1,12 @@
+.disabled-row {
+    background-color: #dcdcdc;
+    pointer-events: none;
+}
+
+.disabled-row td:nth-child(2) button{
+    pointer-events: auto;
+}
+
+.disabled-row td:nth-child(3){
+    pointer-events: auto;
+}
