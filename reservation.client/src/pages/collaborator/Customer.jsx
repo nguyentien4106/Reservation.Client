@@ -7,7 +7,6 @@ import { Flex, Table, Typography } from "antd";
 import AuthorizeView from "../../components/auth/AuthorizeView";
 import { ROLES } from "../../constant/settings";
 import { Link } from "react-router-dom";
-import OrderTable from "../../components/common/OrderTable";
 import CollaboratorOrders from "../../components/collaborator/customer/CollaboratorOrders";
 const { Text, Title } = Typography
 

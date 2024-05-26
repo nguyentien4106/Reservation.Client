@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Table, Typography } from "antd";
 import dayjs from "dayjs";
 import { showMoney } from "../../lib/helper";
-import { Link } from "react-router-dom";
 
 const { Column } = Table;
 const { Paragraph } = Typography
 
 const OrderTable = ({ src, renderAction, children, title = "Action", sort}) => {
     const [source, setSource] = useState([])
-    
+    const [loading, setLoading] = useState(true)
     const [expand, setExpand] = useState([])
 
     useEffect(() => {
@@ -17,10 +16,11 @@ const OrderTable = ({ src, renderAction, children, title = "Action", sort}) => {
         src.sort(sortFn)
         setSource(src)
         setExpand(src.map(item => ({ id: item.id, value: false })))
+        setLoading(false)
     }, [src])
 
     return (
-        <Table dataSource={source} rowKey={"id"} rowClassName={customer => customer.status !== 0 ? "disabled-row" : ""} scroll={{ x: "max-content" }}>
+        <Table loading={loading} dataSource={source} rowKey={"id"} rowClassName={customer => customer.status !== 0 ? "disabled-row" : ""} scroll={{ x: "max-content" }}>
             <Column
                 title={title}
                 key="action"

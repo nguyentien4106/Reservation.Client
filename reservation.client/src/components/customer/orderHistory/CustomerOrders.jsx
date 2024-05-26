@@ -1,8 +1,8 @@
-import React from "react";
-import OrderTable from '../../common/OrderTable';
-import { Button, Modal, Table, Tag } from "antd";
+import React, { Suspense, lazy } from "react";
+import { App, Button, Modal, Table, Tag } from "antd";
 import { Link } from "react-router-dom";
-import PostReview from "./PostReview";
+import ReviewContent from "./ReviewContent";
+import OrderTable from "../../common/OrderTable";
 
 const renderAction = (customer) => {
     let color, text;
@@ -25,17 +25,18 @@ const renderAction = (customer) => {
     return <Tag color={color}>{text}</Tag>;
 };
 
-const sort = (a, b) => b.status - a.status 
+const sort = (a, b) => b.status - a.status
 
 function CustomerOrders({ src }) {
-    
+    const { message } = App.useApp()
     const postReview = order => {
         console.log(order)
         Modal.info({
             title: `Review về ${order.nickName}`,
-            content: <PostReview 
-                        
-                    />,
+            content: <ReviewContent
+                message={message}
+                order={order}
+            />,
             width: "60%",
             okText: "Huỷ",
             okType: "default"
@@ -53,7 +54,7 @@ function CustomerOrders({ src }) {
                         0: <Tag color="green"><a>Review khi được chấp thuận</a></Tag>,
                         default: <Tag color="red"><a>Không được review</a></Tag>
                     };
-                
+
                     return statusComponents[order.status] || statusComponents.default;
                 }}
             />

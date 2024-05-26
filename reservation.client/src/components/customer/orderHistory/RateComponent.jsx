@@ -4,7 +4,7 @@ import { Flex, Rate } from 'antd';
 
 const customIcons = {
     1: <FrownOutlined style={{
-        fontSize: 50
+        fontSize: 50,
     }}/>,
     2: <FrownOutlined style={{
         fontSize: 50

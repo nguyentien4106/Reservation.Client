@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Reservation.Server.Data.Entities;
 using Reservation.Server.Models.DTO.Collaborator;
+using Reservation.Server.Models.DTO.Customer;
 using Reservation.Server.Models.DTO.Home;
 using Reservation.Server.Models.DTO.Service;
 
@@ -31,6 +32,9 @@ namespace Reservation.Server.Profile
 
             CreateMap<OrderDTO, Order>()
                 .ForMember(item => item.CollaboratorId, opt => opt.MapFrom(src => src.CollaboratorId));
+
+            CreateMap<Review, ReviewDTO>().ReverseMap();
+
         }
     }
 }
