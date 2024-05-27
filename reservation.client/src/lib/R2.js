@@ -70,6 +70,26 @@ const get = async (username) => {
     return Promise.all(images ?? [])
 };
 
+
+const getReviewImages = async (username, orderId) => {
+    const prefix = `${username}/reviews/${orderId}`
+    console.log(prefix)
+    // return []
+    const objects = await s3Client.send(
+                                        new ListObjectsV2Command({
+                                            Bucket: cloudflareR2BucketName,
+                                            Prefix: prefix
+                                        })
+                                    )
+        
+
+    const images = objects.Contents && objects.Contents.map(async (content) => ({
+        url: await getUrl(content),
+        content: content,
+    }))
+
+    return Promise.all(images ?? [])
+};
 const getAvatar = async (username) => {
     // return []
     const prefix = `${username}/avatar`
@@ -110,5 +130,6 @@ export const R2 = {
     upload: upload,
     get: get,
     delete: deleteObject,
-    getAvatar: getAvatar
+    getAvatar: getAvatar,
+    getReviewImages: getReviewImages
 };

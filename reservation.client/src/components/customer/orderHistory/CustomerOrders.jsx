@@ -47,7 +47,7 @@ function CustomerOrders({ src }) {
                 key="review"
                 render={(_, order) => {
                     if(order.status === 2){
-                        return order?.review ? <Button>Xem Review</Button> : <Button onClick={() => postReview(order)}>Đăng review</Button>
+                        return order?.review ? <Link to={`/collaborators/${order.collaboratorId}`}>Đã review</Link> : <Button onClick={() => postReview(order)}>Đăng review</Button>
                     }
 
                     return order.status === 0 ? <Tag color={"green"}><a>Review khi được chấp thuận</a></Tag> : <Tag color={"red"}><a>Không được review</a></Tag>
