@@ -16,7 +16,7 @@ const layout = {
     },
 };
 
-function ReviewContent({ order, message }) {
+function ReviewContent({ order, message, setOrdersSrc }) {
     const [rate, setRate] = useState(5)
     const [images, setImages] = useState([])
     const onFinish = async values => {
@@ -31,8 +31,11 @@ function ReviewContent({ order, message }) {
 
         DataService.post(CUSTOMER_PATH.addReview, params)
         .then(res => {
-            if(res.data.isSucceed){
+            const { data } = res
+            if(data.isSucceed){
                 message.success("Đăng review thành công!")
+                console.log(data.data)
+                setOrdersSrc(prev => prev.map(item => item.id === data.data.id ? data.data : item))
             }
         })
         .catch(err => message.error(generateMessages(err)))

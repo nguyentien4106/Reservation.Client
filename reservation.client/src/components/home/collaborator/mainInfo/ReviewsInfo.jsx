@@ -10,21 +10,23 @@ export default function ReviewsInfo() {
 
     useEffect(() => {
         if (collaborator) {
-            setOrders(collaborator.orders);
+            setOrders(collaborator.orders.filter(item => item.review !== null));
         }
     }, [collaborator]);
 
     return (
         <div>
-            <h1>Reviews</h1>
-            {orders.map((order) => (
+            <h1>Đánh giá</h1>
+            {orders.length ? orders.map((order) => (
                 <React.Fragment key={order.id}>
                     <Suspense fallback={<Spin />}>
                         <ReviewCard order={order} />
                     </Suspense>
                     <Divider />
                 </React.Fragment>
-            ))}
+            )) : <h3 style={{
+                color: "red"
+            }}>Chưa có đánh giá nào</h3>}
         </div>
     );
 }

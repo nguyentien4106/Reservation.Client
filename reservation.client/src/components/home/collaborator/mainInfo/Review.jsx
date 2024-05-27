@@ -1,4 +1,4 @@
-import { Avatar, Card, Flex, Image, Rate, Typography } from "antd";
+import { Avatar, Card, Flex, Image, Rate, Spin, Typography } from "antd";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { R2 } from "../../../../lib/R2";
@@ -10,6 +10,7 @@ export default function Review({ order }) {
     const [expand, setExpand] = useState(false);
     const [images, setImages] = useState([]);
     console.log(order);
+
     useEffect(() => {
         R2.getReviewImages(getUserName(order.collaboratorEmail), order.id).then(
             (res) => {
@@ -18,6 +19,7 @@ export default function Review({ order }) {
             }
         );
     }, []);
+
     return (
         <>
             <Card
@@ -33,7 +35,7 @@ export default function Review({ order }) {
                         <Flex justify="space-between">
                             <Typography.Text>{order.name}</Typography.Text>
                             <Rate
-                                defaultValue={order.review.rate}
+                                defaultValue={order.review?.rate}
                                 disabled
                             ></Rate>
                         </Flex>
@@ -62,7 +64,7 @@ export default function Review({ order }) {
                         onExpand: (_, info) => setExpand(info.expanded),
                     }}
                 >
-                    {order.review.description}
+                    {order.review?.description}
                     <Flex
                         gap={20}
                         style={{
@@ -71,7 +73,7 @@ export default function Review({ order }) {
                         }}
                     >
                         {images.map((image) => (
-                            <Image height={100} src={image} preview={false} />
+                            <Image height={100} src={image} preview={false} fallback={<Spin />}/>
                         ))}
                     </Flex>
                 </Typography.Paragraph>

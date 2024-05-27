@@ -15,12 +15,12 @@ export default function Customer() {
     const [customers, setCustomers] = useState([])
 
     useEffect(() => {
-        if (user.collaboratorId)
+        if (user?.collaboratorId)
             DataService.get(COLLABORATOR_PATH.getRequests + user.collaboratorId).then(res => {
                 setCustomers(res.data.data)
                 console.log(res.data.data)
             }).catch(console.error)
-    }, [])
+    }, [user])
 
     return (
         <AuthorizeView role={ROLES.USER}>

@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import { App, Button, Modal, Table, Tag } from "antd";
 import { Link } from "react-router-dom";
 import ReviewContent from "./ReviewContent";
@@ -29,11 +29,19 @@ const sort = (a, b) => b.status - a.status
 
 function CustomerOrders({ src }) {
     const { message } = App.useApp()
+    const [ordersSrc, setOrdersSrc] = useState([])
+
+    useEffect(() => {
+        if(src.length){
+            setOrdersSrc(src)
+        }
+    }, [src])
+
     const postReview = order => {
         console.log(order)
         Modal.info({
             title: `Review về ${order.nickName}`,
-            content: <ReviewContent message={message} order={order} />,
+            content: <ReviewContent message={message} order={order} setOrdersSrc={setOrdersSrc}/>,
             width: "60%",
             okText: "Huỷ",
             okType: "default"
@@ -41,7 +49,7 @@ function CustomerOrders({ src }) {
     }
 
     return (
-        <OrderTable src={src} renderAction={(_, order) => renderAction(order)} title="Trạng thái" sort={sort}>
+        <OrderTable src={ordersSrc} renderAction={(_, order) => renderAction(order)} title="Trạng thái" sort={sort}>
             <Table.Column
                 title="Review"
                 key="review"

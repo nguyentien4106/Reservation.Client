@@ -8,6 +8,6 @@ namespace Reservation.Server.Serivces.Customer
     {
         Task<AppResponse<List<OrderDTO>>> GetOrdersAsync(string? applicationUserId);
 
-        Task<AppResponse<bool>> AddReviewAsync(ReviewDTO review);
+        Task<AppResponse<OrderDTO>> AddReviewAsync(ReviewDTO review);
     }
 }

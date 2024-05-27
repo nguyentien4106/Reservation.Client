@@ -5,7 +5,7 @@ export const menuItems = (navigate, isAdmin) => isAdmin ? adminItems(navigate) :
 const userItems = navigate => [
     {
         key: "collaborator",
-        label: "Cộng tác viên",
+        label: "Cài đặt cho thuê",
         children: [
             {
                 key: "collaborator-overall",
@@ -15,13 +15,13 @@ const userItems = navigate => [
             },
             {
                 key: "collaborator-customer",
-                label: "Thông tin khách khách hàng",
+                label: "Danh sách khách hàng",
                 onClick: () => navigate(COLLABORATOR_ROUTE_PATH.customer),
 
             },
             {
                 key: "setting",
-                label: "Cài đặt hồ sơ cho thuê",
+                label: "Chỉnh sửa hồ sơ",
                 onClick: () => navigate(COLLABORATOR_ROUTE_PATH.setting),
             },
         ],
@@ -33,7 +33,7 @@ const userItems = navigate => [
     },
     {
         key: "customer",
-        label: "Thông tin khách hàng",
+        label: "Thông tin tài khoản",
         children: [
             {
                 key: "customer-overall",

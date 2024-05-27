@@ -22,7 +22,7 @@ namespace Reservation.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<AppResponse<bool>> AddReview(ReviewDTO review)
+        public async Task<AppResponse<OrderDTO>> AddReview(ReviewDTO review)
         {
             return await _customerService.AddReviewAsync(review);
         }

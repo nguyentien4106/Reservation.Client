@@ -13,20 +13,22 @@ namespace Reservation.Server.Serivces.Customer
         private readonly ApplicationDbContext _context = context;
         private readonly IMapper _mapper = mapper;
 
-        public async Task<AppResponse<bool>> AddReviewAsync(ReviewDTO reviewDto)
+        public async Task<AppResponse<OrderDTO>> AddReviewAsync(ReviewDTO reviewDto)
         {
             var order = await _context.Orders.SingleOrDefaultAsync(item => item.Id == reviewDto.OrderId);
             if(order == null)
             {
-                return new AppResponse<bool>().SetErrorResponse("bind", "Order không được tìm thấy");
+                return new AppResponse<OrderDTO>().SetErrorResponse("bind", "Order không được tìm thấy");
             }
             var review = _mapper.Map<Review>(reviewDto);
             review.CreatedDate = DateTime.Now;
 
+
             await _context.Reviews.AddAsync(review);
             await _context.SaveChangesAsync();
+            var orderDto = _mapper.Map<OrderDTO>(review.Order);
 
-            return new AppResponse<bool>().SetSuccessResponse(true);
+            return new AppResponse<OrderDTO>().SetSuccessResponse(orderDto);
         }
 
         public async Task<AppResponse<List<OrderDTO>>> GetOrdersAsync(string? applicationUserId)
