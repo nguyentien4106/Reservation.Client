@@ -1,4 +1,6 @@
-﻿namespace Reservation.Server.Data.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Reservation.Server.Data.Entities
 {
     public class Review
     {
@@ -10,9 +12,11 @@
 
         public int Rate { get; set; }
 
-        public string Title { get; set; } = null!;
+        [Required]
+        public string Title { get; set; } = string.Empty;
 
-        public string Description { get; set; } = null!;
+        [Required]
+        public string Description { get; set; } = string.Empty;
 
         public DateTime? CreatedDate { get; set; }
 

@@ -52,7 +52,7 @@ namespace Reservation.Server.Data
 
             builder.Entity<Order>()
                 .HasOne(hr => hr.Collaborator)
-                .WithMany(c => c.HireRequests)
+                .WithMany(c => c.Orders)
                 .HasForeignKey(k => k.CollaboratorId);
 
             builder.Entity<Order>()

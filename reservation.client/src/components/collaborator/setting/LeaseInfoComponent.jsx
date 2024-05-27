@@ -141,6 +141,7 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
                     name="isReady"
                     label="Bật hồ sơ cho thuê ?"
                     tooltip="Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê."
+                    valuePropName="checked"
                 >
                     <Switch />
                 </Form.Item>

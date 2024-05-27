@@ -46,7 +46,7 @@ namespace Reservation.Server.Data.Entities
 
         public List<CollaboratorService> CollaboratorServices { get; set; } = [];
 
-        public List<Order> HireRequests { get; set; } = [];
+        public List<Order> Orders { get; set; } = [];
 
         public int? Status { get; set; }
 

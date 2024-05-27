@@ -41,7 +41,7 @@ const OrderContent = ({ defaultPrice, collaboratorEmail, collaboratorId, modal }
         });
 
         dispatch(show())
-        DataService.post(HOME_PATH.sendHireRequest, params)
+        DataService.post(HOME_PATH.createOrder, params)
             .then((res) => {
                 const { data } = res
                 if(data.isSucceed){

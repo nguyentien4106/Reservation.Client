@@ -1,6 +1,7 @@
 import React from 'react'
 import PersonalInfo from './PersonalInfo'
 import IntroductionInfo from './IntroductionInfo'
+import ReviewInfo from './ReviewsInfo'
 import { Divider } from 'antd'
 
 function MainInfo() {
@@ -9,6 +10,8 @@ function MainInfo() {
             <PersonalInfo />
             <Divider />
             <IntroductionInfo />
+            <Divider />
+            <ReviewInfo />
         </>
     )
 }

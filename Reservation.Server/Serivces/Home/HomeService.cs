@@ -55,7 +55,7 @@ namespace Reservation.Server.Serivces.Home
             return DateTime.Today.Year - year;
         }
 
-        public async Task<AppResponse<bool>> SendHireRequestAsync(OrderDTO request)
+        public async Task<AppResponse<bool>> CreateOrderAsync(OrderDTO request)
         {
             if (string.IsNullOrEmpty(request.ApplicationUserId))
             {

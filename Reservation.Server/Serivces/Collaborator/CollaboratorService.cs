@@ -52,6 +52,8 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             }
 
             var collaborator = await _context.Collaborators
+                .Include(item => item.Orders)
+                .ThenInclude(item => item.Review)
                 .Include(item => item.ApplicationUser)
                 .Include(item => item.CollaboratorServices)
                 .ThenInclude(cs => cs.Service)

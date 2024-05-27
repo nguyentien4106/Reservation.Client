@@ -21,8 +21,10 @@ namespace Reservation.Server.Serivces.Customer
                 return new AppResponse<bool>().SetErrorResponse("bind", "Order không được tìm thấy");
             }
             var review = _mapper.Map<Review>(reviewDto);
-            
+            review.CreatedDate = DateTime.Now;
+
             await _context.Reviews.AddAsync(review);
+            await _context.SaveChangesAsync();
 
             return new AppResponse<bool>().SetSuccessResponse(true);
         }
@@ -35,6 +37,7 @@ namespace Reservation.Server.Serivces.Customer
             }
 
             var orders = await _context.Orders
+                .Include(item => item.Review)
                 .Where(item => item.ApplicationUserId == applicationUserId)
                 .Include(item => item.Collaborator)
                 .ToListAsync();

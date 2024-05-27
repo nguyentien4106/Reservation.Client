@@ -11,7 +11,6 @@ export const ContainerInfoProfile = createContext({ })
 function CollaboratorPage() {
     const { id } = useParams()
     const collaborator = UseFetchCollaborator(id)
-
     return (
         <ContainerInfoProfile.Provider value={collaborator}>
             <div className='collaborator-infor__container'>

@@ -1,4 +1,6 @@
-﻿namespace Reservation.Server.Models.DTO.Home
+﻿using Reservation.Server.Models.DTO.Customer;
+
+namespace Reservation.Server.Models.DTO.Home
 {
     public class OrderDTO
     {
@@ -31,6 +33,8 @@
         public DateTime? ConfirmedDate { get; set; }
 
         public int? Status { get; set; }
+
+        public ReviewDTO? Review { get; set; }
 
     }
 }

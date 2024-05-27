@@ -33,10 +33,7 @@ function CustomerOrders({ src }) {
         console.log(order)
         Modal.info({
             title: `Review về ${order.nickName}`,
-            content: <ReviewContent
-                message={message}
-                order={order}
-            />,
+            content: <ReviewContent message={message} order={order} />,
             width: "60%",
             okText: "Huỷ",
             okType: "default"
@@ -49,13 +46,11 @@ function CustomerOrders({ src }) {
                 title="Review"
                 key="review"
                 render={(_, order) => {
-                    const statusComponents = {
-                        2: <Button onClick={() => postReview(order)}>Đăng review</Button>,
-                        0: <Tag color="green"><a>Review khi được chấp thuận</a></Tag>,
-                        default: <Tag color="red"><a>Không được review</a></Tag>
-                    };
+                    if(order.status === 2){
+                        return order?.review ? <Button>Xem Review</Button> : <Button onClick={() => postReview(order)}>Đăng review</Button>
+                    }
 
-                    return statusComponents[order.status] || statusComponents.default;
+                    return order.status === 0 ? <Tag color={"green"}><a>Review khi được chấp thuận</a></Tag> : <Tag color={"red"}><a>Không được review</a></Tag>
                 }}
             />
             <Table.Column

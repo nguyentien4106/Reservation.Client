@@ -1,4 +1,5 @@
 ﻿using Reservation.Server.Data;
+using Reservation.Server.Models.DTO.Home;
 using Reservation.Server.Models.DTO.Service;
 using System.ComponentModel.DataAnnotations;
 
@@ -47,5 +48,7 @@ namespace Reservation.Server.Models.DTO.Collaborator
         public string? OtherServices { get; set; }
 
         public ViewDTO? View { get; set; }
+
+        public List<OrderDTO>? Orders { get; set; }
     }
 }
