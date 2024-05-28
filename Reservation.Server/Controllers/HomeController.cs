@@ -23,9 +23,9 @@ namespace Reservation.Server.Controllers
 
         [HttpGet]
         
-        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllFilter([FromQuery] string city, string district, string sex, int maxAge)
+        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllFilter([FromQuery] string city, string district, string sex, int orderType)
         {
-            return await _homeService.GetAllAsync(city, district, sex, maxAge);
+            return await _homeService.GetAllAsync(city, district, sex, orderType);
         }
 
         [HttpPost]

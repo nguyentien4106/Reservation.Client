@@ -1,6 +1,6 @@
 ﻿namespace Reservation.Server.Models.Enum
 {
-    public enum HireRequestStatus
+    public enum OrderStatus
     {
         Sent,
         Denied,

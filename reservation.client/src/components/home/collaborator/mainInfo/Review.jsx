@@ -9,12 +9,10 @@ const { Meta } = Card;
 export default function Review({ order }) {
     const [expand, setExpand] = useState(false);
     const [images, setImages] = useState([]);
-    console.log(order);
 
     useEffect(() => {
         R2.getReviewImages(getUserName(order.collaboratorEmail), order.id).then(
             (res) => {
-                console.log(res);
                 setImages(res.map((item) => item.url));
             }
         );

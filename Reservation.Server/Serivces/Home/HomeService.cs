@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Reservation.Server.Data;
 using Reservation.Server.Data.Entities;
+using Reservation.Server.Extensions;
 using Reservation.Server.Models.DTO.Auth;
 using Reservation.Server.Models.DTO.Collaborator;
 using Reservation.Server.Models.DTO.Email;
@@ -23,10 +24,10 @@ namespace Reservation.Server.Serivces.Home
         {
             var collaborators = await _context.Collaborators.Include(item=> item.View).Where(item => item.IsReady == true).ToListAsync();
 
-            return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(_mapper.Map<List<CollaboratorDTO>>(collaborators));
+            return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(_mapper.Map<List<CollaboratorDTO>>(collaborators).OrderByAvgRate());
         }
 
-        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(string city, string district, string sex, int maxAge)
+        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(string city, string district, string sex, int orderType)
         {
             var query = _context.Collaborators.Include(item => item.View).AsQueryable();
 
@@ -38,22 +39,42 @@ namespace Reservation.Server.Serivces.Home
 
             var result = await query.ToListAsync();
 
-            result = result.Where(item => GetAge(item.BirthDate.GetValueOrDefault()) <= maxAge).ToList();
-
-            return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(_mapper.Map<List<CollaboratorDTO>>(result));
-        }
-
-        private static int GetAge(DateTime? birthDate)
-        {
-            if (!birthDate.HasValue)
+            if(result== null)
             {
-                return 0;
+                return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse([]);
+            }
+            var collaboratorDtos = _mapper.Map<List<CollaboratorDTO>>(result);
+
+            switch (orderType)
+            {
+                case (int)OrderFilterType.PriceIncreasing:
+                    collaboratorDtos = collaboratorDtos.OrderByPrice();
+                    break;
+
+                case (int)OrderFilterType.PriceDecreasing:
+                    collaboratorDtos = collaboratorDtos.OrderByPriceDecreasing();
+                    break;
+
+                case (int)OrderFilterType.RateCountIncreasing:
+                    collaboratorDtos = collaboratorDtos.OrderByRateCount();
+                    break;
+
+                case (int)OrderFilterType.RateCountDecreasing:
+                    collaboratorDtos = collaboratorDtos.OrderByRateCountDecreasing();
+                    break;
+
+                case (int)OrderFilterType.AgeIncreasing:
+                    collaboratorDtos = collaboratorDtos.OrderByAge();
+                    break;
+
+                case (int)OrderFilterType.AgeDecreasing:
+                    collaboratorDtos = collaboratorDtos.OrderByAgeDecreasing();
+                    break;
             }
 
-            var year = birthDate.Value.Year;
-
-            return DateTime.Today.Year - year;
+            return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(collaboratorDtos);
         }
+
 
         public async Task<AppResponse<bool>> CreateOrderAsync(OrderDTO request)
         {
@@ -62,13 +83,8 @@ namespace Reservation.Server.Serivces.Home
                 return new AppResponse<bool>().SetErrorResponse("user", "User trống!");
             }
 
-            //if (!request.CollaboratorId)
-            //{
-            //    return new AppResponse<bool>().SetErrorResponse("user", "Không tìm thấy dữ liệu của người cho thuê");
-            //}
-
             var hireRequest = _mapper.Map<Order>(request);
-            hireRequest.Status = (int)HireRequestStatus.Sent;
+            hireRequest.Status = (int)OrderStatus.Sent;
             hireRequest.CreatedDate = DateTime.Now;
 
             await _context.Orders.AddAsync(hireRequest);

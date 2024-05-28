@@ -9,6 +9,34 @@ import { HOME_PATH } from "../../constant/urls";
 const { Text } = Typography;
 const hasAll = true;
 
+const orderFilters = [
+    {
+        value: 0,
+        label: "Giá tăng dần"
+    },
+    {
+        value: 1,
+        label: "Giá giá giảm dần",
+    },
+    {
+        value: 2,
+        label: "Số lượng đánh giá tăng dần",
+    },
+    {
+        value: 3,
+        label: "Số lượng đánh giá tăng dần",
+    },
+    {
+        value: 4,
+        label: "Độ tuổi giảm dần",
+    },
+    {
+        value: 5,
+        label: "Độ tuổi tăng dần"
+    },
+]
+
+
 const getFilterItem = ({
     label,
     onSelect,
@@ -82,6 +110,14 @@ function FilterArea({ setFilter, filterResult }) {
             onSelect: (value) =>
                 setFilter((prev) => Object.assign(prev, { sex: value })),
         },
+        {
+            label: "Sắp xếp",
+            defaultValue: 0,
+            options: orderFilters,
+            width: 200,
+            onSelect: (value) =>
+                setFilter((prev) => Object.assign(prev, { orderType: value })),
+        },
     ];
 
     return (
@@ -89,7 +125,6 @@ function FilterArea({ setFilter, filterResult }) {
             <Space direction="vertical" size={30}>
                 <Flex className="filter-area" wrap gap={20}>
                     {filterItems.map((item) => getFilterItem(item))}
-                    <Range label={"Độ tuổi"} min={14} max={50} width={400} rangeValue={rangeValue} setRangeValue={setRangeValue}/>
                 </Flex>
                 <Button type="primary" onClick={filterResult}>
                     Tìm kiếm

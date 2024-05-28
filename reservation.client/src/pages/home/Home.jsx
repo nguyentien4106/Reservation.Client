@@ -19,7 +19,7 @@ const defaultFilter = {
     city: "All",
     district: "All",
     sex: "All",
-    maxAge: 50,
+    orderType: 0,
 };
 
 function Home() {
@@ -38,6 +38,7 @@ function Home() {
             .then((res) => {
                 const { data } = res.data;
                 setCollaborators(data);
+                console.log(data)
             })
             .catch((err) => message.error(err.message))
             .finally(() => {

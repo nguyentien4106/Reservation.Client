@@ -73,7 +73,6 @@ const get = async (username) => {
 
 const getReviewImages = async (username, orderId) => {
     const prefix = `${username}/reviews/${orderId}`
-    console.log(prefix)
     // return []
     const objects = await s3Client.send(
                                         new ListObjectsV2Command({

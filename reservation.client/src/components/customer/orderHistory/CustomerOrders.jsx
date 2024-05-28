@@ -38,7 +38,6 @@ function CustomerOrders({ src }) {
     }, [src])
 
     const postReview = order => {
-        console.log(order)
         Modal.info({
             title: `Review về ${order.nickName}`,
             content: <ReviewContent message={message} order={order} setOrdersSrc={setOrdersSrc}/>,

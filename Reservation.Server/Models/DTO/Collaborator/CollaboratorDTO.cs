@@ -50,5 +50,7 @@ namespace Reservation.Server.Models.DTO.Collaborator
         public ViewDTO? View { get; set; }
 
         public List<OrderDTO>? Orders { get; set; }
+
+        public double? AvgRate => Orders?.Average(order => order.Review?.Rate);
     }
 }

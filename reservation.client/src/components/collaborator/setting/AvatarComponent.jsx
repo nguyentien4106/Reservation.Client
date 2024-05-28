@@ -53,7 +53,6 @@ function AvatarComponent({ setHasAvatar }) {
         else {
             const uploadAvatar = async () => {
                 const { originFileObj, type, name } = change.fileList[0]
-                console.log(change.fileList[0])
                 const image = await getBase64(originFileObj);
                 const fileName = `${userName}/avatar/${name}`
                 R2.upload(fileName, image, type).then(res => {

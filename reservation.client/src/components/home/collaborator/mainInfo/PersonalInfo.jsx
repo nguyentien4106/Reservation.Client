@@ -45,7 +45,6 @@ const items = (collaborator) => [
 
 function PersonalInfo() {
     const collaborator = useContext(ContainerInfoProfile);
-
     const servicePanel = (service) => (
         <div className="service-panel text-header" key={service}>
             <Text style={{ color: "white" }}>{service}</Text>

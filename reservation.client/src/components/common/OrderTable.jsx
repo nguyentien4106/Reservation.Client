@@ -65,7 +65,6 @@ const OrderTable = ({ src, renderAction, children, title = "Action", sort}) => {
                                 expandable: 'collapsible',
                                 expanded: expand.length ? expand[`${customer.id}`]?.value : true,
                                 onExpand: (e, info) => {
-                                    console.log(e, info)
                                     setExpand(prev => prev.map(item => item.id === customer.id ? { id: item.id, value: true} : item))
                                 },
                             }}

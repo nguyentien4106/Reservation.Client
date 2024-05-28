@@ -75,7 +75,6 @@ const CollaboratorOrders = ({ src}) => {
         DataService.get(COLLABORATOR_PATH.confrimRequest + queryString)
             .then(res => {
                 const { data } = res
-                console.log(data)
                 setSource(prev => prev.map(item => item.id === data.data.id ? data.data : item))
                 if (data.isSucceed) {
                     message.success("Đã xác nhận thành công")
