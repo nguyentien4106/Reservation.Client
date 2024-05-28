@@ -52,13 +52,22 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             }
 
             var collaborator = await _context.Collaborators
-                .Include(item => item.Orders)
-                .ThenInclude(item => item.Review)
-                .Include(item => item.ApplicationUser)
-                .Include(item => item.CollaboratorServices)
-                .ThenInclude(cs => cs.Service)
                 .Include(item => item.View)
-                .FirstOrDefaultAsync(collaborator => collaborator.Id == collaboratorId);
+                .Include(item => item.CollaboratorServices)
+                .ThenInclude(item => item.Service)
+                .SingleOrDefaultAsync(item => item.Id == collaboratorId);
+
+            var orders = await _context.Orders.Include(item => item.Review).Where(item => item.CollaboratorId == collaboratorId).ToListAsync();
+
+            collaborator.Orders = orders;
+            //var collaborator = await _context.Collaborators
+            //    .Include(item => item.Orders)
+            //    .ThenInclude(item => item.Review)
+            //    .Include(item => item.ApplicationUser)
+            //    .Include(item => item.CollaboratorServices)
+            //    .ThenInclude(cs => cs.Service)
+            //    .Include(item => item.View)
+            //    .FirstOrDefaultAsync(collaborator => collaborator.Id == collaboratorId);
 
             if (collaborator == null)
             {

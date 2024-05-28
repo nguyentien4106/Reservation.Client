@@ -4,7 +4,6 @@ import DataService from "../../lib/DataService";
 import { COLLABORATOR_PATH } from "../../constant/urls";
 import { App } from "antd";
 import { ROLES } from "../../constant/settings";
-// import { ProfileContext } from "../../context/useProfileContext";
 import LeaseAlbumComponent from "../../components/collaborator/setting/LeaseAlbumComponent";
 import LeaseInfoComponent from "../../components/collaborator/setting/LeaseInfoComponent";
 import { UserContext } from "../../context/useUserContext";
