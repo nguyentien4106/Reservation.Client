@@ -23,6 +23,7 @@ const defaultFilter = {
 };
 
 function Home() {
+    console.log(import.meta.env.VITE_BASE_URL)
     const [filter, setFilter] = useState(defaultFilter);
     const { message } = App.useApp();
     const [collaborators, setCollaborators] = useState([]);
