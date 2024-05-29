@@ -17,7 +17,6 @@ function BookingInfo() {
     const [modal, contextHolder] = Modal.useModal();
 
     const user = getUser();
-    const navigate = useNavigate();
 
     const handleShowPhone = () => {
         setPhoneInfo((prev) =>
@@ -33,6 +32,7 @@ function BookingInfo() {
                         collaboratorEmail={collaborator?.email}
                         collaboratorId={collaborator?.id}
                         modal={modal}
+                        nickName={collaborator?.nickName}
                     />,
             width: user ? "60%" : "30%",
             okText: "Huỷ",

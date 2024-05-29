@@ -75,7 +75,6 @@ namespace Reservation.Server.Serivces.Home
             return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(collaboratorDtos);
         }
 
-
         public async Task<AppResponse<bool>> CreateOrderAsync(OrderDTO request)
         {
             if (string.IsNullOrEmpty(request.ApplicationUserId))

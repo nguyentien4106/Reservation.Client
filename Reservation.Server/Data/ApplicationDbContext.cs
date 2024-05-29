@@ -24,6 +24,8 @@ namespace Reservation.Server.Data
 
         public DbSet<Review> Reviews { get; set; }
 
+        public DbSet<Rate> Rates { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -28,10 +28,10 @@ namespace Reservation.Server.Controllers
             return await _homeService.GetAllAsync(city, district, sex, orderType);
         }
 
-        [HttpPost]
-        public async Task<AppResponse<bool>> CreateOrder(OrderDTO request)
-        {
-            return await _homeService.CreateOrderAsync(request);
-        }
+        //[HttpPost]
+        //public async Task<AppResponse<bool>> CreateOrder(OrderDTO request)
+        //{
+        //    return await _homeService.CreateOrderAsync(request);
+        //}
     }
 }

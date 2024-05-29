@@ -63,7 +63,12 @@ function Login() {
         DataService.post(AUTH_PATH.login, values).then(res => {
             const { data } = res
             if (!data.isSucceed) {
-                message.error(generateMessages(data.messages))
+                if(data.errorCode === 403){
+                    message.error("Tên đăng nhập hoặc mật khẩu không đúng !")
+                }
+                else {
+                    message.error(generateMessages(data.messages))
+                }
             }
             else{
                 setLocal("accessToken", data.data.accessToken)

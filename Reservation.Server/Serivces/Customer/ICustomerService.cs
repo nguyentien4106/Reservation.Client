@@ -9,5 +9,8 @@ namespace Reservation.Server.Serivces.Customer
         Task<AppResponse<List<OrderDTO>>> GetOrdersAsync(string? applicationUserId);
 
         Task<AppResponse<OrderDTO>> AddReviewAsync(ReviewDTO review);
+
+        Task<AppResponse<bool>> CreateOrderAsync(OrderDTO request);
+
     }
 }

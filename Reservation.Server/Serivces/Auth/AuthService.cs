@@ -57,29 +57,31 @@ namespace Reservation.Server.Serivces.Auth
             }
             await _userManager.AddToRoleAsync(user, UserRole);
 
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            string url = $"{tokenSettings.Audience}/confirm-email";
-            var param = new Dictionary<string, string>()
-            {
-                { "code", code },
-                { "email", request.Email },
-            };
+            //string url = $"{tokenSettings.Audience}/confirm-email";
+            //var param = new Dictionary<string, string>()
+            //{
+            //    { "code", code },
+            //    { "email", request.Email },
+            //};
 
-            var callbackUrl = new Uri(QueryHelpers.AddQueryString(url, param));
+            //var callbackUrl = new Uri(QueryHelpers.AddQueryString(url, param));
 
 
-            var emailContent = new EmailContent
-            {
-                Subject = "Confirm your email!",
-                Content = $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.",
-                ToEmail = request.Email,
-                ToName = request.Email
-            };
+            //var emailContent = new EmailContent
+            //{
+            //    Subject = "Confirm your email!",
+            //    Content = $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.",
+            //    ToEmail = request.Email,
+            //    ToName = request.Email
+            //};
 
-            _emailServicee.SendMail(emailContent);
+            //_emailServicee.SendMail(emailContent);
 
-            return new AppResponse<bool>().SetSuccessResponse(true, "confirm", "Your email has been registered successfully!\nPlease check the email to confirmation!");
+            await SendVerification(request.Email, user);
+
+            return new AppResponse<bool>().SetSuccessResponse(true, "confirm", "Bạn đã đăng ký thành công. Vui lòng kiểm tra email để kích hoạt tài khoản.");
         }
 
         private static Dictionary<string, string[]> GetRegisterErrors(IdentityResult result)
@@ -105,6 +107,31 @@ namespace Reservation.Server.Serivces.Auth
             }
 
             return errorDictionary;
+        }
+
+        private async Task<bool> SendVerification(string email, ApplicationUser user)
+        {
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            string url = $"{tokenSettings.Audience}/confirm-email";
+            var param = new Dictionary<string, string>()
+            {
+                { "code", code },
+                { "email", email },
+            };
+
+            var callbackUrl = new Uri(QueryHelpers.AddQueryString(url, param));
+
+
+            var emailContent = new EmailContent
+            {
+                Subject = "Confirm your email!",
+                Content = $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.",
+                ToEmail = email,
+                ToName = email
+            };
+
+            return _emailServicee.SendMail(emailContent);
         }
 
         public async Task<AppResponse<bool>> LogoutAsync(ClaimsPrincipal user)
@@ -136,8 +163,14 @@ namespace Reservation.Server.Serivces.Auth
 
             var emailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
 
-            return emailConfirmed ? new AppResponse<UserLoginResponse>().SetErrorResponse("password", result.ToString(), 403)
-                : new AppResponse<UserLoginResponse>().SetErrorResponse("account", "Please check email and do confirmation!", 401);
+            if(emailConfirmed) 
+            {
+                return new AppResponse<UserLoginResponse>().SetErrorResponse("password", result.ToString(), 403);
+            }
+
+            await SendVerification(request.Email, user);
+
+            return new AppResponse<UserLoginResponse>().SetErrorResponse("account", "Bạn chưa kích hoạt tài khoản. Vui lòng kiểm tra email để kích hoạt!", 401);
 
         }
 

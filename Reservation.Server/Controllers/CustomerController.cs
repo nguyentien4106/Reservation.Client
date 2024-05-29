@@ -26,5 +26,11 @@ namespace Reservation.Server.Controllers
         {
             return await _customerService.AddReviewAsync(review);
         }
+
+        [HttpPost]
+        public async Task<AppResponse<bool>> CreateOrder(OrderDTO request)
+        {
+            return await _customerService.CreateOrderAsync(request);
+        }
     }
 }

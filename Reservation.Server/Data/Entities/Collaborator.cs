@@ -54,5 +54,7 @@ namespace Reservation.Server.Data.Entities
 
         public string? OtherServices { get; set; }
 
+        public Rate? Rate { get; set; }
+
     }
 }
