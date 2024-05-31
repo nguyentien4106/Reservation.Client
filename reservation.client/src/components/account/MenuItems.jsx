@@ -27,7 +27,6 @@ const MenuItems = () => {
     ];
 
     const onClick = (e) => {
-        console.log('click ', e);
     };
 
     return (

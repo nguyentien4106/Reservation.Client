@@ -24,7 +24,6 @@ export default function Overall() {
         dispatch(show());
         DataService.get(COLLABORATOR_PATH.getProfile + user?.collaboratorId)
             .then((res) => {
-                console.log(res.data);
                 const { orders } = res.data.data;
                 setReady(res.data.data.isReady);
                 setOrders(orders);

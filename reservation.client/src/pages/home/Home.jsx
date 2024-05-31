@@ -23,7 +23,6 @@ const defaultFilter = {
 };
 
 function Home() {
-    console.log(import.meta.env.VITE_BASE_URL)
     const [filter, setFilter] = useState(defaultFilter);
     const { message } = App.useApp();
     const [collaborators, setCollaborators] = useState([]);
@@ -39,7 +38,6 @@ function Home() {
             .then((res) => {
                 const { data } = res.data;
                 setCollaborators(data);
-                console.log(data)
             })
             .catch((err) => message.error(err.message))
             .finally(() => {
