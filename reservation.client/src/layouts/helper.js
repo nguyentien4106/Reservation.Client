@@ -50,10 +50,20 @@ const userItems = navigate => [
             {
                 key: "customer-donate",
                 label: "Lịch sử donate",
-                onClick: () => navigate(CUSTOMER_ROUTE_PATH.donateHistory),
+                onClick: () => navigate(CUSTOMER_ROUTE_PATH.findPeople),
             },
         ],
     },
+    {
+        key: "customer/find-talent",
+        label: "Tìm người",
+        onClick: () => navigate(CUSTOMER_ROUTE_PATH.findTalent)
+    },
+    {
+        key: "customer/find-jobs",
+        label: "Tìm việc",
+        onClick: () => navigate(CUSTOMER_ROUTE_PATH.findJobs)
+    }
 ];
 
 const adminItems = navigate => [

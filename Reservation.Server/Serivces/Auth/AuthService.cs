@@ -16,6 +16,7 @@ using NuGet.Common;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Reservation.Server.Models.Request;
+using MimeKit;
 
 namespace Reservation.Server.Serivces.Auth
 {
@@ -24,7 +25,8 @@ namespace Reservation.Server.Serivces.Auth
                                 RoleManager<IdentityRole> roleManager,
                                 ApplicationDbContext applicationDbContext,
                                 TokenSettings tokenSettings,
-                                IEmailService emailService
+                                IEmailService emailService,
+                                IWebHostEnvironment webHostEnvironment
         ) : IAuthService
     {
         private readonly UserManager<ApplicationUser> _userManager = userManager;
@@ -33,6 +35,7 @@ namespace Reservation.Server.Serivces.Auth
         private readonly TokenSettings _tokenSettings = tokenSettings;
         private readonly ApplicationDbContext _context = applicationDbContext;
         private readonly IEmailService _emailServicee = emailService;
+        private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
 
         private const string UserRole = "USER";
 
@@ -44,7 +47,6 @@ namespace Reservation.Server.Serivces.Auth
                 Email = request.Email,
                 PhoneNumber = request.PhoneNumber,
                 PhoneNumberConfirmed = true,
-                //EmailConfirmed = true,
                 JoinedDate = DateTime.UtcNow,
             };
 
@@ -57,58 +59,12 @@ namespace Reservation.Server.Serivces.Auth
             }
             await _userManager.AddToRoleAsync(user, UserRole);
 
-            //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-            //string url = $"{tokenSettings.Audience}/confirm-email";
-            //var param = new Dictionary<string, string>()
-            //{
-            //    { "code", code },
-            //    { "email", request.Email },
-            //};
-
-            //var callbackUrl = new Uri(QueryHelpers.AddQueryString(url, param));
-
-
-            //var emailContent = new EmailContent
-            //{
-            //    Subject = "Confirm your email!",
-            //    Content = $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.",
-            //    ToEmail = request.Email,
-            //    ToName = request.Email
-            //};
-
-            //_emailServicee.SendMail(emailContent);
-
             await SendVerification(request.Email, user);
 
             return new AppResponse<bool>().SetSuccessResponse(true, "confirm", "Bạn đã đăng ký thành công. Vui lòng kiểm tra email để kích hoạt tài khoản.");
         }
 
-        private static Dictionary<string, string[]> GetRegisterErrors(IdentityResult result)
-        {
-            var errorDictionary = new Dictionary<string, string[]>(1);
-
-            foreach (var error in result.Errors)
-            {
-                string[] newDescriptions;
-
-                if (errorDictionary.TryGetValue(error.Code, out var descriptions))
-                {
-                    newDescriptions = new string[descriptions.Length + 1];
-                    Array.Copy(descriptions, newDescriptions, descriptions.Length);
-                    newDescriptions[descriptions.Length] = error.Description;
-                }
-                else
-                {
-                    newDescriptions = [error.Description];
-                }
-
-                errorDictionary[error.Code] = newDescriptions;
-            }
-
-            return errorDictionary;
-        }
-
+        
         private async Task<bool> SendVerification(string email, ApplicationUser user)
         {
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -122,10 +78,12 @@ namespace Reservation.Server.Serivces.Auth
 
             var callbackUrl = new Uri(QueryHelpers.AddQueryString(url, param));
 
-
-            var emailContent = new EmailContent
+            var body = new BodyBuilder();
+            body.HtmlBody = _emailServicee.GetEmailTemplate("confirmEmail.html").Replace("[LINK]", callbackUrl.ToString());
+            
+            var emailContent = new EmailContent(body.ToMessageBody())
             {
-                Subject = "Confirm your email!",
+                Subject = "Xác nhận email tại ThueNguoiYeu.me",
                 Content = $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.",
                 ToEmail = email,
                 ToName = email
@@ -172,6 +130,31 @@ namespace Reservation.Server.Serivces.Auth
 
             return new AppResponse<UserLoginResponse>().SetErrorResponse("account", "Bạn chưa kích hoạt tài khoản. Vui lòng kiểm tra email để kích hoạt!", 401);
 
+        }
+
+        private static Dictionary<string, string[]> GetRegisterErrors(IdentityResult result)
+        {
+            var errorDictionary = new Dictionary<string, string[]>(1);
+
+            foreach (var error in result.Errors)
+            {
+                string[] newDescriptions;
+
+                if (errorDictionary.TryGetValue(error.Code, out var descriptions))
+                {
+                    newDescriptions = new string[descriptions.Length + 1];
+                    Array.Copy(descriptions, newDescriptions, descriptions.Length);
+                    newDescriptions[descriptions.Length] = error.Description;
+                }
+                else
+                {
+                    newDescriptions = [error.Description];
+                }
+
+                errorDictionary[error.Code] = newDescriptions;
+            }
+
+            return errorDictionary;
         }
 
         private async Task<UserLoginResponse> GenerateUserToken(ApplicationUser user)

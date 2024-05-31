@@ -30,8 +30,7 @@ namespace Reservation.Server.Serivces.Email
 
         public bool SendEmailNewOrder(EmailContent email, OrderDTO order)
         {
-            var url = _hostingEnvironment.ContentRootPath;
-            var filePath = Path.Combine(url, "Template/newOrder.html");
+            var filePath = GetTemplateFilePath("newOrder.html");
             var doc = new HtmlDocument();
             doc.Load(filePath);
             var node = doc.DocumentNode.SelectSingleNode("//body");
@@ -64,7 +63,7 @@ namespace Reservation.Server.Serivces.Email
                 message.From.Add(new MailboxAddress(_fromName, _fromEmail));
                 message.To.Add(new MailboxAddress(email.ToName, email.ToEmail));
                 message.Subject = email.Subject;
-                message.Body = new TextPart("plain")
+                message.Body = email.Body ?? new TextPart("plain")
                 {
                     Text = email.Content
                 };
@@ -106,6 +105,24 @@ namespace Reservation.Server.Serivces.Email
             builder.Replace("[CREATED_DATE]", order.CreatedDate.ToString());
 
             return builder.ToString();
+        }
+
+        public string GetTemplateFilePath(string template)
+        {
+            var url = _hostingEnvironment.ContentRootPath;
+            var filePath = Path.Combine(url, $"Template/{template}");
+
+            return filePath;
+        }
+
+        public string GetEmailTemplate(string template)
+        {
+            var filePath = GetTemplateFilePath(template);
+            var doc = new HtmlDocument();
+            doc.Load(filePath);
+            var node = doc.DocumentNode.SelectSingleNode("//body");
+
+            return node.OuterHtml;
         }
     }
 }

@@ -1,7 +1,15 @@
-﻿namespace Reservation.Server.Models.DTO.Email
+﻿using MimeKit;
+
+namespace Reservation.Server.Models.DTO.Email
 {
-    public class EmailContent
+    public class EmailContent(MimeEntity body)
     {
+        public EmailContent() : this(null)
+        {
+        }
+
+        public MimeEntity Body { get; set; } = body;
+
         public string ToEmail { get; set; } = string.Empty;
 
         public string ToName { get; set; } = string.Empty;
@@ -9,5 +17,6 @@
         public string Subject { get; set; } = string.Empty;
 
         public string Content { get; set; } = string.Empty;
+
     }
 }
