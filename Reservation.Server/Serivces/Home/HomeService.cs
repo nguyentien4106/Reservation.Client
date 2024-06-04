@@ -110,7 +110,7 @@ namespace Reservation.Server.Serivces.Home
 
         private static string BuildContent(OrderDTO request)
         {
-            return $"Một khách hàng có tên {request.Name}, có số điện thoại {request.PhoneNumber}, đã đề nghị thuê bạn {request.Times} giờ với mức giá {request.Offer} mỗi giờ";
+            return $"Một khách hàng có tên {request.Name}, có số điện thoại {request.PhoneNumber}, đã đề nghị thuê bạn {request.Times} giờ với mức giá {request.Tips} mỗi giờ";
         }
     }
 }

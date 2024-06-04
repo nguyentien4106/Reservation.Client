@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { generateMessages, getUser } from "../../../../lib/helper";
-import { Form, Input, InputNumber, Button, App, Modal } from "antd";
+import { Form, Input, InputNumber, Button, App, Modal, Select } from "antd";
 import { createRef } from "react";
 import { Link } from "react-router-dom";
 import DataService from "../../../../lib/DataService";
@@ -17,12 +17,14 @@ const layout = {
     },
 };
 
-const OrderContent = ({ defaultPrice, collaboratorEmail, collaboratorId, modal, nickName }) => {
-    console.log(modal)
+const OrderContent = ({ collaboratorEmail, collaboratorId, nickName, collaboratorServices }) => {
     const user = getUser();
     const submit = createRef(null);
     const { message } = App.useApp();
     const dispatch = useDispatch()
+    const [price, setPrice] = useState(0)
+    const [time, setTime] = useState(0)
+    const [tips, setTips] = useState(0)
 
     if (!user) {
         return (
@@ -38,9 +40,11 @@ const OrderContent = ({ defaultPrice, collaboratorEmail, collaboratorId, modal, 
             collaboratorEmail: collaboratorEmail,
             applicationUserId: user.id,
             collaboratorId: collaboratorId,
-            nickName
+            nickName,
+            price,
+            amount: time * price + tips
         });
-
+        console.log(params)
         dispatch(show())
         DataService.post(CUSTOMER_PATH.createOrder, params)
             .then((res) => {
@@ -71,7 +75,7 @@ const OrderContent = ({ defaultPrice, collaboratorEmail, collaboratorId, modal, 
             }}
             initialValues={{
                 email: user?.userName,
-                offer: defaultPrice,
+                price: price
             }}
         >
             <Form.Item
@@ -104,21 +108,53 @@ const OrderContent = ({ defaultPrice, collaboratorEmail, collaboratorId, modal, 
             </Form.Item>
 
             <Form.Item
-                name="offer"
-                label="Offer"
+                name="service"
+                label="Dich vụ muốn thuê"
                 rules={[
                     {
                         required: true,
                     },
                 ]}
             >
+                <Select
+                    style={{
+                        width: "50%"
+                    }}
+                    options={collaboratorServices.map(item => ({ value: item.name, label: item.name }))}
+                    onChange={e => {
+                        const price = collaboratorServices.find(item => item.name === e)?.price ?? 0
+                        setPrice(price)
+                    }}
+                >
+
+                </Select>
+            </Form.Item>
+
+            <Form.Item
+                name="tips"
+                label="Tips"
+                tooltip="Tiền tips ngoài tiền dịch vụ phải trả."
+            >
                 <InputNumber
-                    width={"100%"}
-                    style={{ width: "100%" }}
+                    style={{ width: "50%" }}
                     formatter={(value) =>
-                        `VND ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     }
-                    parser={(value) => value.replace(/\VND\s?|(,*)/g, "")}
+                    parser={(value) => value.replace(/\đ\s?|(,*)/g, "")}
+                    onChange={setTips}
+                />
+            </Form.Item>
+            <Form.Item
+                label="Giá dịch vụ"
+            >
+                <InputNumber
+                    value={price}
+                    disabled
+                    style={{ width: "50%" }}
+                    formatter={(value) =>
+                        `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }
+                    parser={(value) => value.replace(/\đ\s?|(,*)/g, "")}
                 />
             </Form.Item>
 
@@ -130,8 +166,30 @@ const OrderContent = ({ defaultPrice, collaboratorEmail, collaboratorId, modal, 
                         required: true,
                     },
                 ]}
+                style={{ width: "100%" }}
+
             >
-                <InputNumber min={1} />
+                <InputNumber min={1} 
+                    onChange={setTime}
+                />
+            </Form.Item>
+
+            <Form.Item
+                label="Tổng tiền"
+                style={{ width: "100%" }}
+                tooltip="Giá dịch vụ * thời gian + Tips"
+
+            >
+                <InputNumber
+                    disabled
+                    value={time * price + tips}
+                    style={{ width: "50%" }}
+                    
+                    formatter={(value) =>
+                        ` đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }
+                    parser={(value) => value.replace(/\đ\s?|(,*)/g, "")}
+                />
             </Form.Item>
 
             <Form.Item

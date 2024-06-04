@@ -11,6 +11,8 @@ namespace Reservation.Server.Data.Entities
 
         public Collaborator Collaborator { get; set; }
 
+        public string? Service { get; set; }
+
         public string ApplicationUserId { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
@@ -21,7 +23,8 @@ namespace Reservation.Server.Data.Entities
 
         public string? PhoneNumber { get; set; }
 
-        public int? Offer { get; set; }
+        public int? Tips { get; set; }
+        public decimal? Price { get; set; }
 
         public string? Description { get; set; }
 
@@ -36,5 +39,7 @@ namespace Reservation.Server.Data.Entities
         public DateTime? ConfirmedDate { get; set; }
 
         public Review? Review { get; set; }
+        public decimal? Amount { get; set; }
+
     }
 }

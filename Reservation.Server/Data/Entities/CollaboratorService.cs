@@ -9,5 +9,7 @@
         public Guid CollaboratorId { get; set; }
 
         public Collaborator Collaborator { get; set; }
+
+        public decimal? Price { get; set; }
     }
 }

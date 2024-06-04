@@ -95,9 +95,9 @@ namespace Reservation.Server.Serivces.Email
             var builder = new StringBuilder(template);
             builder.Replace("[COLLABORATOR_NAME]", email.ToName);
             builder.Replace("[CUSTOMER_NAME]", order.Name);
-            builder.Replace("[PRICE]", order.Offer.ToString());
+            builder.Replace("[PRICE]", order.Tips.ToString());
             builder.Replace("[TIMES]", order.Times.ToString());
-            builder.Replace("[AMOUNT]", $"{order.Times * order.Offer}");
+            builder.Replace("[AMOUNT]", $"{order.Amount}");
             builder.Replace("[DESCRIPTION]", order.Description);
             builder.Replace("[EMAIL]", order.Email);
             builder.Replace("[PHONE]", order.PhoneNumber);

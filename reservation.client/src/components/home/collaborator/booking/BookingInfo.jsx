@@ -13,16 +13,9 @@ const defaultPhone = "Hiển thị số điện thoại";
 
 function BookingInfo() {
     const collaborator = useContext(ContainerInfoProfile);
-    const [phoneInfo, setPhoneInfo] = useState(defaultPhone);
     const [modal, contextHolder] = Modal.useModal();
 
     const user = getUser();
-
-    const handleShowPhone = () => {
-        setPhoneInfo((prev) =>
-            prev === defaultPhone ? collaborator.phoneNumber : defaultPhone
-        );
-    };
 
     const handleOrder = () => {
         modal.info({
@@ -31,6 +24,7 @@ function BookingInfo() {
                         defaultPrice={collaborator?.pricePerHour} 
                         collaboratorEmail={collaborator?.email}
                         collaboratorId={collaborator?.id}
+                        collaboratorServices={collaborator.collaboratorServices}
                         modal={modal}
                         nickName={collaborator?.nickName}
                     />,
@@ -57,9 +51,9 @@ function BookingInfo() {
                 >
                     {showMoney(collaborator?.pricePerHour) + " /h"}
                 </Text>
-                <button className="button-booking" onClick={handleShowPhone}>
+                {/* <button className="button-booking" onClick={handleShowPhone}>
                     {phoneInfo}
-                </button>
+                </button> */}
                 <button
                     className="button-booking"
                     onClick={ handleOrder}

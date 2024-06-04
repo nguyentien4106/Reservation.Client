@@ -15,3 +15,7 @@ export const CUSTOMER_ROUTE_PATH = {
 export const DONATE_ROUTE_PATH = {
     donate: "/donate"
 }
+
+export const ACTION_ROUTE_PATH = {
+    post: "/post"
+}

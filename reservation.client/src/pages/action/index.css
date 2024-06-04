@@ -1,0 +1,32 @@
+.heading{
+    font-variation-settings: "wght" 600;
+    letter-spacing: .025rem;
+    margin-bottom: 0;
+    font-size: 1.25rem;
+    line-height: 1.2em;
+    color: #108a00;
+}
+
+.text{
+    font-variation-settings: "wght" 450;
+    letter-spacing: .001875rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    line-height: 1.5em;
+    color: rgb(116, 116, 116);
+}
+
+
+.card{
+    border: 0.5px solid #848683;
+    border-radius: 10px;
+    /* width: 30%; */
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.card:hover{
+    box-shadow: 10px solid #108a00;
+    background-color: aliceblue;
+}

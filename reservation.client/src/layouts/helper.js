@@ -1,4 +1,4 @@
-import { COLLABORATOR_ROUTE_PATH, CUSTOMER_ROUTE_PATH, DONATE_ROUTE_PATH } from "../constant/paths";
+import { ACTION_ROUTE_PATH, COLLABORATOR_ROUTE_PATH, CUSTOMER_ROUTE_PATH, DONATE_ROUTE_PATH } from "../constant/paths";
 
 export const menuItems = (navigate, isAdmin) => isAdmin ? adminItems(navigate) : userItems(navigate)
 
@@ -60,9 +60,9 @@ const userItems = navigate => [
         onClick: () => navigate(CUSTOMER_ROUTE_PATH.findTalent)
     },
     {
-        key: "customer/find-jobs",
+        key: "post",
         label: "Tìm việc",
-        onClick: () => navigate(CUSTOMER_ROUTE_PATH.findJobs)
+        onClick: () => navigate(ACTION_ROUTE_PATH.post)
     }
 ];
 

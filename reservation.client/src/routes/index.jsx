@@ -6,7 +6,7 @@ import { HomeRoutes } from './homeRoute';
 import { AccountRoutes } from './accountRoute';
 import { Route } from 'react-router-dom';
 import { CustomerRoutes } from './customerRoute';
-
+import { ActionRoutes } from './actionRoute';
 export const AppRoutes = (
     <>
         <Route path="/error" element={<ErrorPage />}/>
@@ -16,5 +16,6 @@ export const AppRoutes = (
         { DonateRotues }
         { AccountRoutes }
         { CustomerRoutes }
+        { ActionRoutes }
     </>
 )

@@ -41,18 +41,26 @@ const OrderTable = ({ src, renderAction, children, title = "Action", sort}) => {
                 title="Số điện thoại" 
                 dataIndex="phoneNumber" 
             />
+            <Column 
+                title="Dịch vụ thuê" 
+                dataIndex="service" 
+            />
             <Column
                 title="Giá mỗi giờ"
-                render={(_, customer) => showMoney((+customer.offer))}
+                render={(_, customer) => showMoney((+customer.price))}
             />
             <Column 
                 title="Số giờ" 
                 dataIndex="times"
 
             />
+            <Column 
+                title="Tiền Tips" 
+                render={(_, customer) => showMoney((+customer.tips))}
+            />
             <Column
                 title="Thành tiền"
-                render={(_, customer) => showMoney((+customer.times) * (+customer.offer))}
+                render={(_, customer) => showMoney(customer.amount)}
             />
             <Column 
                 title="Yêu cầu thêm"

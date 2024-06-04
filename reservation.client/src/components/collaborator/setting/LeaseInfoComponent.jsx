@@ -8,6 +8,7 @@ import {
     Switch,
     Tag,
     message,
+    Space
 } from "antd";
 import { Select } from "antd";
 import useFetchProvinces from "../../../hooks/useFetchProvinces";
@@ -19,7 +20,7 @@ import AvatarComponent from "./AvatarComponent";
 import { COLLABORATOR_PATH } from "../../../constant/urls";
 import DataService from "../../../lib/DataService";
 import { UserContext } from "../../../context/useUserContext";
-
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 const layout = {
     labelCol: {
         span: 8,
@@ -68,24 +69,23 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
     const services = useFetchServices();
     const [form] = Form.useForm();
     const { user } = useContext(UserContext)
-
+    console.log('services', services)
     useEffect(() => {
-        const serviceIds = initialValues?.collaboratorServices?.map(
-            (item) => item.serviceId
-        );
-
         const newValues = {
             ...initialValues,
             birthDate: dayjs(initialValues?.birthDate),
-            collaboratorServices: serviceIds,
+            // collaboratorServices: serviceIds,
         };
+
+        console.log("newvalues", newValues)
 
         form.setFieldsValue(newValues);
     }, [initialValues]);
 
-    
+
     const onFinish = (values) => {
-        if(!hasAvatar){
+        console.log("values", values)
+        if (!hasAvatar) {
             message.error("Bạn cần phải upload ảnh đại diện trước.")
             return
         }
@@ -93,8 +93,9 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
         const services =
             values.collaboratorServices &&
             values.collaboratorServices.map((item) => ({
-                serviceId: item,
+                serviceId: item.serviceId,
                 collaboratorId: collaborator?.id,
+                price: item.price
             }));
 
         const params = {
@@ -109,7 +110,7 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
             ? COLLABORATOR_PATH.update
             : COLLABORATOR_PATH.add;
 
-            DataService.post(url, params).then((res) => {
+        DataService.post(url, params).then((res) => {
             const { data } = res;
             message.open({
                 type: data.isSucceed ? "success" : "error",
@@ -154,7 +155,7 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
                         textAlign: "center"
                     }}
                 >
-                    <AvatarComponent setHasAvatar={setHasAvatar}/>
+                    <AvatarComponent setHasAvatar={setHasAvatar} />
                 </Form.Item>
 
                 <Form.Item
@@ -316,27 +317,6 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
                 </Form.Item>
 
                 <Form.Item
-                    name="pricePerHour"
-                    label="Chi phí mỗi giờ thuê"
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-                >
-                    <InputNumber
-                        min={10000}
-                        width={"100%"}
-                        style={{ width: "100%" }}
-                        formatter={(value) =>
-                            `VND ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                        }
-                        parser={(value) => value.replace(/\VND\s?|(,*)/g, "")}
-                    />
-                </Form.Item>
-
-                <Form.Item
-                    name="collaboratorServices"
                     label="Dịch vụ cho thuê"
                     rules={[
                         {
@@ -344,17 +324,70 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
                         },
                     ]}
                 >
-                    <Select
-                        mode="multiple"
-                        tagRender={tagRender}
-                        style={{
-                            width: "100%",
-                        }}
-                        options={services}
-                    />
+                    <Form.List name={"collaboratorServices"}>
+                        {(fields, { add, remove }) => (
+                            <>
+                                {fields.map(({ key, name, ...restField }) => (
+                                    <Space
+                                        key={key}
+                                        style={{
+                                            display: 'flex',
+                                            marginBottom: 8,
+                                        }}
+                                        align="baseline"
+                                    >
+                                        <Form.Item
+                                            {...restField}
+                                            name={[name, 'serviceId']}
+                                            style={{
+                                                width: "50%",
+                                                minWidth: 200
+                                            }}
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                },
+                                            ]}
+                                        >
+                                            <Select
+                                                options={services}
+                                            />
+                                        </Form.Item>
+                                        <Form.Item
+                                            {...restField}
+                                            name={[name, 'price']}
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: 'Vui lòng điền giá',
+                                                },
+                                            ]}
+                                        >
+                                            <InputNumber
+                                                min={10000}
+                                                width={"100%"}
+                                                style={{ width: "100%" }}
+                                                formatter={(value) =>
+                                                    `đ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                                }
+                                                parser={(value) => value.replace(/\đ\s?|(,*)/g, "")}
+                                            />
+                                        </Form.Item>
+                                        <MinusCircleOutlined onClick={() => remove(name)} />
+                                    </Space>
+                                ))}
+                                <Form.Item>
+                                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                        Thêm dịch vụ
+                                    </Button>
+                                </Form.Item>
+                            </>
+                        )}
+                    </Form.List>
                 </Form.Item>
 
                 <Form.Item
+                    tooltip="Giá sẽ tự liên hệ và trao đổi giữa các bạn."
                     name="otherServices"
                     label="Các dịch vụ khác"
                 >

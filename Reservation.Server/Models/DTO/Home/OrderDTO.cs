@@ -8,6 +8,8 @@ namespace Reservation.Server.Models.DTO.Home
 
         public Guid CollaboratorId { get; set; }
 
+        public string? Service { get; set; }
+
         public string? NickName { get; set; }
 
         public string ApplicationUserId { get; set; }
@@ -18,7 +20,7 @@ namespace Reservation.Server.Models.DTO.Home
 
         public string? PhoneNumber { get; set; }
 
-        public int? Offer { get; set; }
+        public int? Tips { get; set; }
 
         public int? Times { get; set; }
 
@@ -35,6 +37,9 @@ namespace Reservation.Server.Models.DTO.Home
         public int? Status { get; set; }
 
         public ReviewDTO? Review { get; set; }
+        public decimal? Amount { get; set; }
+        public decimal? Price { get; set; }
+
 
     }
 }

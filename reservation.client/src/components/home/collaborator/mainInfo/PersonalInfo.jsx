@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { ContainerInfoProfile } from "../../../../pages/home/collaborator/CollaboratorPage";
 import { Space, Flex, Divider, Typography } from "antd";
-import { getYear, showNumber } from "../../../../lib/helper";
+import { getYear, showMoney, showNumber } from "../../../../lib/helper";
 const { Text } = Typography;
 
 const getItem = ({ label, value }) => (
@@ -40,14 +40,17 @@ const items = (collaborator) => [
         label: "Cân nặng",
         value: collaborator?.weight,
     },
-    
+
 ];
 
 function PersonalInfo() {
     const collaborator = useContext(ContainerInfoProfile);
     const servicePanel = (service) => (
-        <div className="service-panel text-header" key={service}>
-            <Text style={{ color: "white" }}>{service}</Text>
+        <div className="service-panel text-header" key={service.name}>
+            <Space>
+                <Text style={{ color: "white" }}>{service.name}</Text>
+                <Text style={{ color: "white" }}>{showMoney(service.price)}/h</Text>
+            </Space>
         </div>
     );
     return (
@@ -63,7 +66,7 @@ function PersonalInfo() {
                     <Text className="text-header text-center">Các dịch vụ</Text>
                     <Flex gap="middle" wrap={true}>
                         {collaborator?.collaboratorServices?.map((item) =>
-                            servicePanel(item.name)
+                            servicePanel(item)
                         )}
                     </Flex>
                 </Space>
