@@ -17,7 +17,7 @@ const getView = view => {
 const CoverCardImage = ({ src, price, view }) => (
     <div className="collaborator">
         <Image
-            height={400}
+            height={300}
             width ={300}
             // width={"100%"}
             src={src}

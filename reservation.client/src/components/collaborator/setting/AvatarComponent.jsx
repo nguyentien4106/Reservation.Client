@@ -5,6 +5,7 @@ import { getBase64, getUserName } from '../../../lib/helper';
 import { PlusOutlined } from "@ant-design/icons";
 import { R2 } from '../../../lib/R2';
 import { UserContext } from '../../../context/useUserContext';
+import ImgCrop from 'antd-img-crop';
 
 function AvatarComponent({ setHasAvatar }) {
     const [fileList, setFileList] = useState([]);
@@ -72,12 +73,12 @@ function AvatarComponent({ setHasAvatar }) {
     }
 
     return (
-        <>
+        <ImgCrop showReset showGrid aspect={1/1} quality={1} beforeCrop={file => file}>
             <Upload
                 listType="picture-card"
                 fileList={fileList}
                 onChange={onFileChange}
-                beforeUpload={() => false}
+                beforeUpload={undefined}
                 maxCount={1}
                 accept="image/*"
             >
@@ -98,7 +99,7 @@ function AvatarComponent({ setHasAvatar }) {
                     </div>
                 </button>
             </Upload>
-        </>
+        </ImgCrop>
 
     )
 }
