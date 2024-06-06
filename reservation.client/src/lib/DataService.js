@@ -9,6 +9,17 @@ const service = axios.create()
 
 const AUTH_REQUEST = "Auth/"
 const beforeRequest = request => {
+    const controller = new AbortController();
+
+    if(request.url.includes("noaction.com")){
+        controller.abort()
+
+        return {
+            ...request,
+            signal: controller.signal
+        }
+    }
+
     if(request.url.includes(AUTH_REQUEST)){
         return request
     }

@@ -2,13 +2,16 @@
   cursor: pointer;
   border-radius: 10px;
   font-size: 22px;
-  /* color: white; */
+  font-size: 22px;
+    font-family: 'Minion Pro', serif;
+    line-height: 30px;
+    font-weight: 800;
+    margin-bottom: 5px;
 }
 
-/* .ant-menu-item-selected{
-    background-color: red;
-    color: red;
-} */
+.logo{
+    color: rgb(20, 168, 0);
+}
 
 @media only screen and (max-width: 600px){
     main {

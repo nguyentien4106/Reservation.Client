@@ -1,4 +1,4 @@
-import { ACTION_ROUTE_PATH, COLLABORATOR_ROUTE_PATH, CUSTOMER_ROUTE_PATH, DONATE_ROUTE_PATH } from "../constant/paths";
+import { ACTION_ROUTE_PATH, COLLABORATORS_ROUTE_PATH, COLLABORATOR_ROUTE_PATH, CUSTOMER_ROUTE_PATH, DONATE_ROUTE_PATH } from "../constant/paths";
 
 export const menuItems = (navigate, isAdmin) => isAdmin ? adminItems(navigate) : userItems(navigate)
 
@@ -57,7 +57,7 @@ const userItems = navigate => [
     {
         key: "customer/find-talent",
         label: "Tìm người",
-        onClick: () => navigate(CUSTOMER_ROUTE_PATH.findTalent)
+        onClick: () => navigate(COLLABORATORS_ROUTE_PATH.collaborators)
     },
     {
         key: "post",

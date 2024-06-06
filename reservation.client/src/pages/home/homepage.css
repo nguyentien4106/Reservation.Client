@@ -1,0 +1,141 @@
+.short-desc{
+    margin-top: 10px;
+    color: #6D6E71;
+    font-size: 16px;
+    line-height: 1.6;
+    display: block;
+    text-overflow: ellipsis;
+}
+
+.banner-text-h4{
+    font-size: 40px;
+    line-height: 55px;
+    font-weight: 700;
+    color: #000;
+    font-family: 'Minion Pro', serif;
+}
+
+.banner-text-h3{
+    font-size: 22px;
+    font-family: 'Minion Pro', serif;
+    line-height: 30px;
+    /* color: #000; */
+    font-weight: 800;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.container{
+    padding-left: 8%;
+    padding-right: 8%;
+}
+
+.button-primary{
+    color: #fff;
+    text-align: center;
+    background-color: #108a00;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 16px;
+    transition: background-color .2s;
+    display: flex;
+
+    font-weight: 700;
+    font-size: large;
+}
+
+.button-primary:hover{
+    background-color: #108c00;
+    color: #fff;
+    text-decoration: none;
+}
+
+.banner{
+    display: flex;
+    gap: 70;
+    padding-top: 50px;
+}
+
+.banner-direction{
+    align-items: start;
+}
+
+.image-banner{
+    /* position: absolute; */
+    margin-top: 150px;
+}
+
+.why{
+    color: var(--new-black);
+    letter-spacing: -.032em;
+    margin-bottom: 25px;
+    font-family: "DM Serif Text", serif;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1em;
+    font-style: normal;
+
+}
+
+.why-cards{
+    display: flex;
+    flex-direction: column;
+}
+
+.why-card{
+    display: flex;
+    justify-content: space-around;
+    gap: 100px;
+}
+
+.why-card-text{
+    width: 30%;
+}
+
+.card-image{
+    width: 40%;
+    height: 40%;
+}
+
+@media only screen and (max-width: 600px){
+    .banner{
+        flex-direction: column;
+    }
+
+    .image-banner{
+        /* position: absolute; */
+        margin-top: 50px;
+    }
+
+    .why-card{
+        gap: 10px;
+        flex-direction: column;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .why-card-2 img{
+        order: 2;
+    }
+    
+    .why-card-2 div{
+        order: 1;
+    }
+
+    .why-card-text{
+        width: 100%;
+    }
+
+    .banner-direction{
+        align-items: center;
+    }
+
+    .card-image{
+        width: 100%;
+    }
+
+}

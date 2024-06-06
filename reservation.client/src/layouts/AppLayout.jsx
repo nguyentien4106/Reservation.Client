@@ -1,10 +1,8 @@
-import React, { useContext, useState } from 'react';
-import { Layout, theme, Button } from 'antd';
-import { Outlet, useNavigate } from 'react-router-dom';
-// import NavLayout from './NavLayout';
-import { jwtDecode } from 'jwt-decode';
-import { Cookie } from '../lib/cookies';
-import AppHeader from './Header'
+import React, { useContext, useState } from "react";
+import { Layout, theme, Button } from "antd";
+import { Outlet, useNavigate } from "react-router-dom";
+import AppHeader from "./Header";
+import { Footer } from "antd/es/layout/layout";
 const { Header, Content } = Layout;
 
 const AppLayout = () => {
@@ -14,11 +12,11 @@ const AppLayout = () => {
 
     return (
         <>
-            <Layout style={{ minWidth: "100%", height: "100vh" }}  >
+            <Layout style={{ minWidth: "100%", height: "100vh" }}>
                 <AppHeader />
                 <Content
                     style={{
-                        padding: '0 16px',
+                        padding: "0 16px",
                     }}
                 >
                     <div
@@ -29,13 +27,15 @@ const AppLayout = () => {
                             borderRadius: borderRadiusLG,
                         }}
                     >
-                        <Outlet/>
+                        <Outlet />
                     </div>
                 </Content>
+
+                {/* <Footer style={{ textAlign: "center" }}>
+                    ThueNguoiYeu.me ©{new Date().getFullYear()}
+                </Footer> */}
             </Layout>
         </>
-
-
     );
 };
 export default AppLayout;

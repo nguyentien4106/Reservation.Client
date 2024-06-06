@@ -22,7 +22,7 @@ const defaultFilter = {
     orderType: 0,
 };
 
-function Home() {
+function Collaborators() {
     const [filter, setFilter] = useState(defaultFilter);
     const { message } = App.useApp();
     const [collaborators, setCollaborators] = useState([]);
@@ -81,4 +81,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default Collaborators;

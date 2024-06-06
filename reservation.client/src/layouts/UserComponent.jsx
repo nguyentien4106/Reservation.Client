@@ -5,6 +5,8 @@ import LogoutLink from '@/components/auth/LogoutLink';
 import { Link } from 'react-router-dom';
 
 function UserComponent({ user }) {
+
+    console.log(user)
     const content = (
         <div style={{
             display: 'flex',
@@ -12,6 +14,7 @@ function UserComponent({ user }) {
             width: "100%"
         }}>
             <Link to={"/account"}>{user?.userName}</Link>
+            <Link to={`/collaborators/${user.collaboratorId}`}>{"Xem hồ sơ cho thuê"}</Link>
             <LogoutLink />
         </div>
     )

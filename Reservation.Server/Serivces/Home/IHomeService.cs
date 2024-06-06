@@ -10,6 +10,5 @@ namespace Reservation.Server.Serivces.Home
 
         Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(string city, string district, string sex, int maxAge);
 
-        Task<AppResponse<bool>> CreateOrderAsync(OrderDTO request);
     }
 }

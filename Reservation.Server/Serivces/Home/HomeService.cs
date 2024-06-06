@@ -39,7 +39,7 @@ namespace Reservation.Server.Serivces.Home
 
             var result = await query.ToListAsync();
 
-            if(result== null)
+            if(result == null)
             {
                 return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse([]);
             }
@@ -75,42 +75,5 @@ namespace Reservation.Server.Serivces.Home
             return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(collaboratorDtos);
         }
 
-        public async Task<AppResponse<bool>> CreateOrderAsync(OrderDTO request)
-        {
-            if (string.IsNullOrEmpty(request.ApplicationUserId))
-            {
-                return new AppResponse<bool>().SetErrorResponse("user", "User trống!");
-            }
-
-            var hireRequest = _mapper.Map<Order>(request);
-            hireRequest.Status = (int)OrderStatus.Sent;
-            hireRequest.CreatedDate = DateTime.Now;
-
-            await _context.Orders.AddAsync(hireRequest);
-
-            await _context.SaveChangesAsync();
-
-            var email = new EmailContent()
-            {
-                Subject = "Bạn đang có một người muốn thuê mới.",
-                ToEmail = request.CollaboratorEmail,
-                ToName = "Collaborator Name",
-                Content = BuildContent(request)
-            };
-
-            var sended = _emailService.SendMail(email);
-
-            if (!sended)
-            {
-                return new AppResponse<bool>().SetErrorResponse("email", "Đã gửi yêu cầu thành công nhưng chưa gửi được email !");
-            }
-
-            return new AppResponse<bool>().SetSuccessResponse(true);
-        }
-
-        private static string BuildContent(OrderDTO request)
-        {
-            return $"Một khách hàng có tên {request.Name}, có số điện thoại {request.PhoneNumber}, đã đề nghị thuê bạn {request.Times} giờ với mức giá {request.Tips} mỗi giờ";
-        }
     }
 }

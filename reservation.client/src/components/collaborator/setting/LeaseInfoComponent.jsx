@@ -69,7 +69,6 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
     const services = useFetchServices();
     const [form] = Form.useForm();
     const { user } = useContext(UserContext)
-    console.log('services', services)
     useEffect(() => {
         const newValues = {
             ...initialValues,
@@ -77,14 +76,12 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
             // collaboratorServices: serviceIds,
         };
 
-        console.log("newvalues", newValues)
 
         form.setFieldsValue(newValues);
     }, [initialValues]);
 
 
     const onFinish = (values) => {
-        console.log("values", values)
         if (!hasAvatar) {
             message.error("Bạn cần phải upload ảnh đại diện trước.")
             return

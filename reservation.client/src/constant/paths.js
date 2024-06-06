@@ -9,7 +9,12 @@ export const CUSTOMER_ROUTE_PATH = {
     orderHistory: "/customer/order-history",
     donateHistory: "/customer/donate-history",
     findTalent: "/customer/find-talent",
-    findJobs: "/customer/find-jobs"
+    findJobs: "/customer/find-jobs",
+    postJobs: "/customer/jobs"
+}
+
+export const COLLABORATORS_ROUTE_PATH = {
+    collaborators: "/collaborators"
 }
 
 export const DONATE_ROUTE_PATH = {

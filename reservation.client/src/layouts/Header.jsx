@@ -46,7 +46,7 @@ export default function Header() {
             <div style={styles.container}>
                 <div style={styles.menuContainer}>
                     <div
-                        className="demo-logo"
+                        className="demo-logo logo"
                         onClick={() => {
                             navigate("/");
                             setCurrent("");
