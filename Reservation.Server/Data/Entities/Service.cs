@@ -9,5 +9,7 @@
         public string? Description { get; set; }
 
         public List<CollaboratorService> CollaboratorServices { get; set; } = [];
+
+        public List<JobService> JobServices { get; set; } = [];
     }
 }

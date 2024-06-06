@@ -26,6 +26,8 @@ namespace Reservation.Server.Data
 
         public DbSet<Rate> Rates { get; set; }
 
+        public DbSet<Job> Jobs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -47,6 +49,19 @@ namespace Reservation.Server.Data
             builder.Entity<CollaboratorService>()
                 .HasOne(cs => cs.Service)
                 .WithMany(s => s.CollaboratorServices)
+                .HasForeignKey(cs => cs.ServiceId);
+
+            builder.Entity<JobService>()
+                .HasKey(cs => new { cs.ApplicationUserId, cs.ServiceId });
+
+            builder.Entity<JobService>()
+                .HasOne(cs => cs.ApplicationUser)
+                .WithMany(c => c.JobServices)
+                .HasForeignKey(cs => cs.ApplicationUserId);
+
+            builder.Entity<JobService>()
+                .HasOne(cs => cs.Service)
+                .WithMany(s => s.JobServices)
                 .HasForeignKey(cs => cs.ServiceId);
 
             builder.Entity<Order>()

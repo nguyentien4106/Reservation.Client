@@ -11,7 +11,8 @@ using Reservation.Server.Serivces.Email;
 
 namespace Reservation.Server.Serivces.Customer
 {
-    public class CustomerService(ApplicationDbContext context, IMapper mapper, IEmailService emailService) : ICustomerService
+    public class CustomerService(ApplicationDbContext context, IMapper mapper, IEmailService emailService) 
+        : ICustomerService
     {
         private readonly ApplicationDbContext _context = context;
         private readonly IMapper _mapper = mapper;
@@ -88,7 +89,6 @@ namespace Reservation.Server.Serivces.Customer
                 Subject = "Bạn đang có một người muốn thuê mới.",
                 ToEmail = request.CollaboratorEmail,
                 ToName = request.NickName ?? "Customer",
-                Content = BuildContent(request)
             };
 
             var sended = _emailService.SendEmailNewOrder(email, request);
@@ -101,9 +101,18 @@ namespace Reservation.Server.Serivces.Customer
             return new AppResponse<bool>().SetSuccessResponse(true);
         }
 
-        private static string BuildContent(OrderDTO request)
+        public async Task<AppResponse<bool>> CreateJobAsync(JobDTO jobDTO)
         {
-            return $"Một khách hàng có tên {request.Name}, có số điện thoại {request.PhoneNumber}, đã đề nghị thuê bạn {request.Times} giờ với mức giá {request.Tips} mỗi giờ";
+            if (string.IsNullOrEmpty(jobDTO.ApplicationUserId))
+            {
+                return new AppResponse<bool>().SetErrorResponse("user", "User không tìm thấy thử lại");
+            }
+
+            var job = _mapper.Map<Job>(jobDTO);
+            await _context.Jobs.AddAsync(job);    
+            await _context.SaveChangesAsync();
+
+            return new AppResponse<bool>().SetSuccessResponse(true);
         }
     }
 }

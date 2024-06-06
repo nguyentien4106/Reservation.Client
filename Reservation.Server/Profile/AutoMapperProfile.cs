@@ -35,6 +35,10 @@ namespace Reservation.Server.Profile
 
             CreateMap<Review, ReviewDTO>().ReverseMap();
 
+            CreateMap<JobDTO, Job>().ReverseMap();
+
+            CreateMap<JobServiceDTO, JobService>().ReverseMap();
+
         }
     }
 }

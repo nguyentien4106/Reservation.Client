@@ -12,5 +12,7 @@ namespace Reservation.Server.Serivces.Customer
 
         Task<AppResponse<bool>> CreateOrderAsync(OrderDTO request);
 
+        Task<AppResponse<bool>> CreateJobAsync(JobDTO job);
+
     }
 }

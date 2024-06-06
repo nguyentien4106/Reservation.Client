@@ -38,29 +38,6 @@ const validateMessages = {
     },
 };
 
-const tagRender = (props) => {
-    const { label, closable, onClose } = props;
-    const onPreventMouseDown = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-    };
-
-    return (
-        <Tag
-            color={"green"}
-            onMouseDown={onPreventMouseDown}
-            closable={closable}
-            onClose={onClose}
-            style={{
-                marginInlineEnd: 4,
-            }}
-        >
-            {label}
-        </Tag>
-    );
-};
-
-
 export default function LeaseInfoComponent({ initialValues, collaborator }) {
     const [provinceId, setProvinceId] = useState(0);
     const [hasAvatar, setHasAvatar] = useState(false)

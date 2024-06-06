@@ -10,7 +10,7 @@ export default function Jobs() {
             height: "100%",
             marginTop: "10%"
         }}>
-            <Flex gap={50} vertical justify="center">
+            {/* <Flex gap={50} vertical justify="center">
                 <a href="#" className="card">
                     <Space direction="vertical">
                         <p class="heading gtm-margin-xxs">Việc tìm người</p>
@@ -29,7 +29,8 @@ export default function Jobs() {
                         </p>
                     </Space>
                 </a>
-            </Flex>
+            </Flex> */}
+            
         </div>
     );
 }

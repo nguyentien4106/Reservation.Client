@@ -3,28 +3,62 @@ import { ACTION_ROUTE_PATH, COLLABORATORS_ROUTE_PATH, COLLABORATOR_ROUTE_PATH, C
 export const menuItems = (navigate, isAdmin) => isAdmin ? adminItems(navigate) : userItems(navigate)
 
 const userItems = navigate => [
+    // {
+    //     key: "collaborator",
+    //     label: "Cài đặt cho thuê",
+    //     children: [
+    //         {
+    //             key: "collaborator-overall",
+    //             label: "Tổng quan",
+    //             onClick: () => navigate(COLLABORATOR_ROUTE_PATH.overall),
+
+    //         },
+    //         {
+    //             key: "collaborator-customer",
+    //             label: "Danh sách khách hàng",
+    //             onClick: () => navigate(COLLABORATOR_ROUTE_PATH.customer),
+
+    //         },
+    //         {
+    //             key: "setting",
+    //             label: "Chỉnh sửa hồ sơ",
+    //             onClick: () => navigate(COLLABORATOR_ROUTE_PATH.setting),
+    //         },
+    //     ],
+    // },
+
+    // {
+    //     key: "customer",
+    //     label: "Thông tin tài khoản",
+    //     children: [
+    //         {
+    //             key: "customer-overall",
+    //             label: "Tổng quan",
+    //             onClick: () => navigate(CUSTOMER_ROUTE_PATH.overall),
+
+    //         },
+    //         {
+    //             key: "order-history",
+    //             label: "Lịch sử thuê",
+    //             onClick: () => navigate(CUSTOMER_ROUTE_PATH.orderHistory),
+
+    //         },
+    //         {
+    //             key: "customer-donate",
+    //             label: "Lịch sử donate",
+    //             onClick: () => navigate(CUSTOMER_ROUTE_PATH.findPeople),
+    //         },
+    //     ],
+    // },
     {
-        key: "collaborator",
-        label: "Cài đặt cho thuê",
-        children: [
-            {
-                key: "collaborator-overall",
-                label: "Tổng quan",
-                onClick: () => navigate(COLLABORATOR_ROUTE_PATH.overall),
-
-            },
-            {
-                key: "collaborator-customer",
-                label: "Danh sách khách hàng",
-                onClick: () => navigate(COLLABORATOR_ROUTE_PATH.customer),
-
-            },
-            {
-                key: "setting",
-                label: "Chỉnh sửa hồ sơ",
-                onClick: () => navigate(COLLABORATOR_ROUTE_PATH.setting),
-            },
-        ],
+        key: "customer/find-talent",
+        label: "Tìm người để thuê",
+        onClick: () => navigate(COLLABORATORS_ROUTE_PATH.collaborators)
+    },
+    {
+        key: "post",
+        label: "Jobs đang tìm người",
+        onClick: () => navigate(CUSTOMER_ROUTE_PATH.jobs)
     },
     {
         key: "donate",
@@ -32,37 +66,20 @@ const userItems = navigate => [
         onClick: () => navigate(DONATE_ROUTE_PATH.donate),
     },
     {
-        key: "customer",
-        label: "Thông tin tài khoản",
+        key: "post",
+        label: "Đăng bài",
         children: [
             {
-                key: "customer-overall",
-                label: "Tổng quan",
-                onClick: () => navigate(CUSTOMER_ROUTE_PATH.overall),
-
+                key: "create-profile",
+                label: "Tạo hồ sơ cho thuê",
+                onClick: () => navigate(COLLABORATOR_ROUTE_PATH.setting)
             },
             {
-                key: "order-history",
-                label: "Lịch sử thuê",
-                onClick: () => navigate(CUSTOMER_ROUTE_PATH.orderHistory),
-
+                key: "create-job",
+                label: "Đăng việc",
+                onClick: () => navigate(CUSTOMER_ROUTE_PATH.postJobs)
             },
-            {
-                key: "customer-donate",
-                label: "Lịch sử donate",
-                onClick: () => navigate(CUSTOMER_ROUTE_PATH.findPeople),
-            },
-        ],
-    },
-    {
-        key: "customer/find-talent",
-        label: "Tìm người",
-        onClick: () => navigate(COLLABORATORS_ROUTE_PATH.collaborators)
-    },
-    {
-        key: "post",
-        label: "Tìm việc",
-        onClick: () => navigate(ACTION_ROUTE_PATH.post)
+        ]
     }
 ];
 
