@@ -16,6 +16,7 @@ using Microsoft.OpenApi.Models;
 using Reservation.Server.Middleware;
 using Reservation.Server.Serivces.ManageCollaborator;
 using Reservation.Server.Serivces.Customer;
+using Reservation.Server.Serivces.Jobs;
 
 namespace Reservation.Server
 {
@@ -55,6 +56,7 @@ namespace Reservation.Server
             builder.Services.AddTransient<IHomeService, HomeService>();
             builder.Services.AddTransient<IManageCollaboratorService, ManageCollaboratorService>();
             builder.Services.AddTransient<ICustomerService, CustomerService>();
+            builder.Services.AddTransient<IJobsService, JobsService>();
 
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 

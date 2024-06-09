@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import useFetchProvinces from "../../hooks/useFetchProvinces";
 import { Space, Select, Typography, Flex, Button } from "antd";
-import useFetchDistricts from "../../hooks/useFetchDistricts";
-import Range from "./filter/Range";
 import FilterCollapse from "./filter/FilterCollapse";
-import DataService from "../../lib/DataService";
-import { HOME_PATH } from "../../constant/urls";
+import locationAPI from "../../api/locationAPI";
 const { Text } = Typography;
 const hasAll = true;
 
@@ -66,9 +62,8 @@ const getFilterItem = ({
 
 function FilterArea({ setFilter, filterResult }) {
     const [provinceId, setProvinceId] = useState(-1);
-    const [rangeValue, setRangeValue] = useState(50)
-    const provinces = useFetchProvinces(hasAll);
-    const districts = useFetchDistricts(provinceId, hasAll);
+    const provinces = locationAPI.getProvinces(hasAll);
+    const districts = locationAPI.getDistrcits(provinceId, hasAll);
 
     const onProvinceSelect = (e, province) => {
         setFilter((prev) => Object.assign(prev, { city: province.value }));

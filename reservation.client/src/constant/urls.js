@@ -37,5 +37,10 @@ export const MANAGE_COLLABORATOR_PATH = {
 export const CUSTOMER_PATH = {
     getOrders: "Customer/GetOrders?applicationUserId=",
     addReview: "Customer/AddReview",
-    createOrder: "Customer/CreateOrder"
+    createOrder: "Customer/CreateOrder",
+    createJob: "Customer/CreateJob",
+}
+
+export const JOBS_PATH = {
+    getAll: "Jobs/GetAll"
 }

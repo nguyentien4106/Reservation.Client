@@ -10,6 +10,5 @@
 
         public ApplicationUser ApplicationUser { get; set; }
 
-        public decimal? Price { get; set; }
     }
 }

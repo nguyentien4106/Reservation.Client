@@ -20,5 +20,9 @@ namespace Reservation.Server.Models.DTO.Customer
         public required DateTime DateTime { get; set; }
 
         public List<JobServiceDTO> Services { get; set; } = [];
+
+        public int? PaymentType { get; set; }
+
+        public int? Status { get; set; }
     }
 }

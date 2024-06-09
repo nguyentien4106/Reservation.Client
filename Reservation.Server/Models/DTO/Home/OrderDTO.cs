@@ -39,7 +39,5 @@ namespace Reservation.Server.Models.DTO.Home
         public ReviewDTO? Review { get; set; }
         public decimal? Amount { get; set; }
         public decimal? Price { get; set; }
-
-
     }
 }

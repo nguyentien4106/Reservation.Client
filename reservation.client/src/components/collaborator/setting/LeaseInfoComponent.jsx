@@ -11,16 +11,14 @@ import {
     Space
 } from "antd";
 import { Select } from "antd";
-import useFetchProvinces from "../../../hooks/useFetchProvinces";
-import useFetchDistricts from "../../../hooks/useFetchDistricts";
 import useFetchServices from "../../../hooks/useFetchServices";
 import dayjs from "dayjs";
-// import { ProfileContext } from "../../../context/useProfileContext";
 import AvatarComponent from "./AvatarComponent";
 import { COLLABORATOR_PATH } from "../../../constant/urls";
 import DataService from "../../../lib/DataService";
 import { UserContext } from "../../../context/useUserContext";
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import locationAPI from "../../../api/locationAPI";
 const layout = {
     labelCol: {
         span: 8,
@@ -41,11 +39,12 @@ const validateMessages = {
 export default function LeaseInfoComponent({ initialValues, collaborator }) {
     const [provinceId, setProvinceId] = useState(0);
     const [hasAvatar, setHasAvatar] = useState(false)
-    const provinces = useFetchProvinces();
-    const districts = useFetchDistricts(provinceId);
+    const provinces = locationAPI.getProvinces();
+    const districts = locationAPI.getDistrcits(provinceId);
     const services = useFetchServices();
     const [form] = Form.useForm();
     const { user } = useContext(UserContext)
+
     useEffect(() => {
         const newValues = {
             ...initialValues,
@@ -176,6 +175,7 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
                         }
                         options={provinces}
                         onSelect={(e, province) => {
+                            console.log(province)
                             setProvinceId(province.id);
                         }}
                     />

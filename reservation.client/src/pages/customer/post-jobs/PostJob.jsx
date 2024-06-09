@@ -13,6 +13,12 @@ import {
     Flex,
 } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import locationAPI from "../../../api/locationAPI";
+import useFetchServices from "../../../hooks/useFetchServices";
+import DataService from "../../../lib/DataService";
+import dayjs from "dayjs";
+import { CUSTOMER_PATH } from "../../../constant/urls";
+import { getUser } from "../../../lib/helper";
 
 const layout = {
     labelCol: {
@@ -24,303 +30,182 @@ const layout = {
 };
 
 export default function PostJob() {
-    const onFinish = (values) => {};
+    const provinces = locationAPI.getProvinces()
+    const services = useFetchServices()
+    const onFinish = (values) => {
+        const userId = getUser().id
+        const params = Object.assign(values, { 
+            applicationUserId: userId, 
+            services: values.services.map(item => ({ serviceId: item, applicationUserId: userId })),
+            status: 0
+        })
+        console.log(params)
+        DataService.post(CUSTOMER_PATH.createJob, params).then(res => {
+            console.log(res)
+        })
+    };
+
+    const prefixSelector = (
+        <Form.Item name="paymentType" noStyle>
+            <Select
+                style={{
+                    width: 100,
+                }}
+            >
+                <Option value="1">Mỗi giờ</Option>
+                <Option value="2">Toàn bộ</Option>
+            </Select>
+        </Form.Item>
+    );
 
     return (
         <AuthorizeView role={ROLES.USER}>
-            <div style={{
-                // textAlign: "center"
-            }}>
-                <Flex
+            <div
+                style={{
+                    textAlign: "center"
+                }}
+            >
+                <h2>Thôn tin job</h2>
+            </div>
+
+            <Flex
+                justify="center"
+                vertical={true}
+                style={{
+                    alignItems: "center",
+                    width: "100%",
+                    padding: 20
+                }}
+                align="center"
+            >
+
+                <Form
+                    {...layout}
+                    name="nest-messages"
+                    onFinish={onFinish}
                     style={{
-                        // maxWidth: "60%",
-                        alignItems: "center"
+                        backgroundColor: "rgb(232, 232, 232)",
+                        minWidth: "60%",
+                        width: "60%",
+                        padding: 30,
+                        borderRadius: 20,
                     }}
-                    justify="center"
-                    vertical
+                    initialValues={{
+                        paymentType: "1",
+                        dateTime: dayjs()
+                    }}
                 >
-                    <h3>Tạo bài viết tìm người</h3>
-
-                    <Form
-                        {...layout}
-                        name="nest-messages"
-                        onFinish={onFinish}
-                        style={{
-                            // maxWidth: 600,
-                            minWidth: "60%"
-                        }}
-                        // validateMessages={validateMessages}
-                        // initialValues={{
-                        //     ...initialValues,
-                        //     email: user?.userName,
-                        // }}
-                        // form={form}
-                    >
-                        <Form.Item
-                            name="isReady"
-                            label="Bật hồ sơ cho thuê ?"
-                            tooltip="Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê."
-                            valuePropName="checked"
-                        >
-                            <Switch />
-                        </Form.Item>
-
-                        <Form.Item
-                            name={"nickName"}
-                            label="Nick Name"
-                            tooltip="Tên hiển thị trên hồ sơ"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <Input />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="city"
-                            label="Tỉnh/Thành phố"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            {/* <Select
-                        showSearch
-                        style={{ width: 200 }}
-                        placeholder="Tỉnh"
-                        optionFilterProp="children"
-                        filterOption={(input, option) =>
-                            (option?.label ?? "").includes(input)
-                        }
-                        options={provinces}
-                        onSelect={(e, province) => {
-                            setProvinceId(province.id);
-                        }}
-                    /> */}
-                        </Form.Item>
-
-                        <Form.Item
-                            name="phoneNumber"
-                            label="Phone Number"
-                            tooltip="Vui lòng nhập số điện thoại chính chủ để chúng tôi có thể kiểm chứng thông tin."
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <Input maxLength={11} minLength={10} />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="sex"
-                            label="Giới tính"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            {/* <Select
-                        options={[
+                    <Form.Item
+                        name="title"
+                        label="Tiêu đề"
+                        tooltip="Tiêu đề để giúp người dùng nhanh chóng nhận biết job"
+                        rules={[
                             {
-                                label: "Nữ",
-                                value: "Female",
-                            },
-                            {
-                                label: "Nam",
-                                value: "Male",
-                            },
-                            {
-                                label: "Khác",
-                                value: "Others",
+                                required: true,
                             },
                         ]}
-                    /> */}
-                        </Form.Item>
+                    >
+                        <Input />
+                    </Form.Item>
 
-                        <Form.Item
-                            name={"birthDate"}
-                            label="Ngày sinh"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <DatePicker />
-                        </Form.Item>
-
-                        <Form.Item
-                            name={"height"}
-                            label="Chiều cao"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <InputNumber placeholder="cm" />
-                        </Form.Item>
-
-                        <Form.Item
-                            name={"weight"}
-                            label="Cân nặng"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <InputNumber placeholder="kg" />
-                        </Form.Item>
-
-                        <Form.Item
-                            name={"job"}
-                            label="Nghề nghiệp"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <Input placeholder="sinh viên" />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Dịch vụ cho thuê"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <Form.List name={"collaboratorServices"}>
-                                {(fields, { add, remove }) => (
-                                    <>
-                                        {fields.map(
-                                            ({ key, name, ...restField }) => (
-                                                <Space
-                                                    key={key}
-                                                    style={{
-                                                        display: "flex",
-                                                        marginBottom: 8,
-                                                    }}
-                                                    align="baseline"
-                                                >
-                                                    <Form.Item
-                                                        {...restField}
-                                                        name={[
-                                                            name,
-                                                            "serviceId",
-                                                        ]}
-                                                        style={{
-                                                            width: "50%",
-                                                            minWidth: 200,
-                                                        }}
-                                                        rules={[
-                                                            {
-                                                                required: true,
-                                                            },
-                                                        ]}
-                                                    >
-                                                        <Select
-                                                            options={services}
-                                                        />
-                                                    </Form.Item>
-                                                    <Form.Item
-                                                        {...restField}
-                                                        name={[name, "price"]}
-                                                        rules={[
-                                                            {
-                                                                required: true,
-                                                                message:
-                                                                    "Vui lòng điền giá",
-                                                            },
-                                                        ]}
-                                                    >
-                                                        <InputNumber
-                                                            min={10000}
-                                                            width={"100%"}
-                                                            style={{
-                                                                width: "100%",
-                                                            }}
-                                                            formatter={(
-                                                                value
-                                                            ) =>
-                                                                `đ ${value}`.replace(
-                                                                    /\B(?=(\d{3})+(?!\d))/g,
-                                                                    ","
-                                                                )
-                                                            }
-                                                            parser={(value) =>
-                                                                value.replace(
-                                                                    /\đ\s?|(,*)/g,
-                                                                    ""
-                                                                )
-                                                            }
-                                                        />
-                                                    </Form.Item>
-                                                    <MinusCircleOutlined
-                                                        onClick={() =>
-                                                            remove(name)
-                                                        }
-                                                    />
-                                                </Space>
-                                            )
-                                        )}
-                                        <Form.Item>
-                                            <Button
-                                                type="dashed"
-                                                onClick={() => add()}
-                                                block
-                                                icon={<PlusOutlined />}
-                                            >
-                                                Thêm dịch vụ
-                                            </Button>
-                                        </Form.Item>
-                                    </>
-                                )}
-                            </Form.List>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="title"
-                            label="Tự bạch"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <Input min={10} />
-                        </Form.Item>
-
-                        <Form.Item
-                            name={"introduction"}
-                            label="Phần mô tả giới thiệu"
-                        >
-                            <Input.TextArea />
-                        </Form.Item>
-
-                        <Form.Item
-                            wrapperCol={{
-                                // ...layout.wrapperCol,
-                                offset: 8,
-                            }}
-                        >
+                    <Form.Item
+                        name="location"
+                        label="Tỉnh/Thành phố"
+                        rules={[
                             {
-                                <Button type="primary" htmlType="submit">
-                                    Cập nhật hồ sơ
-                                </Button>
+                                required: true,
+                            },
+                        ]}
+                    >
+                        <Select
+                            showSearch
+                            style={{ width: 200 }}
+                            placeholder="Tỉnh/Thành phố"
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                                (option?.label ?? "").includes(input)
                             }
-                        </Form.Item>
-                    </Form>
-                </Flex>
-            </div>
+                            options={provinces}
+                        />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="description"
+                        label="Thông tin chi tiết"
+                        rules={[
+                            {
+                                required: true,
+                            },
+                        ]}
+                    >
+                        <Input.TextArea placeholder="Hoạt động gì? Cụ thể job?" />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="dateTime"
+                        label="Thời gian"
+                        rules={[
+                            {
+                                required: true,
+                            },
+                        ]}
+                    >
+                        <DatePicker />
+                    </Form.Item>
+
+
+                    <Form.Item
+                        name="requried"
+                        label="Yêu cầu ?"
+                        rules={[
+                            {
+                                required: true,
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        name={"cast"}
+                        label="Chi phí bạn trả"
+                        rules={[
+                            {
+                                required: true,
+                            },
+                        ]}
+                    >
+                        <InputNumber addonBefore={prefixSelector} />
+                    </Form.Item>
+
+                    <Form.Item
+                        name={"services"}
+                        label="Dịch vụ muốn thuê?"
+                        tooltip={"Chúng tôi sẽ gửi thông báo tới cho những người gần bạn và có dịch vụ bạn đang tìm."}
+                    >
+                        <Select
+                            options={services}
+                            mode="multiple"
+                        >
+
+                        </Select>
+                    </Form.Item>
+
+
+                    <Form.Item
+                        wrapperCol={{
+                            // ...layout.wrapperCol,
+                            offset: 8,
+                        }}
+                    >
+                        {
+                            <Button type="primary" htmlType="submit">
+                                Đăng "job"
+                            </Button>
+                        }
+                    </Form.Item>
+                </Form>
+            </Flex>
         </AuthorizeView>
     );
 }

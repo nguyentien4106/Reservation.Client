@@ -1,7 +1,17 @@
 import { Button, Card, Flex, Space } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
+import DataService from "../../../lib/DataService";
+import { JOBS_PATH } from "../../../constant/urls";
 export default function Jobs() {
+    const [jobs, setJobs] = useState([])
+
+    useEffect(() => {
+        DataService.get(JOBS_PATH.getAll).then(res => {
+            setJobs(res.data.data)
+        })
+    }, [])
+
     return (
         <div style={{
             width: "30%",
@@ -30,6 +40,10 @@ export default function Jobs() {
                     </Space>
                 </a>
             </Flex> */}
+
+            {
+                jobs.map(item => <h1>{item.title}</h1>)
+            }
             
         </div>
     );
