@@ -175,7 +175,6 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
                         }
                         options={provinces}
                         onSelect={(e, province) => {
-                            console.log(province)
                             setProvinceId(province.id);
                         }}
                     />

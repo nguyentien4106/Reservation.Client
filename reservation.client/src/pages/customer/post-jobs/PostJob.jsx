@@ -39,7 +39,6 @@ export default function PostJob() {
             services: values.services.map(item => ({ serviceId: item, applicationUserId: userId })),
             status: 0
         })
-        console.log(params)
         DataService.post(CUSTOMER_PATH.createJob, params).then(res => {
             console.log(res)
         })

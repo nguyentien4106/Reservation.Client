@@ -3,6 +3,7 @@ using Reservation.Server.Data.Entities;
 using Reservation.Server.Models.DTO.Collaborator;
 using Reservation.Server.Models.DTO.Customer;
 using Reservation.Server.Models.DTO.Home;
+using Reservation.Server.Models.DTO.Jobs;
 using Reservation.Server.Models.DTO.Service;
 
 namespace Reservation.Server.Profile
@@ -38,6 +39,7 @@ namespace Reservation.Server.Profile
             CreateMap<JobDTO, Job>().ReverseMap();
 
             CreateMap<JobServiceDTO, JobService>().ReverseMap();
+
 
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Reservation.Server.Models.DTO.Auth;
 using Reservation.Server.Models.DTO.Customer;
 using Reservation.Server.Models.DTO.Home;
+using Reservation.Server.Models.DTO.Jobs;
 
 namespace Reservation.Server.Serivces.Customer
 {

@@ -8,5 +8,7 @@ namespace Reservation.Server.Serivces.Jobs
         Task<AppResponse<bool>> CreateJobAsync(JobDTO job);
 
         Task<AppResponse<List<JobDTO>>> GetAll();
+
+        Task<AppResponse<bool>>
     }
 }

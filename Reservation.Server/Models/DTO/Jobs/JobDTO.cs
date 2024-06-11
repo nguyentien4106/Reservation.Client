@@ -1,7 +1,6 @@
-﻿using Reservation.Server.Data.Entities;
-using Reservation.Server.Data;
+﻿using Reservation.Server.Models.DTO.Customer;
 
-namespace Reservation.Server.Models.DTO.Customer
+namespace Reservation.Server.Models.DTO.Jobs
 {
     public class JobDTO
     {
@@ -24,6 +23,8 @@ namespace Reservation.Server.Models.DTO.Customer
         public int? PaymentType { get; set; }
 
         public int? Status { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
 
     }
 }

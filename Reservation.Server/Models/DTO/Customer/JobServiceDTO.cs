@@ -7,5 +7,7 @@ namespace Reservation.Server.Models.DTO.Customer
         public Guid ServiceId { get; set; }
 
         public string ApplicationUserId { get; set; }
+
+        public string? ServiceName { get; set; }
     }
 }

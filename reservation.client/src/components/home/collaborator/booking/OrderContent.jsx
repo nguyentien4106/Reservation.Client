@@ -44,7 +44,6 @@ const OrderContent = ({ collaboratorEmail, collaboratorId, nickName, collaborato
             price,
             amount: time * price + tips
         });
-        console.log(params)
         dispatch(show())
         DataService.post(CUSTOMER_PATH.createOrder, params)
             .then((res) => {

@@ -18,7 +18,6 @@ export default function Customer() {
         if (user?.collaboratorId)
             DataService.get(COLLABORATOR_PATH.getRequests + user.collaboratorId).then(res => {
                 setCustomers(res.data.data)
-                console.log(res.data.data)
             }).catch(console.error)
     }, [user])
 

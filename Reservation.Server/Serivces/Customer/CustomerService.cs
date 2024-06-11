@@ -6,6 +6,7 @@ using Reservation.Server.Models.DTO.Auth;
 using Reservation.Server.Models.DTO.Customer;
 using Reservation.Server.Models.DTO.Email;
 using Reservation.Server.Models.DTO.Home;
+using Reservation.Server.Models.DTO.Jobs;
 using Reservation.Server.Models.Enum;
 using Reservation.Server.Serivces.Email;
 

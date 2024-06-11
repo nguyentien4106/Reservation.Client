@@ -12,3 +12,8 @@ export const GET_COLLABORATOR_TYPES = {
     readyAndReviewing: 1,
     notReady: 2
 }
+
+export const PAYMENT_TYPES = {
+    1: "Theo giờ",
+    2: "Toàn bộ"
+}

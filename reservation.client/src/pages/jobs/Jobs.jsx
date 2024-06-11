@@ -25,17 +25,25 @@ export default function Jobs() {
             >
                 <div
                     style={{
-                        width: "100%"
+                        width: "60%",
+                        marginBottom: "50px",
+                        alignItems: "center",
                     }}
                 >
-                   <Input.Search onChange={(e) => setSearch(e.target.value)} onSearch={() => console.log(seach)}></Input.Search>
+                   <Input.Search 
+                        onChange={(e) => setSearch(e.target.value)} 
+                        onSearch={() => console.log(seach)}
+                        placeholder="Tìm kiếm từ khoá"
+                    >
+                        
+                   </Input.Search>
                 </div>
                 {jobs.length ? (
-                    jobs.map((item) => <h1>{item.title}</h1>)
+                    jobs.map((item) => <Job job={item}>{item.title}</Job>)
                 ) : (
                     <>
                     <h2>Không có post</h2>
-                        <Job/>
+                        {/* <Job/> */}
                     </>
                     
                 )}
