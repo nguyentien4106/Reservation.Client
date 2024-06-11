@@ -10,13 +10,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Models\ViewModel\**" />
-	  <Content Remove="Models\ViewModel\**" />
-	  <EmbeddedResource Remove="Models\ViewModel\**" />
-	  <None Remove="Models\ViewModel\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.7.0" />
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.61" />

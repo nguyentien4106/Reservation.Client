@@ -1,5 +1,5 @@
 ﻿using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Customer;
+using Reservation.Server.Models.DTO.Jobs;
 
 namespace Reservation.Server.Serivces.Jobs
 {
@@ -9,6 +9,6 @@ namespace Reservation.Server.Serivces.Jobs
 
         Task<AppResponse<List<JobDTO>>> GetAll();
 
-        Task<AppResponse<bool>>
+        Task<AppResponse<bool>> ApplyJobAsync();
     }
 }

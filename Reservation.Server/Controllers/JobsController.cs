@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Customer;
+using Reservation.Server.Models.DTO.Jobs;
 using Reservation.Server.Serivces.Jobs;
 
 namespace Reservation.Server.Controllers

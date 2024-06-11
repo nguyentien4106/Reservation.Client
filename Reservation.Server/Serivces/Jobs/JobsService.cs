@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Reservation.Server.Data;
 using Reservation.Server.Data.Entities;
 using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Customer;
+using Reservation.Server.Models.DTO.Jobs;
 using Reservation.Server.Serivces.Email;
 
 namespace Reservation.Server.Serivces.Jobs
@@ -13,6 +13,11 @@ namespace Reservation.Server.Serivces.Jobs
         private readonly ApplicationDbContext _context = context;
         private readonly IMapper _mapper = mapper;
         private readonly IEmailService _emailService = emailService;
+
+        public Task<AppResponse<bool>> ApplyJobAsync()
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<AppResponse<bool>> CreateJobAsync(JobDTO jobDTO)
         {
