@@ -56,7 +56,7 @@ const userItems = navigate => [
         onClick: () => navigate(COLLABORATORS_ROUTE_PATH.collaborators)
     },
     {
-        key: "post",
+        key: "jobs",
         label: "Jobs đang tìm người",
         onClick: () => navigate(CUSTOMER_ROUTE_PATH.jobs)
     },
@@ -66,7 +66,7 @@ const userItems = navigate => [
         onClick: () => navigate(DONATE_ROUTE_PATH.donate),
     },
     {
-        key: "post",
+        key: "post-job",
         label: "Đăng bài",
         children: [
             {

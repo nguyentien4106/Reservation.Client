@@ -6,9 +6,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<InvariantGlobalization>false</InvariantGlobalization>
 		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
-		<!--<SpaRoot>..\reservation.client</SpaRoot>
-		<SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
-		<SpaProxyServerUrl>https://localhost:5173</SpaProxyServerUrl>-->
+		<AWSProjectType>Lambda</AWSProjectType>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -19,6 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.7.0" />
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
 		<PackageReference Include="MailKit" Version="4.5.0" />

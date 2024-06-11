@@ -4,9 +4,9 @@ import Overall from "../pages/customer/Overall";
 import DonateHistory from "../pages/customer/DonateHistory";
 import { CUSTOMER_ROUTE_PATH } from "../constant/paths";
 import OrderHistory from "@/pages/customer/OrderHistory"
-import Jobs from "../pages/customer/jobs/Jobs";
 import Collaborators from "../pages/home/Collaborators";
 import PostJob from "../pages/customer/post-jobs/PostJob";
+import Jobs from "../pages/jobs/Jobs";
 
 export const CustomerRoutes = (
     <>

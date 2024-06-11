@@ -48,7 +48,7 @@ namespace Reservation.Server.Serivces.UserServiceRegister
         {
             if (collaboratorId == null || !collaboratorId.HasValue)
             {
-                return new AppResponse<CollaboratorDTO>().SetSuccessResponse(new(), "id", $"{collaboratorId} not found!");
+                return new AppResponse<CollaboratorDTO>().SetErrorResponse("id", $"{collaboratorId} not found!");
             }
 
             var collaborator = await _context.Collaborators
@@ -60,14 +60,7 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             var orders = await _context.Orders.Include(item => item.Review).Where(item => item.CollaboratorId == collaboratorId).ToListAsync();
 
             collaborator.Orders = orders;
-            //var collaborator = await _context.Collaborators
-            //    .Include(item => item.Orders)
-            //    .ThenInclude(item => item.Review)
-            //    .Include(item => item.ApplicationUser)
-            //    .Include(item => item.CollaboratorServices)
-            //    .ThenInclude(cs => cs.Service)
-            //    .Include(item => item.View)
-            //    .FirstOrDefaultAsync(collaborator => collaborator.Id == collaboratorId);
+
 
             if (collaborator == null)
             {
@@ -203,7 +196,7 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             }
             else
             {
-                collaboratorView.Count += 1;
+                await _context.Database.ExecuteSqlRawAsync("UPDATE Views SET COUNT = COUNT + 1 WHERE CollaboratorId = {0}", collaborator.Id);
             }
 
             await _context.SaveChangesAsync();

@@ -31,5 +31,7 @@ namespace Reservation.Server.Data.Entities
         public int? Status { get; set; }
 
         public int? PaymentType { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
     }
 }

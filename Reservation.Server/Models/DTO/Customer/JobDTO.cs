@@ -24,5 +24,6 @@ namespace Reservation.Server.Models.DTO.Customer
         public int? PaymentType { get; set; }
 
         public int? Status { get; set; }
+
     }
 }
