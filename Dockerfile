@@ -13,21 +13,21 @@ WORKDIR /src
 
 COPY ["Reservation.API/Reservation.API.csproj", "Reservation.API/"] 
 
-RUN dotnet restore "Reservation.Server/Reservation.Server.csproj"
+RUN dotnet restore "Reservation.API/Reservation.API.csproj"
 
 COPY . .
 
-WORKDIR "/src/Reservation.Server"
+WORKDIR "/src/Reservation.API"
 
-RUN dotnet build "Reservation.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "Reservation.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "Reservation.Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish
+RUN dotnet publish "Reservation.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 
 FROM base AS final
 
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-ENTRYPOINT [ "dotnet", "Reservation.Server.dll" ]
+ENTRYPOINT [ "dotnet", "Reservation.API.dll" ]
