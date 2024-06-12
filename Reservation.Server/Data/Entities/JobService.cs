@@ -6,9 +6,9 @@
 
         public Service Service { get; set; }
 
-        public string ApplicationUserId { get; set; }
+        public Guid JobId { get; set; }
 
-        public ApplicationUser ApplicationUser { get; set; }
+        public Job Job { get; set; }
 
     }
 }

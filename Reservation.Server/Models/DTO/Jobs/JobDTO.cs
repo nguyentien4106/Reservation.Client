@@ -1,4 +1,4 @@
-﻿using Reservation.Server.Models.DTO.Customer;
+﻿using Reservation.API.Models.DTO.Jobs;
 
 namespace Reservation.Server.Models.DTO.Jobs
 {
@@ -18,7 +18,7 @@ namespace Reservation.Server.Models.DTO.Jobs
 
         public required DateTime DateTime { get; set; }
 
-        public List<JobServiceDTO> Services { get; set; } = [];
+        public List<JobServiceDTO> JobServices { get; set; } = [];
 
         public int? PaymentType { get; set; }
 

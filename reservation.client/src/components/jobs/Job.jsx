@@ -1,15 +1,14 @@
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import { PAYMENT_TYPES } from "../../constant/settings";
-import { showMoney } from "../../lib/helper";
+import { getUser, showMoney } from "../../lib/helper";
 import { Button, Divider, Typography } from "antd";
 
 export default function Job({ job }) {
-    console.log(job.services)
     const [expanded, setExpanded] = useState(false);
-
+    
     const handleApply = () => {
-
+        console.log(getUser())
     }
     
     return (
@@ -96,8 +95,8 @@ export default function Job({ job }) {
 
                     <div className="services-container">
                         {
-                            job.services.length ? 
-                            job.services.map(item => <span className="service-item">{item.serviceName}</span>) 
+                            job.jobServices.length ? 
+                            job.jobServices.map(item => <span key={item.serviceName} className="service-item">{item.serviceName}</span>) 
                             : <span className="service-item">Không có dịch vụ cụ thể</span>
                         }
                     </div>

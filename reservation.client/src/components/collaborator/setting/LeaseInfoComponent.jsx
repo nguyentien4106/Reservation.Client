@@ -19,6 +19,8 @@ import DataService from "../../../lib/DataService";
 import { UserContext } from "../../../context/useUserContext";
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import locationAPI from "../../../api/locationAPI";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../state/user/userSlice";
 const layout = {
     labelCol: {
         span: 8,
@@ -44,14 +46,13 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
     const services = useFetchServices();
     const [form] = Form.useForm();
     const { user } = useContext(UserContext)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const newValues = {
             ...initialValues,
             birthDate: dayjs(initialValues?.birthDate),
-            // collaboratorServices: serviceIds,
         };
-
 
         form.setFieldsValue(newValues);
     }, [initialValues]);
@@ -85,6 +86,9 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
 
         DataService.post(url, params).then((res) => {
             const { data } = res;
+            if(url === COLLABORATOR_PATH.add){
+                dispatch(setUser({ collaboratorId: data.data }))
+            }
             message.open({
                 type: data.isSucceed ? "success" : "error",
                 content: data.isSucceed

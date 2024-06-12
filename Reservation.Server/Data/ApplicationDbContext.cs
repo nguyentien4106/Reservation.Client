@@ -54,12 +54,12 @@ namespace Reservation.Server.Data
 
 
             builder.Entity<JobService>()
-                .HasKey(cs => new { cs.ApplicationUserId, cs.ServiceId });
+                .HasKey(cs => new { cs.JobId, cs.ServiceId });
 
             builder.Entity<JobService>()
-                .HasOne(cs => cs.ApplicationUser)
+                .HasOne(cs => cs.Job)
                 .WithMany(c => c.JobServices)
-                .HasForeignKey(cs => cs.ApplicationUserId);
+                .HasForeignKey(cs => cs.JobId);
 
             builder.Entity<JobService>()
                 .HasOne(cs => cs.Service)

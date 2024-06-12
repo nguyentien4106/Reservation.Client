@@ -18,5 +18,11 @@ namespace Reservation.Server.Controllers
         {
             return await _service.GetAll();
         }
+
+        [HttpPost]
+        public async Task<AppResponse<bool>> CreateJob(JobDTO job)
+        {
+            return await _service.CreateJobAsync(job);
+        }
     }
 }

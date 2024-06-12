@@ -1,12 +1,12 @@
 ﻿using Reservation.Server.Data;
 
-namespace Reservation.Server.Models.DTO.Customer
+namespace Reservation.API.Models.DTO.Jobs
 {
     public class JobServiceDTO
     {
         public Guid ServiceId { get; set; }
 
-        public string ApplicationUserId { get; set; }
+        public Guid JobId { get; set; }
 
         public string? ServiceName { get; set; }
     }

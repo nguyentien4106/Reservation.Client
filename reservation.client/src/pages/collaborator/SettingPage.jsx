@@ -7,13 +7,14 @@ import { ROLES } from "../../constant/settings";
 import LeaseAlbumComponent from "../../components/collaborator/setting/LeaseAlbumComponent";
 import LeaseInfoComponent from "../../components/collaborator/setting/LeaseInfoComponent";
 import { UserContext } from "../../context/useUserContext";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../state/user/userSlice";
 
 const SettingPage = () => {
     const { user } = useContext(UserContext);
     const [collaborator, setCollaborator] = useState({ id: "" });
     const { message } = App.useApp();
     const [initialValues, setInitialValues] = useState({});
-    // const [collaboratorId, setCollaboratorId] = (user?.userName)
     const email = user?.userName
 
     useEffect(() => {
@@ -25,7 +26,6 @@ const SettingPage = () => {
                     setInitialValues(data ?? { email: user.userName });
                 }
             ).catch((err) => {
-                console.log(err)
                 if(err.response.status == 400){
                     message.error("Không tìm thấy hồ sơ theo đường dẫn này. Hãy thử lại !")
                 }

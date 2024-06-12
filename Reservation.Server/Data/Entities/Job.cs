@@ -26,7 +26,7 @@ namespace Reservation.Server.Data.Entities
         [Required]
         public required DateTime DateTime { get; set; }
 
-        public List<JobService> Services { get; set; } = [];
+        public List<JobService> JobServices { get; set; } = [];
 
         public int? Status { get; set; }
 

@@ -34,10 +34,6 @@ namespace Reservation.Server.Controllers
             return await _customerService.CreateOrderAsync(request);
         }
 
-        [HttpPost]
-        public async Task<AppResponse<bool>> CreateJob(JobDTO job)
-        {
-            return await _customerService.CreateJobAsync(job);
-        }
+        
     }
 }

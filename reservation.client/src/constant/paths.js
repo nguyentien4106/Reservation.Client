@@ -25,3 +25,9 @@ export const DONATE_ROUTE_PATH = {
 export const ACTION_ROUTE_PATH = {
     post: "/post"
 }
+
+export const JOBS_ROUTE_PATH = {
+    jobs: "/jobs",
+    post: "/jobs/post",
+
+}

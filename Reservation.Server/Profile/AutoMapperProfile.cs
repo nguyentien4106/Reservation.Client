@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Reservation.API.Models.DTO.Jobs;
 using Reservation.Server.Data.Entities;
 using Reservation.Server.Models.DTO.Collaborator;
 using Reservation.Server.Models.DTO.Customer;

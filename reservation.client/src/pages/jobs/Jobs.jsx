@@ -10,6 +10,7 @@ export default function Jobs() {
 
     useEffect(() => {
         DataService.get(JOBS_PATH.getAll).then((res) => {
+            console.log(res.data)
             setJobs(res.data.data);
         });
     }, []);
@@ -39,13 +40,9 @@ export default function Jobs() {
                    </Input.Search>
                 </div>
                 {jobs.length ? (
-                    jobs.map((item) => <Job job={item}>{item.title}</Job>)
+                    jobs.map((item) => <Job key={item.createdDate} job={item}>{item.title}</Job>)
                 ) : (
-                    <>
                     <h2>Không có post</h2>
-                        {/* <Job/> */}
-                    </>
-                    
                 )}
             </Flex>
         </>

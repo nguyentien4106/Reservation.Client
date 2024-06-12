@@ -1,6 +1,6 @@
 import React from "react";
 import AuthorizeView from "@/components/auth/AuthorizeView";
-import { ROLES } from "../../../constant/settings";
+import { ROLES } from "../../constant/settings";
 import {
     Button,
     DatePicker,
@@ -11,14 +11,19 @@ import {
     Switch,
     Space,
     Flex,
+    App,
 } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import locationAPI from "../../../api/locationAPI";
-import useFetchServices from "../../../hooks/useFetchServices";
-import DataService from "../../../lib/DataService";
+import locationAPI from "../../api/locationAPI";
+import useFetchServices from "../../hooks/useFetchServices";
+import DataService from "../../lib/DataService";
 import dayjs from "dayjs";
-import { CUSTOMER_PATH } from "../../../constant/urls";
-import { getUser } from "../../../lib/helper";
+import { CUSTOMER_PATH, JOBS_PATH } from "../../constant/urls";
+import { getUser } from "../../lib/helper";
+import { useDispatch } from "react-redux";
+import { hide, show } from "@/state/loading/loadingSlice";
+import { useNavigate } from "react-router-dom";
+import { JOBS_ROUTE_PATH } from "../../constant/paths";
 
 const layout = {
     labelCol: {
@@ -30,18 +35,34 @@ const layout = {
 };
 
 export default function PostJob() {
-    const provinces = locationAPI.getProvinces()
-    const services = useFetchServices()
+    const provinces = locationAPI.getProvinces();
+    const services = useFetchServices();
+    const dispatch = useDispatch()
+    const { message } = App.useApp();
+    const navigate = useNavigate();
+
     const onFinish = (values) => {
-        const userId = getUser().id
-        const params = Object.assign(values, { 
-            applicationUserId: userId, 
-            services: values.services.map(item => ({ serviceId: item, applicationUserId: userId })),
-            status: 0
-        })
-        DataService.post(CUSTOMER_PATH.createJob, params).then(res => {
-            console.log(res)
-        })
+        const userId = getUser().id;
+        const params = Object.assign(values, {
+            applicationUserId: userId,
+            jobServices: values.services.map((item) => ({ serviceId: item })),
+            status: 0,
+        });
+        dispatch(show())
+        DataService.post(JOBS_PATH.createJob, params).then((res) => {
+            const { data } = res
+            if(data.isSucceed){
+                message.success("Đã đăng job thành công. ")
+                navigate(JOBS_ROUTE_PATH.jobs)
+            }
+            else{
+                message.success("Đăng job thất bại. Vui lòng thử lại.")
+            }
+        }).catch(err => {
+            console.log(err)
+        }).finally(() => {
+            dispatch(hide())
+        });
     };
 
     const prefixSelector = (
@@ -51,8 +72,8 @@ export default function PostJob() {
                     width: 100,
                 }}
             >
-                <Option value="1">Mỗi giờ</Option>
-                <Option value="2">Toàn bộ</Option>
+                <Select.Option value="1">Mỗi giờ</Select.Option>
+                <Select.Option value="2">Toàn bộ</Select.Option>
             </Select>
         </Form.Item>
     );
@@ -61,10 +82,10 @@ export default function PostJob() {
         <AuthorizeView role={ROLES.USER}>
             <div
                 style={{
-                    textAlign: "center"
+                    textAlign: "center",
                 }}
             >
-                <h2>Thôn tin job</h2>
+                <h2>Thông tin job</h2>
             </div>
 
             <Flex
@@ -73,11 +94,10 @@ export default function PostJob() {
                 style={{
                     alignItems: "center",
                     width: "100%",
-                    padding: 20
+                    padding: 20,
                 }}
                 align="center"
             >
-
                 <Form
                     {...layout}
                     name="nest-messages"
@@ -91,7 +111,11 @@ export default function PostJob() {
                     }}
                     initialValues={{
                         paymentType: "1",
-                        dateTime: dayjs()
+                        dateTime: dayjs(),
+                    }}
+
+                    validateMessages={{
+                        required: "Vui lòng nhập các field này."
                     }}
                 >
                     <Form.Item
@@ -142,16 +166,15 @@ export default function PostJob() {
 
                     <Form.Item
                         name="dateTime"
-                        label="Thời gian"
+                        label="Thời gian thực hiện"
                         rules={[
                             {
                                 required: true,
                             },
                         ]}
                     >
-                        <DatePicker />
+                        <DatePicker minDate={dayjs()} />
                     </Form.Item>
-
 
                     <Form.Item
                         name="requried"
@@ -174,22 +197,30 @@ export default function PostJob() {
                             },
                         ]}
                     >
-                        <InputNumber addonBefore={prefixSelector} />
+                        <InputNumber
+                            addonBefore={prefixSelector}
+                            min={10000}
+                            width={"100%"}
+                            style={{ width: "100%" }}
+                            formatter={(value) =>
+                                `đ ${value}`.replace(
+                                    /\B(?=(\d{3})+(?!\d))/g,
+                                    ","
+                                )
+                            }
+                            parser={(value) => value.replace(/\đ\s?|(,*)/g, "")}
+                        />
                     </Form.Item>
 
                     <Form.Item
                         name={"services"}
                         label="Dịch vụ muốn thuê?"
-                        tooltip={"Chúng tôi sẽ gửi thông báo tới cho những người gần bạn và có dịch vụ bạn đang tìm."}
+                        tooltip={
+                            "Chúng tôi sẽ gửi thông báo tới cho những người gần bạn và có dịch vụ bạn đang tìm."
+                        }
                     >
-                        <Select
-                            options={services}
-                            mode="multiple"
-                        >
-
-                        </Select>
+                        <Select options={services} mode="multiple"></Select>
                     </Form.Item>
-
 
                     <Form.Item
                         wrapperCol={{
