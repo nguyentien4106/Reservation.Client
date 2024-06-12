@@ -5,13 +5,13 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine as build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 as build
 
 ARG BUILD_CONFIGURATION=Release
 
 WORKDIR /src 
 
-COPY ["Reservation.Server/Reservation.Server.csproj", "Reservation.Server/"] 
+COPY ["Reservation.API/Reservation.API.csproj", "Reservation.API/"] 
 
 RUN dotnet restore "Reservation.Server/Reservation.Server.csproj"
 
