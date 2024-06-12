@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Reservation.Server.Data.Entities;
+using Reservation.Server.Serivces.Jobs;
 using System.Reflection.Emit;
 
 namespace Reservation.Server.Data
@@ -51,6 +52,7 @@ namespace Reservation.Server.Data
                 .WithMany(s => s.CollaboratorServices)
                 .HasForeignKey(cs => cs.ServiceId);
 
+
             builder.Entity<JobService>()
                 .HasKey(cs => new { cs.ApplicationUserId, cs.ServiceId });
 
@@ -76,6 +78,12 @@ namespace Reservation.Server.Data
                 .HasOne(hr => hr.ApplicationUser)
                 .WithMany(k => k.HireRequests)
                 .HasForeignKey(c => c.ApplicationUserId);
+
+            builder.Entity<CollaboratorService>().Property(e => e.Price).HasPrecision(18, 2);
+            builder.Entity<Order>().Property(e => e.Price).HasPrecision(18, 2);
+            builder.Entity<Order>().Property(e => e.Amount).HasPrecision(18, 2);
+            builder.Entity<Job>().Property(e => e.Cast).HasPrecision(18, 2);
+
         }
 
     }
