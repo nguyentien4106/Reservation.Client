@@ -2,10 +2,13 @@
 using Reservation.API.Serivces.Order;
 using Reservation.API.Models.DTO.Auth;
 using Reservation.API.Models.DTO.Home;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Reservation.API.Controllers
 {
+    [Route("[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class OrderController(IOrderService service) : ControllerBase
     {
         private readonly IOrderService _orderService = service;

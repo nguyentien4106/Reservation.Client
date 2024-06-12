@@ -37,11 +37,11 @@ namespace Reservation.API.Profile
 
             CreateMap<Review, ReviewDTO>().ReverseMap();
 
-            CreateMap<JobDTO, Job>().ReverseMap();
+            CreateMap<JobDTO, Job>();
+
+            CreateMap<Job, JobDTO>().ForMember(item => item.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName));
 
             CreateMap<JobServiceDTO, JobService>().ReverseMap();
-
-
         }
     }
 }

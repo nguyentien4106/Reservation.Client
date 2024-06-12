@@ -9,7 +9,7 @@ namespace Reservation.API.Data
     
         public Collaborator? CollaboratorProfile { get; set; }
 
-        public List<Order> HireRequests { get; set; } = [];
+        public List<Order> Orders { get; set; } = [];
 
         public List<JobService> JobServices { get; set; } = [];
     }

@@ -76,7 +76,7 @@ namespace Reservation.API.Data
 
             builder.Entity<Order>()
                 .HasOne(hr => hr.ApplicationUser)
-                .WithMany(k => k.HireRequests)
+                .WithMany(k => k.Orders)
                 .HasForeignKey(c => c.ApplicationUserId);
 
             builder.Entity<CollaboratorService>().Property(e => e.Price).HasPrecision(18, 2);

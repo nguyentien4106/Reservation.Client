@@ -4,14 +4,25 @@ import "./index.css";
 import DataService from "../../lib/DataService";
 import { JOBS_PATH } from "../../constant/urls";
 import Job from "../../components/jobs/Job";
+import { useDispatch } from "react-redux";
+import { hide, show } from "@/state/loading/loadingSlice";
+
+
 export default function Jobs() {
     const [jobs, setJobs] = useState([]);
     const [seach, setSearch] = useState("")
+    const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch(show())
         DataService.get(JOBS_PATH.getAll).then((res) => {
-            console.log(res.data)
             setJobs(res.data.data);
+        })
+        .catch(err => {
+            alert(err)
+        })
+        .finally(() => {
+            dispatch(hide())
         });
     }, []);
 

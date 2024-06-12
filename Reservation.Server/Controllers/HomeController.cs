@@ -20,18 +20,5 @@ namespace Reservation.API.Controllers
         {
             return await _homeService.GetAllAsync();
         }
-
-        //[HttpGet]
-        
-        //public async Task<AppResponse<List<CollaboratorDTO>>> GetAllFilter([FromQuery] string city, string district, string sex, int orderType)
-        //{
-        //    return await _homeService.GetAllAsync(city, district, sex, orderType);
-        //}
-
-        //[HttpPost]
-        //public async Task<AppResponse<bool>> CreateOrder(OrderDTO request)
-        //{
-        //    return await _homeService.CreateOrderAsync(request);
-        //}
     }
 }

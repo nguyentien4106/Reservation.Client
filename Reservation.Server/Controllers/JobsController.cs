@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Reservation.API.Data.Entities;
 using Reservation.API.Models.DTO.Auth;
 using Reservation.API.Models.DTO.Jobs;
 using Reservation.API.Serivces.Jobs;
@@ -23,6 +24,12 @@ namespace Reservation.API.Controllers
         public async Task<AppResponse<bool>> CreateJob(JobDTO job)
         {
             return await _service.CreateJobAsync(job);
+        }
+
+        [HttpPost]
+        public async Task<AppResponse<bool>> ApplyJob()
+        {
+            return await _service.ApplyJobAsync();
         }
     }
 }

@@ -26,5 +26,7 @@ namespace Reservation.API.Models.DTO.Jobs
 
         public DateTime? CreatedDate { get; set; }
 
+        public string UserName { get; set; }
+
     }
 }

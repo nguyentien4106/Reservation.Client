@@ -16,12 +16,6 @@ namespace Reservation.API.Controllers
     {
         private readonly ICustomerService _customerService = customerService;
 
-        //[HttpGet]
-        //public async Task<AppResponse<List<OrderDTO>>> GetOrders(string applicationUserId)
-        //{
-        //    return await _customerService.GetOrdersAsync(applicationUserId);
-        //}
-
         [HttpPost]
         public async Task<AppResponse<OrderDTO>> AddReview(ReviewDTO review)
         {

@@ -2,15 +2,18 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import { PAYMENT_TYPES } from "../../constant/settings";
 import { getUser, showMoney } from "../../lib/helper";
-import { Button, Divider, Typography } from "antd";
+import { Button, Divider, Typography, Modal  } from "antd";
+import ModalJob from "./ModalJob";
 
 export default function Job({ job }) {
     const [expanded, setExpanded] = useState(false);
-    
+    const [open, setOpen] = useState(false);
+    console.log(job)
     const handleApply = () => {
-        console.log(getUser())
+        setOpen(true)
     }
-    
+
+
     return (
 
         <>
@@ -103,6 +106,11 @@ export default function Job({ job }) {
                 </div>
             </section>
             <Divider />
+            <ModalJob 
+                job={job} 
+                open={open}
+                close={() => setOpen(false)}
+            />
         </>
     );
 }

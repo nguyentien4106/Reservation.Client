@@ -35,7 +35,12 @@ namespace Reservation.API.Serivces.Jobs
 
         public async Task<AppResponse<List<JobDTO>>> GetAll()
         {
-            var jobs = await _context.Jobs.Include(item => item.JobServices).ThenInclude(item => item.Service).ToListAsync();
+            var jobs = await _context.Jobs
+                .Include(item => item.ApplicationUser)
+                .Include(item => item.JobServices)
+                .ThenInclude(item => item.Service)
+                .ToListAsync();
+
             var result = _mapper.Map<List<JobDTO>>(jobs);
 
             return new AppResponse<List<JobDTO>>().SetSuccessResponse(result);
