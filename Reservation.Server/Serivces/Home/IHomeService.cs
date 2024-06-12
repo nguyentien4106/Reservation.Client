@@ -1,8 +1,8 @@
-﻿using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Collaborator;
-using Reservation.Server.Models.DTO.Home;
+﻿using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Collaborator;
+using Reservation.API.Models.DTO.Home;
 
-namespace Reservation.Server.Serivces.Home
+namespace Reservation.API.Serivces.Home
 {
     public interface IHomeService
     {

@@ -1,11 +1,11 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Reservation.Server.Data;
-using Reservation.Server.Models.DTO.Auth;
+using Reservation.API.Data;
+using Reservation.API.Models.DTO.Auth;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Reservation.Server.Serivces.Auth
+namespace Reservation.API.Serivces.Auth
 {
     public class TokenUtil
     {

@@ -1,4 +1,4 @@
-﻿using Reservation.Server.Data;
+﻿using Reservation.API.Data;
 
 namespace Reservation.API.Models.DTO.Jobs
 {

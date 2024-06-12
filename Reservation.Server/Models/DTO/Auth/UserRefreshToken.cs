@@ -1,4 +1,4 @@
-﻿namespace Reservation.Server.Models.DTO.Auth
+﻿namespace Reservation.API.Models.DTO.Auth
 {
     public class UserRefreshToken
     {

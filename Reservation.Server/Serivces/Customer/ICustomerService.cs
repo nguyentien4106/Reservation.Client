@@ -1,9 +1,9 @@
-﻿using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Customer;
-using Reservation.Server.Models.DTO.Home;
-using Reservation.Server.Models.DTO.Jobs;
+﻿using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Customer;
+using Reservation.API.Models.DTO.Home;
+using Reservation.API.Models.DTO.Jobs;
 
-namespace Reservation.Server.Serivces.Customer
+namespace Reservation.API.Serivces.Customer
 {
     public interface ICustomerService
     {
@@ -11,7 +11,7 @@ namespace Reservation.Server.Serivces.Customer
 
         Task<AppResponse<OrderDTO>> AddReviewAsync(ReviewDTO review);
 
-        Task<AppResponse<bool>> CreateOrderAsync(OrderDTO request);
+        //Task<AppResponse<bool>> CreateOrderAsync(OrderDTO request);
 
         Task<AppResponse<bool>> CreateJobAsync(JobDTO job);
 

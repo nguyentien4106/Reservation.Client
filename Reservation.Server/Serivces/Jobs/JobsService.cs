@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Reservation.Server.Data;
-using Reservation.Server.Data.Entities;
-using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Jobs;
-using Reservation.Server.Serivces.Email;
+using Reservation.API.Data;
+using Reservation.API.Data.Entities;
+using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Jobs;
+using Reservation.API.Serivces.Email;
 
-namespace Reservation.Server.Serivces.Jobs
+namespace Reservation.API.Serivces.Jobs
 {
     public class JobsService(ApplicationDbContext context, IMapper mapper, IEmailService emailService) : IJobsService
     {

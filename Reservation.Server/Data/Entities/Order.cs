@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Reservation.Server.Data.Entities
+namespace Reservation.API.Data.Entities
 {
     public class Order
     {

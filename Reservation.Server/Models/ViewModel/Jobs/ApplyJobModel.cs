@@ -1,4 +1,4 @@
-﻿namespace Reservation.Server.Models.ViewModel.Jobs
+﻿namespace Reservation.API.Models.ViewModel.Jobs
 {
     public class ApplyJobModel
     {

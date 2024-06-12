@@ -2,23 +2,24 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Reservation.Server.Profile;
-using Reservation.Server.Data;
-using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Serivces.Auth;
-using Reservation.Server.Serivces.Email;
+using Reservation.API.Profile;
+using Reservation.API.Data;
+using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Serivces.Auth;
+using Reservation.API.Serivces.Email;
 using System.Security.Claims;
 using System.Text;
-using Reservation.Server.Serivces.UserServiceRegister;
-using Reservation.Server.Serivces.Service;
-using Reservation.Server.Serivces.Home;
+using Reservation.API.Serivces.UserServiceRegister;
+using Reservation.API.Serivces.Service;
+using Reservation.API.Serivces.Home;
 using Microsoft.OpenApi.Models;
-using Reservation.Server.Middleware;
-using Reservation.Server.Serivces.ManageCollaborator;
-using Reservation.Server.Serivces.Customer;
-using Reservation.Server.Serivces.Jobs;
+using Reservation.API.Middleware;
+using Reservation.API.Serivces.ManageCollaborator;
+using Reservation.API.Serivces.Customer;
+using Reservation.API.Serivces.Jobs;
+using Reservation.API.Serivces.Order;
 
-namespace Reservation.Server
+namespace Reservation.API
 {
     public class Program
     {
@@ -55,6 +56,7 @@ namespace Reservation.Server
             builder.Services.AddTransient<IManageCollaboratorService, ManageCollaboratorService>();
             builder.Services.AddTransient<ICustomerService, CustomerService>();
             builder.Services.AddTransient<IJobsService, JobsService>();
+            builder.Services.AddTransient<IOrderService, OrderService>();
 
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
             builder.Services.AddControllers();

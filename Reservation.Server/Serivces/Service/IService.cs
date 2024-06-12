@@ -1,7 +1,7 @@
-﻿using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Service;
+﻿using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Service;
 
-namespace Reservation.Server.Serivces.Service
+namespace Reservation.API.Serivces.Service
 {
     public interface IService
     {

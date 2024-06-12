@@ -4,7 +4,7 @@ import { Form, Input, InputNumber, Button, App, Modal, Select } from "antd";
 import { createRef } from "react";
 import { Link } from "react-router-dom";
 import DataService from "../../../../lib/DataService";
-import { CUSTOMER_PATH, HOME_PATH } from "../../../../constant/urls";
+import { CUSTOMER_PATH, HOME_PATH, ORDER_PATH } from "../../../../constant/urls";
 import { useDispatch } from "react-redux";
 import { hide, show } from "@/state/loading/loadingSlice";
 
@@ -45,7 +45,7 @@ const OrderContent = ({ collaboratorEmail, collaboratorId, nickName, collaborato
             amount: time * price + tips
         });
         dispatch(show())
-        DataService.post(CUSTOMER_PATH.createOrder, params)
+        DataService.post(ORDER_PATH.createOrder, params)
             .then((res) => {
                 const { data } = res
                 if(data.isSucceed){

@@ -34,7 +34,7 @@ function Collaborators() {
         dispatch(show());
         const params = new URLSearchParams(filter);
 
-        DataService.get(HOME_PATH.getAllFilter + params)
+        DataService.get(COLLABORATOR_PATH.getAllFilter + params)
             .then((res) => {
                 const { data } = res.data;
                 setCollaborators(data);

@@ -6,6 +6,7 @@ import { COLLABORATOR_PATH } from "@/constant/urls";
 import { useDispatch } from "react-redux";
 import { show, hide } from "@/state/loading/loadingSlice";
 import OrderTable from "../../common/OrderTable";
+import { ORDER_PATH } from "../../../constant/urls";
 
 const { Text } = Typography
 const ActionTypes = {
@@ -72,7 +73,7 @@ const CollaboratorOrders = ({ src}) => {
     const handleAction = (customer, status) => {
         dispatch(show())
         const queryString = `requestId=${customer.id}&status=${status}`
-        DataService.get(COLLABORATOR_PATH.confrimRequest + queryString)
+        DataService.get(ORDER_PATH.confirmOrder + queryString)
             .then(res => {
                 const { data } = res
                 setSource(prev => prev.map(item => item.id === data.data.id ? data.data : item))

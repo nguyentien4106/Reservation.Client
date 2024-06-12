@@ -1,6 +1,6 @@
 ﻿using MimeKit;
 
-namespace Reservation.Server.Models.DTO.Email
+namespace Reservation.API.Models.DTO.Email
 {
     public class EmailContent(MimeEntity body)
     {

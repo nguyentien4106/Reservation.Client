@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Reservation.Server.Data;
-using Reservation.Server.Data.Entities;
-using Reservation.Server.Extensions;
-using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Collaborator;
-using Reservation.Server.Models.DTO.Email;
-using Reservation.Server.Models.DTO.Home;
-using Reservation.Server.Models.Enum;
-using Reservation.Server.Serivces.Email;
+using Reservation.API.Data;
+using Reservation.API.Data.Entities;
+using Reservation.API.Extensions;
+using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Collaborator;
+using Reservation.API.Models.DTO.Email;
+using Reservation.API.Models.DTO.Home;
+using Reservation.API.Models.Enum;
+using Reservation.API.Serivces.Email;
 
-namespace Reservation.Server.Serivces.Home
+namespace Reservation.API.Serivces.Home
 {
     public class HomeService(ApplicationDbContext context, IMapper mapper, IEmailService emailService) : IHomeService
     {

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Reservation.Server.Migrations
+namespace Reservation.API.Migrations
 {
     /// <inheritdoc />
     public partial class addmoreinfo1 : Migration

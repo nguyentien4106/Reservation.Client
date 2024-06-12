@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.WebUtilities;
-using Reservation.Server.Data;
-using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Auth.Request;
-using Reservation.Server.Models.DTO.Auth.Response;
-using Reservation.Server.Models.DTO.Email;
-using Reservation.Server.Serivces.Email;
+using Reservation.API.Data;
+using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Auth.Request;
+using Reservation.API.Models.DTO.Auth.Response;
+using Reservation.API.Models.DTO.Email;
+using Reservation.API.Serivces.Email;
 using System.Security.Claims;
 using System.Security.Policy;
 using System.Text.Encodings.Web;
@@ -15,10 +15,10 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using NuGet.Common;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
-using Reservation.Server.Models.Request;
+using Reservation.API.Models.Request;
 using MimeKit;
 
-namespace Reservation.Server.Serivces.Auth
+namespace Reservation.API.Serivces.Auth
 {
     public class AuthService(UserManager<ApplicationUser> userManager,
                                 SignInManager<ApplicationUser> signInManager,

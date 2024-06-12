@@ -1,4 +1,4 @@
-﻿namespace Reservation.Server.Models.DTO.UserServicesRegister
+﻿namespace Reservation.API.Models.DTO.UserServicesRegister
 {
     public class RegisterDTO
     {

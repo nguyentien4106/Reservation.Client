@@ -1,4 +1,4 @@
-﻿namespace Reservation.Server.Models.DTO.Auth.Request
+﻿namespace Reservation.API.Models.DTO.Auth.Request
 {
     public class UserRegisterRequest
     {

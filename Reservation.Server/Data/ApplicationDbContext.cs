@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Reservation.Server.Data.Entities;
-using Reservation.Server.Serivces.Jobs;
+using Reservation.API.Data.Entities;
+using Reservation.API.Serivces.Jobs;
 using System.Reflection.Emit;
 
-namespace Reservation.Server.Data
+namespace Reservation.API.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

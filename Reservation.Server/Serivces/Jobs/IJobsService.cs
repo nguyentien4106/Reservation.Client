@@ -1,7 +1,7 @@
-﻿using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Jobs;
+﻿using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Jobs;
 
-namespace Reservation.Server.Serivces.Jobs
+namespace Reservation.API.Serivces.Jobs
 {
     public interface IJobsService
     {

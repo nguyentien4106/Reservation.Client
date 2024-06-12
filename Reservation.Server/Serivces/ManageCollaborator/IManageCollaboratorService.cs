@@ -1,7 +1,7 @@
-﻿using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Collaborator;
+﻿using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Collaborator;
 
-namespace Reservation.Server.Serivces.ManageCollaborator
+namespace Reservation.API.Serivces.ManageCollaborator
 {
     
     public interface IManageCollaboratorService

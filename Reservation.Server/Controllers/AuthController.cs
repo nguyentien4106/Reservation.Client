@@ -4,16 +4,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Reservation.Server.Data;
-using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Auth.Request;
-using Reservation.Server.Models.DTO.Auth.Response;
-using Reservation.Server.Models.Request;
-using Reservation.Server.Serivces.Auth;
+using Reservation.API.Data;
+using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Auth.Request;
+using Reservation.API.Models.DTO.Auth.Response;
+using Reservation.API.Models.Request;
+using Reservation.API.Serivces.Auth;
 using System.Security.Claims;
 using System.Security.Policy;
 
-namespace Reservation.Server.Controllers
+namespace Reservation.API.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]

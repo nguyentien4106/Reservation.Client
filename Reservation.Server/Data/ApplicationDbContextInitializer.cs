@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Reservation.Server.Data.Entities;
+using Reservation.API.Data.Entities;
 using System.Security.Claims;
 
-namespace Reservation.Server.Data
+namespace Reservation.API.Data
 {
     public class ApplicationDbContextInitializer(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
     {

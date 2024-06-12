@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Model.Strings;
-using Reservation.Server.Data;
-using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Collaborator;
-using Reservation.Server.Models.DTO.Home;
-using Reservation.Server.Models.DTO.UserServicesRegister;
-using Reservation.Server.Models.Request;
-using Reservation.Server.Serivces.UserServiceRegister;
+using Reservation.API.Data;
+using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Collaborator;
+using Reservation.API.Models.DTO.Home;
+using Reservation.API.Models.DTO.UserServicesRegister;
+using Reservation.API.Models.Request;
+using Reservation.API.Serivces.UserServiceRegister;
 
-namespace Reservation.Server.Controllers
+namespace Reservation.API.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
@@ -65,15 +65,10 @@ namespace Reservation.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<AppResponse<List<OrderDTO>>> GetRequests(Guid? collaboratorId)
-        {
-            return await _collaboratorService.GetRequestsAsync(collaboratorId);
-        }
 
-        [HttpGet]
-        public async Task<AppResponse<OrderDTO>> ComfirmRequest(Guid? requestId, int status)
+        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllFilter([FromQuery] string city, string district, string sex, int orderType)
         {
-            return await _collaboratorService.ComfirmRequestAsync(requestId, status);
+            return await _collaboratorService.GetAllAsync(city, district, sex, orderType);
         }
     }
 }

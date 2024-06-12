@@ -1,6 +1,6 @@
 ﻿using Reservation.API.Models.DTO.Jobs;
 
-namespace Reservation.Server.Models.DTO.Jobs
+namespace Reservation.API.Models.DTO.Jobs
 {
     public class JobDTO
     {

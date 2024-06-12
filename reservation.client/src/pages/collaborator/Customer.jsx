@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import DataService from "../../lib/DataService";
-import { COLLABORATOR_PATH } from "../../constant/urls";
+import { COLLABORATOR_PATH, ORDER_PATH } from "../../constant/urls";
 import { COLLABORATOR_ROUTE_PATH } from "../../constant/paths";
 import { UserContext } from "../../context/useUserContext";
 import { Flex, Typography } from "antd";
@@ -16,7 +16,7 @@ export default function Customer() {
 
     useEffect(() => {
         if (user?.collaboratorId)
-            DataService.get(COLLABORATOR_PATH.getRequests + user.collaboratorId).then(res => {
+            DataService.get(ORDER_PATH.getOrders + user.collaboratorId).then(res => {
                 setCustomers(res.data.data)
             }).catch(console.error)
     }, [user])

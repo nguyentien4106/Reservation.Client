@@ -20,13 +20,14 @@ export const COLLABORATOR_PATH = {
     getProfileByEmail: "Collaborator/GetProfileByEmail?email=",
     getAll: "Collaborator/GetAll?type=",
     changeStatus: "Collaborator/ChangeStatus",
-    getRequests: "Collaborator/GetRequests?collaboratorId=",
-    confrimRequest: "Collaborator/ComfirmRequest?"
+    getAllFilter: "Collaborator/GetAllFilter?"
+    // getRequests: "Collaborator/GetRequests?collaboratorId=",
+    // confrimRequest: "Collaborator/ComfirmRequest?"
 }
 
 export const HOME_PATH = {
     getAll: "Home/GetAll",
-    getAllFilter: "Home/GetAllFilter?",
+    // getAllFilter: "Home/GetAllFilter?",
     createOrder: "Home/CreateOrder"
 }
 
@@ -35,12 +36,18 @@ export const MANAGE_COLLABORATOR_PATH = {
 }
 
 export const CUSTOMER_PATH = {
-    getOrders: "Customer/GetOrders?applicationUserId=",
+    // getOrders: "Customer/GetOrders?applicationUserId=",
     addReview: "Customer/AddReview",
-    createOrder: "Customer/CreateOrder",
+    // createOrder: "Customer/CreateOrder",
 }
 
 export const JOBS_PATH = {
     getAll: "Jobs/GetAll",
     createJob: "Jobs/CreateJob",
+}
+
+export const ORDER_PATH = {
+    getOrders: "Order/GetOrders?collaboratorId=",
+    confirmOrder: "Order/ConfirmOrder?",
+    createOrder: "Order/CreateOrder"
 }

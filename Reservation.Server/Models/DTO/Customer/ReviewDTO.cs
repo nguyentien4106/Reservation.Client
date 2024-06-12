@@ -1,5 +1,5 @@
 ﻿
-namespace Reservation.Server.Models.DTO.Customer
+namespace Reservation.API.Models.DTO.Customer
 {
     public class ReviewDTO
     {

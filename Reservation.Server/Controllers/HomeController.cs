@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Collaborator;
-using Reservation.Server.Models.DTO.Home;
-using Reservation.Server.Serivces.Home;
+using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Collaborator;
+using Reservation.API.Models.DTO.Home;
+using Reservation.API.Serivces.Home;
 
-namespace Reservation.Server.Controllers
+namespace Reservation.API.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
@@ -21,12 +21,12 @@ namespace Reservation.Server.Controllers
             return await _homeService.GetAllAsync();
         }
 
-        [HttpGet]
+        //[HttpGet]
         
-        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllFilter([FromQuery] string city, string district, string sex, int orderType)
-        {
-            return await _homeService.GetAllAsync(city, district, sex, orderType);
-        }
+        //public async Task<AppResponse<List<CollaboratorDTO>>> GetAllFilter([FromQuery] string city, string district, string sex, int orderType)
+        //{
+        //    return await _homeService.GetAllAsync(city, district, sex, orderType);
+        //}
 
         //[HttpPost]
         //public async Task<AppResponse<bool>> CreateOrder(OrderDTO request)

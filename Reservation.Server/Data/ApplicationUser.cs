@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Reservation.Server.Data.Entities;
+using Reservation.API.Data.Entities;
 
-namespace Reservation.Server.Data
+namespace Reservation.API.Data
 {
     public class ApplicationUser : IdentityUser
     {

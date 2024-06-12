@@ -13,12 +13,11 @@ import {
     Flex,
     App,
 } from "antd";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import locationAPI from "../../api/locationAPI";
 import useFetchServices from "../../hooks/useFetchServices";
 import DataService from "../../lib/DataService";
 import dayjs from "dayjs";
-import { CUSTOMER_PATH, JOBS_PATH } from "../../constant/urls";
+import { JOBS_PATH } from "../../constant/urls";
 import { getUser } from "../../lib/helper";
 import { useDispatch } from "react-redux";
 import { hide, show } from "@/state/loading/loadingSlice";

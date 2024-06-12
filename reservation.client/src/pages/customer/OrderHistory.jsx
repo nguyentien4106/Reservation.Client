@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react'
 import DataService from '../../lib/DataService'
-import { CUSTOMER_PATH } from '../../constant/urls'
+import { ORDER_PATH } from '../../constant/urls'
 import { App, Flex, Typography } from 'antd'
 import { getUser } from '../../lib/helper'
 import "./orderHistory.css"
@@ -17,7 +17,7 @@ function OrderHistory() {
     useEffect(() => {
         const user = getUser()
         if(user){
-            DataService.get(CUSTOMER_PATH.getOrders + user?.id).then(res => {
+            DataService.get(ORDER_PATH.getOrders + user?.id).then(res => {
                 const { data } = res
                 if (data.isSucceed) {
                     setCustomers(data.data)

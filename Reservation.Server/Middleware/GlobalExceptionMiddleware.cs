@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
-using Reservation.Server.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Auth;
 using System.Net;
 using System.Text.Json;
 
-namespace Reservation.Server.Middleware
+namespace Reservation.API.Middleware
 {
     public class GlobalExceptionMiddleware(RequestDelegate next)
     {

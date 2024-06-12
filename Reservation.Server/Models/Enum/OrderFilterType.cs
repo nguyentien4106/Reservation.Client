@@ -1,4 +1,4 @@
-﻿namespace Reservation.Server.Models.Enum
+﻿namespace Reservation.API.Models.Enum
 {
     public enum OrderFilterType
     {

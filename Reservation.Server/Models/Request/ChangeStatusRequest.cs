@@ -1,4 +1,4 @@
-﻿namespace Reservation.Server.Models.Request
+﻿namespace Reservation.API.Models.Request
 {
     public class ChangeStatusRequest
     {

@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Auth.Request;
-using Reservation.Server.Models.DTO.Auth.Response;
-using Reservation.Server.Models.Request;
+using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Auth.Request;
+using Reservation.API.Models.DTO.Auth.Response;
+using Reservation.API.Models.Request;
 using System.Security.Claims;
 
-namespace Reservation.Server.Serivces.Auth
+namespace Reservation.API.Serivces.Auth
 {
     public interface IAuthService
     {

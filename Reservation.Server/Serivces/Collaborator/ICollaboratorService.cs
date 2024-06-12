@@ -1,9 +1,9 @@
-﻿using Reservation.Server.Data;
-using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Collaborator;
-using Reservation.Server.Models.DTO.Home;
+﻿using Reservation.API.Data;
+using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Collaborator;
+using Reservation.API.Models.DTO.Home;
 
-namespace Reservation.Server.Serivces.UserServiceRegister
+namespace Reservation.API.Serivces.UserServiceRegister
 {
     public interface ICollaboratorService
     {
@@ -21,8 +21,11 @@ namespace Reservation.Server.Serivces.UserServiceRegister
 
         Task<AppResponse<string>> ChangeStatusAsync(Guid? collaboratorId, int status);
 
-        Task<AppResponse<List<OrderDTO>>> GetRequestsAsync(Guid? collaboratorId);
+        //Task<AppResponse<List<OrderDTO>>> GetRequestsAsync(Guid? collaboratorId);
 
-        Task<AppResponse<OrderDTO>> ComfirmRequestAsync(Guid? requestId, int status);
+        //Task<AppResponse<OrderDTO>> ComfirmRequestAsync(Guid? requestId, int status);
+
+        Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(string city, string district, string sex, int maxAge);
+
     }
 }

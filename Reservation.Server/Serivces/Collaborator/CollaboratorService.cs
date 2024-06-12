@@ -1,17 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Reservation.Server.Data;
-using Reservation.Server.Data.Entities;
-using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Collaborator;
-using Reservation.Server.Models.DTO.Email;
-using Reservation.Server.Models.DTO.Home;
-using Reservation.Server.Models.Enum;
-using Reservation.Server.Serivces.Email;
+using Reservation.API.Data;
+using Reservation.API.Data.Entities;
+using Reservation.API.Extensions;
+using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Collaborator;
+using Reservation.API.Models.DTO.Email;
+using Reservation.API.Models.DTO.Home;
+using Reservation.API.Models.Enum;
+using Reservation.API.Serivces.Email;
 using System.Linq.Expressions;
 
-namespace Reservation.Server.Serivces.UserServiceRegister
+namespace Reservation.API.Serivces.UserServiceRegister
 {
     public class CollaboratorService(
         ApplicationDbContext context, 
@@ -25,6 +26,7 @@ namespace Reservation.Server.Serivces.UserServiceRegister
         private readonly UserManager<ApplicationUser> _userManager = userManager;
         private readonly IMapper _mapper = mapper;
         private readonly IEmailService _emailService = emailService;
+        private const string All = "All";
 
         public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(int type)
         {
@@ -202,57 +204,106 @@ namespace Reservation.Server.Serivces.UserServiceRegister
             await _context.SaveChangesAsync();
         }
 
-        public async Task<AppResponse<List<OrderDTO>>> GetRequestsAsync(Guid? collaboratorId)
+        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(string city, string district, string sex, int orderType)
         {
+            var query = _context.Collaborators.Include(item => item.View).AsQueryable();
 
-            if (!collaboratorId.HasValue)
+            query = query.Where(collaborator => city == All || collaborator.City == city);
+
+            query = query.Where(collaborator => district == All || collaborator.District == district);
+
+            query = query.Where(collaborator => sex == All || collaborator.Sex == sex);
+
+            var result = await query.ToListAsync();
+
+            if (result == null)
             {
-                return new AppResponse<List<OrderDTO>>().SetErrorResponse("user", "Không tìm thấy User");
+                return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse([]);
+            }
+            var collaboratorDtos = _mapper.Map<List<CollaboratorDTO>>(result);
+
+            switch (orderType)
+            {
+                case (int)OrderFilterType.PriceIncreasing:
+                    collaboratorDtos = collaboratorDtos.OrderByPrice();
+                    break;
+
+                case (int)OrderFilterType.PriceDecreasing:
+                    collaboratorDtos = collaboratorDtos.OrderByPriceDecreasing();
+                    break;
+
+                case (int)OrderFilterType.RateCountIncreasing:
+                    collaboratorDtos = collaboratorDtos.OrderByRateCount();
+                    break;
+
+                case (int)OrderFilterType.RateCountDecreasing:
+                    collaboratorDtos = collaboratorDtos.OrderByRateCountDecreasing();
+                    break;
+
+                case (int)OrderFilterType.AgeIncreasing:
+                    collaboratorDtos = collaboratorDtos.OrderByAge();
+                    break;
+
+                case (int)OrderFilterType.AgeDecreasing:
+                    collaboratorDtos = collaboratorDtos.OrderByAgeDecreasing();
+                    break;
             }
 
-            var requests = await _context.Orders.Where(item => item.CollaboratorId == collaboratorId).ToListAsync();
-
-            return new AppResponse<List<OrderDTO>>().SetSuccessResponse(_mapper.Map<List<OrderDTO>>(requests));
-             
+            return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(collaboratorDtos);
         }
 
-        public async Task<AppResponse<OrderDTO>> ComfirmRequestAsync(Guid? requestId, int status)
-        {
-            if (!requestId.HasValue)
-            {
-                return new AppResponse<OrderDTO>().SetErrorResponse("bind", "Không tìm thấy request");
-            }
 
-            var request = await _context.Orders.SingleOrDefaultAsync(item => item.Id == requestId);
-            
-            if(request == null)
-            {
-                return new AppResponse<OrderDTO>().SetErrorResponse("request", "Không tìm thấy request trả về");
-            }
+        //public async Task<AppResponse<List<OrderDTO>>> GetRequestsAsync(Guid? collaboratorId)
+        //{
 
-            request.Status = status;
-            request.ConfirmedDate = DateTime.Now;
+        //    if (!collaboratorId.HasValue)
+        //    {
+        //        return new AppResponse<List<OrderDTO>>().SetErrorResponse("user", "Không tìm thấy User");
+        //    }
 
-            await _context.SaveChangesAsync();
+        //    var requests = await _context.Orders.Where(item => item.CollaboratorId == collaboratorId).ToListAsync();
 
-            var collaborator = await _context.Collaborators.SingleOrDefaultAsync(item => item.Id == request.CollaboratorId);
-            var email = new EmailContent()
-            {
-                ToEmail = request.Email,
-                ToName = request.Name,
-                Subject = "Thông báo mới về yêu cầu cho thuê",
-                Content = $"{collaborator?.NickName ?? ""} đã xác nhận yêu cầu cho thuê của bạn đã tạo vào hồi {request.CreatedDate}. Xin hãy kiểm tra lại trang phản hồi để biết thêm thông tin chi tiết và số diện thoại của CTV. Nếu xảy ra bất cứ vấn đề xin hãy liên lạc lại chúng tôi để giải quyết yêu cầu."
-            };
+        //    return new AppResponse<List<OrderDTO>>().SetSuccessResponse(_mapper.Map<List<OrderDTO>>(requests));
 
-            var sent = _emailService.SendMail(email);
+        //}
 
-            if (!sent)
-            {
-                return new AppResponse<OrderDTO>().SetErrorResponse("mail", "Đã xác nhận thành công nhưng chưa thể gửi email cho người yêu cầu");
-            }
+        //public async Task<AppResponse<OrderDTO>> ComfirmRequestAsync(Guid? requestId, int status)
+        //{
+        //    if (!requestId.HasValue)
+        //    {
+        //        return new AppResponse<OrderDTO>().SetErrorResponse("bind", "Không tìm thấy request");
+        //    }
 
-            return new AppResponse<OrderDTO>().SetSuccessResponse(_mapper.Map<OrderDTO>(request));
-        }
+        //    var request = await _context.Orders.SingleOrDefaultAsync(item => item.Id == requestId);
+
+        //    if(request == null)
+        //    {
+        //        return new AppResponse<OrderDTO>().SetErrorResponse("request", "Không tìm thấy request trả về");
+        //    }
+
+        //    request.Status = status;
+        //    request.ConfirmedDate = DateTime.Now;
+
+        //    await _context.SaveChangesAsync();
+
+        //    var collaborator = await _context.Collaborators.SingleOrDefaultAsync(item => item.Id == request.CollaboratorId);
+        //    var email = new EmailContent()
+        //    {
+        //        ToEmail = request.Email,
+        //        ToName = request.Name,
+        //        Subject = "Thông báo mới về yêu cầu cho thuê",
+        //        Content = $"{collaborator?.NickName ?? ""} đã xác nhận yêu cầu cho thuê của bạn đã tạo vào hồi {request.CreatedDate}. Xin hãy kiểm tra lại trang phản hồi để biết thêm thông tin chi tiết và số diện thoại của CTV. Nếu xảy ra bất cứ vấn đề xin hãy liên lạc lại chúng tôi để giải quyết yêu cầu."
+        //    };
+
+        //    var sent = _emailService.SendMail(email);
+
+        //    if (!sent)
+        //    {
+        //        return new AppResponse<OrderDTO>().SetErrorResponse("mail", "Đã xác nhận thành công nhưng chưa thể gửi email cho người yêu cầu");
+        //    }
+
+        //    return new AppResponse<OrderDTO>().SetSuccessResponse(_mapper.Map<OrderDTO>(request));
+        //}
     }
 
 

@@ -1,4 +1,4 @@
-﻿namespace Reservation.Server.Data.Entities
+﻿namespace Reservation.API.Data.Entities
 {
     public class Service
     {

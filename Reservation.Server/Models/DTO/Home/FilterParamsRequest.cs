@@ -1,4 +1,4 @@
-﻿namespace Reservation.Server.Models.DTO.Home
+﻿namespace Reservation.API.Models.DTO.Home
 {
     public class FilterParamsRequest
     {

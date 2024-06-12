@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Reservation.Server.Data;
-using Reservation.Server.Data.Entities;
-using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Service;
+using Reservation.API.Data;
+using Reservation.API.Data.Entities;
+using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Service;
 
-namespace Reservation.Server.Serivces.Service
+namespace Reservation.API.Serivces.Service
 {
     public class ServiceImpl : IService
     {

@@ -1,6 +1,6 @@
-﻿using Reservation.Server.Models.DTO.Customer;
+﻿using Reservation.API.Models.DTO.Customer;
 
-namespace Reservation.Server.Models.DTO.Home
+namespace Reservation.API.Models.DTO.Home
 {
     public class OrderDTO
     {

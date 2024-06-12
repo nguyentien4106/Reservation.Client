@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Reservation.Server.Data;
+using Reservation.API.Data;
 
 #nullable disable
 
-namespace Reservation.Server.Migrations
+namespace Reservation.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20240521063624_editfield1")]

@@ -1,6 +1,6 @@
-﻿using Reservation.Server.Models.DTO.Collaborator;
+﻿using Reservation.API.Models.DTO.Collaborator;
 
-namespace Reservation.Server.Extensions
+namespace Reservation.API.Extensions
 {
     public static class ListExtension
     {

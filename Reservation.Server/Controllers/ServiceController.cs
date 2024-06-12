@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Service;
-using Reservation.Server.Serivces.Service;
+using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Service;
+using Reservation.API.Serivces.Service;
 
-namespace Reservation.Server.Controllers
+namespace Reservation.API.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]

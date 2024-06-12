@@ -1,4 +1,4 @@
-﻿namespace Reservation.Server.Models.DTO.Collaborator
+﻿namespace Reservation.API.Models.DTO.Collaborator
 {
     public class CollaboratorServiceDTO
     {

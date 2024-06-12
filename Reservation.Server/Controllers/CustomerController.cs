@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Reservation.Server.Models.DTO.Auth;
-using Reservation.Server.Models.DTO.Customer;
-using Reservation.Server.Models.DTO.Home;
-using Reservation.Server.Models.DTO.Jobs;
-using Reservation.Server.Serivces.Customer;
+using Reservation.API.Models.DTO.Auth;
+using Reservation.API.Models.DTO.Customer;
+using Reservation.API.Models.DTO.Home;
+using Reservation.API.Models.DTO.Jobs;
+using Reservation.API.Serivces.Customer;
 
-namespace Reservation.Server.Controllers
+namespace Reservation.API.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
@@ -16,11 +16,11 @@ namespace Reservation.Server.Controllers
     {
         private readonly ICustomerService _customerService = customerService;
 
-        [HttpGet]
-        public async Task<AppResponse<List<OrderDTO>>> GetOrders(string applicationUserId)
-        {
-            return await _customerService.GetOrdersAsync(applicationUserId);
-        }
+        //[HttpGet]
+        //public async Task<AppResponse<List<OrderDTO>>> GetOrders(string applicationUserId)
+        //{
+        //    return await _customerService.GetOrdersAsync(applicationUserId);
+        //}
 
         [HttpPost]
         public async Task<AppResponse<OrderDTO>> AddReview(ReviewDTO review)
@@ -28,12 +28,5 @@ namespace Reservation.Server.Controllers
             return await _customerService.AddReviewAsync(review);
         }
 
-        [HttpPost]
-        public async Task<AppResponse<bool>> CreateOrder(OrderDTO request)
-        {
-            return await _customerService.CreateOrderAsync(request);
-        }
-
-        
     }
 }

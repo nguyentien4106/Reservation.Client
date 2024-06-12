@@ -1,4 +1,4 @@
-﻿namespace Reservation.Server.Models.DTO.Service
+﻿namespace Reservation.API.Models.DTO.Service
 {
     public class ServiceDTO
     {

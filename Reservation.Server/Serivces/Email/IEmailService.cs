@@ -1,8 +1,8 @@
 ﻿using MimeKit;
-using Reservation.Server.Models.DTO.Email;
-using Reservation.Server.Models.DTO.Home;
+using Reservation.API.Models.DTO.Email;
+using Reservation.API.Models.DTO.Home;
 
-namespace Reservation.Server.Serivces.Email
+namespace Reservation.API.Serivces.Email
 {
     public interface IEmailService
     {

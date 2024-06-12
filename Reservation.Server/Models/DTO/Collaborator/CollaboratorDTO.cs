@@ -1,9 +1,9 @@
-﻿using Reservation.Server.Data;
-using Reservation.Server.Models.DTO.Home;
-using Reservation.Server.Models.DTO.Service;
+﻿using Reservation.API.Data;
+using Reservation.API.Models.DTO.Home;
+using Reservation.API.Models.DTO.Service;
 using System.ComponentModel.DataAnnotations;
 
-namespace Reservation.Server.Models.DTO.Collaborator
+namespace Reservation.API.Models.DTO.Collaborator
 {
     public class CollaboratorDTO
     {
