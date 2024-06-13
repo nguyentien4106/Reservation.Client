@@ -26,7 +26,10 @@ namespace Reservation.API.Middleware
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             var response = new AppResponse<bool>().SetErrorResponse("message", exception.Message, context.Response.StatusCode);
-            response.SetErrorResponse("message1", exception.InnerException.Message);
+            if(exception.InnerException != null)
+            {
+                response.SetErrorResponse("message1", exception?.InnerException?.Message);
+            }
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
     }

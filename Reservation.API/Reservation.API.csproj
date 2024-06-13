@@ -42,7 +42,10 @@
   </ItemGroup>-->
 
   <ItemGroup>
-    <Folder Include="Models\DTO\Request\" />
+	  <Folder Include="Models\DTO\Request\" />
+	  <Content Include="Template\**">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
   </ItemGroup>
 
 </Project>
