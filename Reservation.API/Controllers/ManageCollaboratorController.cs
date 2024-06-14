@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Reservation.API.Models.DTO.Auth;
-using Reservation.API.Models.DTO.Collaborator;
-using Reservation.API.Models.Enum;
-using Reservation.API.Serivces.ManageCollaborator;
+using Reservation.Domain.Models.DTO.Auth;
+using Reservation.Domain.Models.DTO.Collaborator;
+using Reservation.Domain.Models.Enum;
+using Reservation.Application.Serivces.ManageCollaborator;
 
 namespace Reservation.API.Controllers
 {

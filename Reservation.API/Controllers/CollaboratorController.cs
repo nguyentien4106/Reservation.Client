@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Elfie.Model.Strings;
-using Reservation.API.Data;
-using Reservation.API.Models.DTO.Auth;
-using Reservation.API.Models.DTO.Collaborator;
-using Reservation.API.Models.DTO.Home;
-using Reservation.API.Models.DTO.UserServicesRegister;
-using Reservation.API.Models.Request;
-using Reservation.API.Serivces.UserServiceRegister;
+using Reservation.Infrastructure.Data;
+using Reservation.Domain.Models.DTO.Auth;
+using Reservation.Domain.Models.DTO.Collaborator;
+using Reservation.Domain.Models.DTO.Home;
+using Reservation.Domain.Models.DTO.UserServicesRegister;
+using Reservation.Domain.Models.Request;
+using Reservation.Application.Serivces.UserServiceRegister;
 
 namespace Reservation.API.Controllers
 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
-using Reservation.API.Models.DTO.Auth;
+using Reservation.Domain.Models.DTO.Auth;
 using System.Net;
 using System.Text.Json;
 

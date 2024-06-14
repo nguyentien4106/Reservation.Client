@@ -42,10 +42,9 @@
   </ItemGroup>-->
 
   <ItemGroup>
-	  <Folder Include="Models\DTO\Request\" />
-	  <Content Include="Template\**">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
+    <ProjectReference Include="..\Reservation.Application\Reservation.Application.csproj" />
+    <ProjectReference Include="..\Reservation.Domain\Reservation.Domain.csproj" />
+    <ProjectReference Include="..\Reservation.Infrastructure\Reservation.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

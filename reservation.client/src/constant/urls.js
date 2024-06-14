@@ -14,13 +14,13 @@ export const SERVICE_PATH = {
 }
 
 export const COLLABORATOR_PATH = {
-    add: "Collaborator/Add",
-    update: "Collaborator/Update",
-    getProfile: "Collaborator/GetProfile?collaboratorId=",
-    getProfileByEmail: "Collaborator/GetProfileByEmail?email=",
-    getAll: "Collaborator/GetAll?type=",
-    changeStatus: "Collaborator/ChangeStatus",
-    getAllFilter: "Collaborator/GetAllFilter?"
+    add: "Collaborators/Add",
+    update: "Collaborators/Update",
+    getProfile: "Collaborators/GetProfile?collaboratorId=",
+    getProfileByEmail: "Collaborators/GetProfileByEmail?email=",
+    getAll: "Collaborators/GetAll?type=",
+    changeStatus: "Collaborators/ChangeStatus",
+    getAllFilter: "Collaborators/GetAllFilter?"
 }
 
 export const HOME_PATH = {
@@ -37,8 +37,9 @@ export const CUSTOMER_PATH = {
 }
 
 export const JOBS_PATH = {
-    getAll: "Jobs/GetAll",
-    createJob: "Jobs/CreateJob",
+    getAll: "Jobs",
+    createJob: "Jobs",
+    applyJob: "Jobs/Apply"
 }
 
 export const ORDER_PATH = {

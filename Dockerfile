@@ -12,6 +12,9 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src 
 
 COPY ["Reservation.API/Reservation.API.csproj", "Reservation.API/"] 
+COPY ["Reservation.Infrastructure/Reservation.Infrastructure.csproj", "Reservation.API/"] 
+COPY ["Reservation.Application/Reservation.Application.csproj", "Reservation.API/"] 
+COPY ["Reservation.Domain/Reservation.Domain.csproj", "Reservation.API/"] 
 
 RUN dotnet restore "Reservation.API/Reservation.API.csproj"
 

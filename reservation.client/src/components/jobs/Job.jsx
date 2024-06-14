@@ -8,7 +8,6 @@ import ModalJob from "./ModalJob";
 export default function Job({ job }) {
     const [expanded, setExpanded] = useState(false);
     const [open, setOpen] = useState(false);
-    console.log(job)
     const handleApply = () => {
         setOpen(true)
     }

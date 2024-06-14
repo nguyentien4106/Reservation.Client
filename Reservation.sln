@@ -7,6 +7,12 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "reservation.client", "reser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reservation.API", "Reservation.API\Reservation.API.csproj", "{2451B4F0-F166-421C-B386-CDB14857D31F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reservation.Infrastructure", "Reservation.Infrastructure\Reservation.Infrastructure.csproj", "{5F877C06-DBA0-4682-8A6D-A622A1AE2914}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reservation.Application", "Reservation.Application\Reservation.Application.csproj", "{C4FF2027-A188-4522-83FE-1E6A7872FEFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reservation.Domain", "Reservation.Domain\Reservation.Domain.csproj", "{35482CEB-72A4-475B-82F9-92AB149D3234}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +29,18 @@ Global
 		{2451B4F0-F166-421C-B386-CDB14857D31F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2451B4F0-F166-421C-B386-CDB14857D31F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2451B4F0-F166-421C-B386-CDB14857D31F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F877C06-DBA0-4682-8A6D-A622A1AE2914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F877C06-DBA0-4682-8A6D-A622A1AE2914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F877C06-DBA0-4682-8A6D-A622A1AE2914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F877C06-DBA0-4682-8A6D-A622A1AE2914}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4FF2027-A188-4522-83FE-1E6A7872FEFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4FF2027-A188-4522-83FE-1E6A7872FEFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4FF2027-A188-4522-83FE-1E6A7872FEFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4FF2027-A188-4522-83FE-1E6A7872FEFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35482CEB-72A4-475B-82F9-92AB149D3234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35482CEB-72A4-475B-82F9-92AB149D3234}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35482CEB-72A4-475B-82F9-92AB149D3234}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35482CEB-72A4-475B-82F9-92AB149D3234}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,8 +1,8 @@
 ﻿using HtmlAgilityPack;
 using MailKit.Net.Smtp;
 using MimeKit;
-using Reservation.API.Models.DTO.Email;
-using Reservation.API.Models.DTO.Home;
+using Reservation.Domain.Models.DTO.Email;
+using Reservation.Domain.Models.DTO.Home;
 using System.Text;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 

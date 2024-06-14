@@ -48,6 +48,7 @@ export default function PostJob() {
             status: 0,
         });
         dispatch(show())
+        console.log(params)
         DataService.post(JOBS_PATH.createJob, params).then((res) => {
             const { data } = res
             if(data.isSucceed){

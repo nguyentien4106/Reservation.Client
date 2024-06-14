@@ -6,17 +6,26 @@ import { JOBS_PATH } from "../../constant/urls";
 import Job from "../../components/jobs/Job";
 import { useDispatch } from "react-redux";
 import { hide, show } from "@/state/loading/loadingSlice";
-
+import { Pagination } from 'antd';
+import { defaultPaging } from "../../constant/options";
 
 export default function Jobs() {
     const [jobs, setJobs] = useState([]);
     const [seach, setSearch] = useState("")
+    const [paging, setPaging] = useState(defaultPaging)
+    const [total, setTotal] = useState(0)
+
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(show())
-        DataService.get(JOBS_PATH.getAll).then((res) => {
-            setJobs(res.data.data);
+        const searchParams = new URLSearchParams(paging);
+
+        DataService.get(JOBS_PATH.getAll + `?${searchParams.toString()}`).then((res) => {
+            const { data } = res.data
+            console.log(data)
+            setJobs(data.jobs);
+            setTotal(data.total)
         })
         .catch(err => {
             alert(err)
@@ -24,7 +33,7 @@ export default function Jobs() {
         .finally(() => {
             dispatch(hide())
         });
-    }, []);
+    }, [paging]);
 
     return (
         <>
@@ -51,10 +60,19 @@ export default function Jobs() {
                    </Input.Search>
                 </div>
                 {jobs.length ? (
-                    jobs.map((item) => <Job key={item.createdDate} job={item}>{item.title}</Job>)
+                    jobs.map((item) => <Job key={item.id} job={item}>{item.title}</Job>)
                 ) : (
-                    <h2>Không có post</h2>
+                    <h2>Hiện tại chưa có jobs nào đang mở. Xin quay lại sau</h2>
                 )}
+                <Pagination 
+                    defaultCurrent={1} 
+                    total={total} 
+                    responsive 
+                    onChange={(index, pageSize) => setPaging({ pageIndex: index - 1, pageSize })}
+                    defaultPageSize={20}
+                    pageSize={paging.pageSize}
+                />
+
             </Flex>
         </>
     );

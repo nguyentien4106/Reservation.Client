@@ -2,22 +2,22 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Reservation.API.Profile;
-using Reservation.API.Data;
-using Reservation.API.Models.DTO.Auth;
-using Reservation.API.Serivces.Auth;
-using Reservation.API.Serivces.Email;
-using System.Security.Claims;
+using Reservation.Domain.Profile;
+using Reservation.Infrastructure.Data;
+using Reservation.Domain.Models.DTO.Auth;
+using Reservation.Application.Serivces.Auth;
+using Reservation.Application.Serivces.Email;
 using System.Text;
-using Reservation.API.Serivces.UserServiceRegister;
-using Reservation.API.Serivces.Service;
-using Reservation.API.Serivces.Home;
+using Reservation.Application.Serivces.UserServiceRegister;
+using Reservation.Application.Serivces.Service;
+using Reservation.Application.Serivces.Home;
 using Microsoft.OpenApi.Models;
+using Reservation.Application.Serivces.ManageCollaborator;
+using Reservation.Application.Serivces.Customer;
+using Reservation.Application.Serivces.Jobs;
+using Reservation.Application.Serivces.Order;
 using Reservation.API.Middleware;
-using Reservation.API.Serivces.ManageCollaborator;
-using Reservation.API.Serivces.Customer;
-using Reservation.API.Serivces.Jobs;
-using Reservation.API.Serivces.Order;
+using Reservation.Applicattion.Serivces.Email;
 
 namespace Reservation.API
 {

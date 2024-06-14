@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Reservation.API.Data.Entities;
-using Reservation.API.Models.DTO.Auth;
-using Reservation.API.Models.DTO.Jobs;
-using Reservation.API.Serivces.Jobs;
+using Reservation.Infrastructure.Data.Entities;
+using Reservation.Domain.Models.DTO.Auth;
+using Reservation.Domain.Models.DTO.Common;
+using Reservation.Domain.Models.DTO.Jobs;
+using Reservation.Domain.Models.ViewModel.Jobs;
+using Reservation.Application.Serivces.Jobs;
 
 namespace Reservation.API.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("[controller]")]
     [ApiController]
     //[Authorize]
     public class JobsController(IJobsService service) : Controller
@@ -15,9 +17,9 @@ namespace Reservation.API.Controllers
         private readonly IJobsService _service = service;
 
         [HttpGet]
-        public async Task<AppResponse<List<JobDTO>>> GetAll()
+        public async Task<AppResponse<JobsViewModel>> GetAll([FromQuery]PaginationModel paging)
         {
-            return await _service.GetAll();
+            return await _service.GetAll(paging);
         }
 
         [HttpPost]
@@ -26,8 +28,8 @@ namespace Reservation.API.Controllers
             return await _service.CreateJobAsync(job);
         }
 
-        [HttpPost]
-        public async Task<AppResponse<bool>> ApplyJob()
+        [HttpPost("[action]/{jobId}")]
+        public async Task<AppResponse<bool>> Apply(Guid jobId)
         {
             return await _service.ApplyJobAsync();
         }

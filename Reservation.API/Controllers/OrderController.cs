@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Reservation.API.Serivces.Order;
-using Reservation.API.Models.DTO.Auth;
-using Reservation.API.Models.DTO.Home;
+using Reservation.Application.Serivces.Order;
+using Reservation.Domain.Models.DTO.Auth;
+using Reservation.Domain.Models.DTO.Home;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Reservation.API.Controllers
