@@ -28,10 +28,10 @@ namespace Reservation.API.Controllers
             return await _service.CreateJobAsync(job);
         }
 
-        [HttpPost("[action]/{jobId}")]
-        public async Task<AppResponse<bool>> Apply(Guid jobId)
+        [HttpPost("[action]")]
+        public async Task<AppResponse<bool>> Apply(ContractDTO contract)
         {
-            return await _service.ApplyJobAsync();
+            return await _service.ApplyJobAsync(contract);
         }
     }
 }

@@ -27,6 +27,8 @@ namespace Reservation.Infrastructure.Data
 
         public DbSet<Job> Jobs { get; set; }
 
+        public DbSet<Contract> Contracts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -82,6 +84,15 @@ namespace Reservation.Infrastructure.Data
             builder.Entity<Order>().Property(e => e.Amount).HasPrecision(18, 2);
             builder.Entity<Job>().Property(e => e.Cast).HasPrecision(18, 2);
 
+            builder.Entity<Contract>()
+                .HasOne(cs => cs.Job)
+                .WithMany(c => c.Contracts)
+                .HasForeignKey(cs => cs.JobId);
+
+            builder.Entity<Contract>()
+                .HasOne(cs => cs.LesseeUser)
+                .WithMany(s => s.Contracts)
+                .HasForeignKey(cs => cs.LesseeId);
         }
 
     }

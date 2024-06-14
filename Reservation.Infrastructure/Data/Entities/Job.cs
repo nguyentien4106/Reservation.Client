@@ -32,6 +32,8 @@ namespace Reservation.Infrastructure.Data.Entities
 
         public int? PaymentType { get; set; }
 
-        public DateTime? CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; } = DateTime.Now;
+
+        public List<Contract> Contracts { get; set; } = [];
     }
 }

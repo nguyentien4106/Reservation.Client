@@ -40,6 +40,8 @@ namespace Reservation.Domain.Profile
             CreateMap<Job, JobDTO>().ForMember(item => item.UserName, opt => opt.MapFrom(src => src.ApplicationUser.UserName));
 
             CreateMap<JobServiceDTO, JobService>().ReverseMap();
+
+            CreateMap<Contract, ContractDTO>().ReverseMap();
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reservation.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Reservation.Infrastructure.Data;
 namespace Reservation.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240614104145_addcontract")]
+    partial class addcontract
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -320,6 +323,9 @@ namespace Reservation.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Contact")
                         .HasColumnType("nvarchar(max)");
 
@@ -329,6 +335,9 @@ namespace Reservation.API.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("JobApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<Guid>("JobId")
                         .HasColumnType("uniqueidentifier");
 
@@ -336,26 +345,20 @@ namespace Reservation.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LesseeUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("LessorId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LessorUserId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("JobApplicationUserId");
+
                     b.HasIndex("JobId");
-
-                    b.HasIndex("LesseeUserId");
-
-                    b.HasIndex("LessorUserId");
 
                     b.ToTable("Contracts");
                 });
@@ -665,25 +668,25 @@ namespace Reservation.API.Migrations
 
             modelBuilder.Entity("Reservation.Infrastructure.Data.Entities.Contract", b =>
                 {
+                    b.HasOne("Reservation.Infrastructure.Data.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("Reservation.Infrastructure.Data.ApplicationUser", "JobApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("JobApplicationUserId");
+
                     b.HasOne("Reservation.Infrastructure.Data.Entities.Job", "Job")
                         .WithMany()
                         .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Reservation.Infrastructure.Data.ApplicationUser", "LesseeUser")
-                        .WithMany()
-                        .HasForeignKey("LesseeUserId");
-
-                    b.HasOne("Reservation.Infrastructure.Data.ApplicationUser", "LessorUser")
-                        .WithMany()
-                        .HasForeignKey("LessorUserId");
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Job");
 
-                    b.Navigation("LesseeUser");
-
-                    b.Navigation("LessorUser");
+                    b.Navigation("JobApplicationUser");
                 });
 
             modelBuilder.Entity("Reservation.Infrastructure.Data.Entities.Job", b =>

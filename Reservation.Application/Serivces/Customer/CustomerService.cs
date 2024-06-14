@@ -110,8 +110,6 @@ namespace Reservation.Application.Serivces.Customer
             }
 
             var job = _mapper.Map<Job>(jobDTO);
-            job.CreatedDate = DateTime.Now;
-
             await _context.Jobs.AddAsync(job);    
             await _context.SaveChangesAsync();
 

@@ -11,6 +11,6 @@ namespace Reservation.Application.Serivces.Jobs
 
         Task<AppResponse<JobsViewModel>> GetAll(PaginationModel model);
 
-        Task<AppResponse<bool>> ApplyJobAsync();
+        Task<AppResponse<bool>> ApplyJobAsync(ContractDTO contract);
     }
 }

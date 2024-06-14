@@ -17,9 +17,19 @@ namespace Reservation.Application.Serivces.Jobs
         private readonly IMapper _mapper = mapper;
         private readonly IEmailService _emailService = emailService;
 
-        public async Task<AppResponse<bool>> ApplyJobAsync()
+        public async Task<AppResponse<bool>> ApplyJobAsync(ContractDTO dto)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(dto.LesseeId) || string.IsNullOrEmpty(dto.LessorId))
+            {
+                return new AppResponse<bool>().SetCommonError();
+            }
+
+            var contract = _mapper.Map<Contract>(dto);
+
+            await _context.Contracts.AddAsync(contract);
+            await _context.SaveChangesAsync();
+
+            return new AppResponse<bool>().SetSuccessResponse(true);
         }
 
         public async Task<AppResponse<bool>> CreateJobAsync(JobDTO jobDTO)
@@ -30,8 +40,6 @@ namespace Reservation.Application.Serivces.Jobs
             }
 
             var job = _mapper.Map<Job>(jobDTO);
-            job.CreatedDate = DateTime.Now;
-
             await _context.Jobs.AddAsync(job);
             await _context.SaveChangesAsync();
 
