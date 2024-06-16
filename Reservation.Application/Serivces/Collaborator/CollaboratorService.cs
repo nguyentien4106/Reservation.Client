@@ -10,6 +10,7 @@ using System.Linq.Expressions;
 using Reservation.Applicattion.Serivces.Email;
 using Reservation.Application.Serivces.UserServiceRegister;
 using Reservation.Domain.Extensions;
+using Reservation.Domain.Models.Request.Collaborators;
 
 namespace Reservation.Application.Serivces.UserServiceRegister
 {
@@ -203,15 +204,15 @@ namespace Reservation.Application.Serivces.UserServiceRegister
             await _context.SaveChangesAsync();
         }
 
-        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(string city, string district, string sex, int orderType)
+        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(GetAllRequest request)
         {
             var query = _context.Collaborators.Include(item => item.View).AsQueryable();
 
-            query = query.Where(collaborator => city == All || collaborator.City == city);
+            query = query.Where(collaborator => request.City == All || collaborator.City == request.City);
 
-            query = query.Where(collaborator => district == All || collaborator.District == district);
+            query = query.Where(collaborator => request.District == All || collaborator.District == request.District);
 
-            query = query.Where(collaborator => sex == All || collaborator.Sex == sex);
+            query = query.Where(collaborator => request.Sex == All || collaborator.Sex == request.Sex);
 
             var result = await query.ToListAsync();
 
@@ -221,7 +222,7 @@ namespace Reservation.Application.Serivces.UserServiceRegister
             }
             var collaboratorDtos = _mapper.Map<List<CollaboratorDTO>>(result);
 
-            switch (orderType)
+            switch (request.OrderType)
             {
                 case (int)OrderFilterType.PriceIncreasing:
                     collaboratorDtos = collaboratorDtos.OrderByPrice();
@@ -247,6 +248,8 @@ namespace Reservation.Application.Serivces.UserServiceRegister
                     collaboratorDtos = collaboratorDtos.OrderByAgeDecreasing();
                     break;
             }
+
+            collaboratorDtos = collaboratorDtos.Paginate(request).ToList();
 
             return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(collaboratorDtos);
         }

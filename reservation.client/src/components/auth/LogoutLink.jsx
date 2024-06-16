@@ -30,7 +30,7 @@ function LogoutLink() {
     }
 
     return (
-        <Link onClick={handleLogout} >{`Logout`}</Link>
+        <Link onClick={handleLogout} style={{fontSize: 16}}>{`Đăng xuất`}</Link>
     );
 }
 

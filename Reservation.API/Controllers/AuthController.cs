@@ -8,10 +8,10 @@ using Reservation.Infrastructure.Data;
 using Reservation.Domain.Models.DTO.Auth;
 using Reservation.Domain.Models.DTO.Auth.Request;
 using Reservation.Domain.Models.DTO.Auth.Response;
-using Reservation.Domain.Models.Request;
 using Reservation.Application.Serivces.Auth;
 using System.Security.Claims;
 using System.Security.Policy;
+using Reservation.Domain.Models.Request.Auth;
 
 namespace Reservation.API.Controllers
 {

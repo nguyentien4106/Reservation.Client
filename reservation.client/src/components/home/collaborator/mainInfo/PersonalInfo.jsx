@@ -49,7 +49,7 @@ function PersonalInfo() {
         <div className="service-panel text-header" key={service.name}>
             <Space>
                 <Text style={{ color: "white" }}>{service.name}</Text>
-                <Text style={{ color: "white" }}>{showMoney(service.price)}/h</Text>
+                <Text style={{ color: "rgb(60, 118, 52, 1)" }}>{showMoney(service.price)}/h</Text>
             </Space>
         </div>
     );

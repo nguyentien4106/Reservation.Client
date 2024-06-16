@@ -6,16 +6,16 @@ using Reservation.Infrastructure.Data;
 using Reservation.Domain.Models.DTO.Auth;
 using Reservation.Domain.Models.DTO.Collaborator;
 using Reservation.Domain.Models.DTO.Home;
-using Reservation.Domain.Models.DTO.UserServicesRegister;
-using Reservation.Domain.Models.Request;
 using Reservation.Application.Serivces.UserServiceRegister;
+using Reservation.Domain.Models.Request.Auth;
+using Reservation.Domain.Models.Request.Collaborators;
 
 namespace Reservation.API.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
     [Authorize]
-    public class CollaboratorController(ICollaboratorService collaboratorService) : ControllerBase
+    public class CollaboratorsController(ICollaboratorService collaboratorService) : ControllerBase
     {
         private readonly ICollaboratorService _collaboratorService = collaboratorService;
 
@@ -64,11 +64,19 @@ namespace Reservation.API.Controllers
             return await _collaboratorService.ChangeStatusAsync(request.CollaboratorId, request.Status);
         }
 
-        [HttpGet]
+        //[HttpGet]
 
-        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllFilter([FromQuery] string city, string district, string sex, int orderType)
+        //public async Task<AppResponse<List<CollaboratorDTO>>> GetAllFilter([FromQuery] string city, string district, string sex, int orderType)
+        //{
+        //    return await _collaboratorService.GetAllAsync(city, district, sex, orderType);
+        //}
+
+        [Route("/[controller]")]
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<AppResponse<List<CollaboratorDTO>>> Collaborators([FromQuery] GetAllRequest request)
         {
-            return await _collaboratorService.GetAllAsync(city, district, sex, orderType);
+            return await _collaboratorService.GetAllAsync(request);
         }
     }
 }

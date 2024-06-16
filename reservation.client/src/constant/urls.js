@@ -10,7 +10,8 @@ export const AUTH_PATH = {
 }
 
 export const SERVICE_PATH = {
-    getAll: "Service/GetAll"
+    getAll: "Services",
+    add: "Services"
 }
 
 export const COLLABORATOR_PATH = {
@@ -20,7 +21,7 @@ export const COLLABORATOR_PATH = {
     getProfileByEmail: "Collaborators/GetProfileByEmail?email=",
     getAll: "Collaborators/GetAll?type=",
     changeStatus: "Collaborators/ChangeStatus",
-    getAllFilter: "Collaborators/GetAllFilter?"
+    getAll: "Collaborators?"
 }
 
 export const HOME_PATH = {
@@ -43,7 +44,8 @@ export const JOBS_PATH = {
 }
 
 export const ORDER_PATH = {
-    getOrders: "Order/GetOrders?collaboratorId=",
-    confirmOrder: "Order/ConfirmOrder?",
-    createOrder: "Order/CreateOrder"
+    getCustomerOrders: "Orders/Customers/",
+    getCollaboratorOrders: "Orders/Collaborators/",
+    confirmOrder: "Orders/Comfirm?",
+    createOrder: "Orders"
 }

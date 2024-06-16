@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Reservation.Infrastructure.Data.Entities;
 using Reservation.Domain.Models.DTO.Auth;
-using Reservation.Domain.Models.DTO.Common;
 using Reservation.Domain.Models.DTO.Jobs;
 using Reservation.Domain.Models.ViewModel.Jobs;
 using Reservation.Application.Serivces.Jobs;
+using Reservation.Domain.Models.Request;
 
 namespace Reservation.API.Controllers
 {
@@ -17,7 +17,7 @@ namespace Reservation.API.Controllers
         private readonly IJobsService _service = service;
 
         [HttpGet]
-        public async Task<AppResponse<JobsViewModel>> GetAll([FromQuery]PaginationModel paging)
+        public async Task<AppResponse<JobsViewModel>> GetAll([FromQuery] PagingRequest paging)
         {
             return await _service.GetAll(paging);
         }

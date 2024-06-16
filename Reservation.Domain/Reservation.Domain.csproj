@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\DTO\Request\**" />
+    <EmbeddedResource Remove="Models\DTO\Request\**" />
+    <None Remove="Models\DTO\Request\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Template\confirmEmail.html" />
     <None Remove="Template\newOrder.html" />
   </ItemGroup>
@@ -21,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\DTO\Request\" />
+    <Folder Include="Models\DTO\Common\" />
   </ItemGroup>
 
   <ItemGroup>

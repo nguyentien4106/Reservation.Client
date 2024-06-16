@@ -2,7 +2,7 @@
 using Reservation.Domain.Models.DTO.Auth;
 using Reservation.Domain.Models.DTO.Auth.Request;
 using Reservation.Domain.Models.DTO.Auth.Response;
-using Reservation.Domain.Models.Request;
+using Reservation.Domain.Models.Request.Auth;
 using System.Security.Claims;
 
 namespace Reservation.Application.Serivces.Auth

@@ -14,6 +14,13 @@ export const CUSTOMER_ROUTE_PATH = {
     jobs: "/customer/jobs"
 }
 
+// export const ACCOUNT_ROUTE_PATH = {
+//     collaboratorSetting: "collaborator/setting",
+//     collaboratorCustomer: "/account/collaborator/customer",
+//     collaboratorOverall: "collaborator/overall",
+
+// }
+
 export const COLLABORATORS_ROUTE_PATH = {
     collaborators: "/collaborators"
 }

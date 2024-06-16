@@ -1,8 +1,7 @@
-import { App, Flex, Space, Spin } from "antd";
+import { App, Col, Flex, Pagination, Row, Space, Spin } from "antd";
 import DataService from "../../lib/DataService.js";
 import { Suspense, lazy, useContext, useEffect, useState } from "react";
 import { COLLABORATOR_PATH, HOME_PATH } from "../../constant/urls.js";
-import { GET_COLLABORATOR_TYPES } from "../../constant/settings.js";
 import FilterArea from "../../components/home/FilterArea.jsx";
 import useFetchServices from "../../hooks/useFetchServices.jsx";
 import "./index.css";
@@ -10,6 +9,7 @@ import { UserContext } from "../../context/useUserContext.jsx";
 import { getUser } from "../../lib/helper.js";
 import { useDispatch } from "react-redux";
 import { show, hide } from "@/state/loading/loadingSlice";
+import { defaultPaging } from "../../constant/options.js";
 
 const CollaboratorCard = lazy(() =>
     import("../../components/home/collaborators/CollaboratorCard.jsx")
@@ -29,12 +29,13 @@ function Collaborators() {
     const services = useFetchServices();
     const { setUser } = useContext(UserContext);
     const dispatch = useDispatch();
+    const [paging, setPaging] = useState(defaultPaging)
 
     const getCollaborators = () => {
         dispatch(show());
-        const params = new URLSearchParams(filter);
+        const params = new URLSearchParams({ ...filter, ...paging });
 
-        DataService.get(COLLABORATOR_PATH.getAllFilter + params)
+        DataService.get(COLLABORATOR_PATH.getAll + params)
             .then((res) => {
                 const { data } = res.data;
                 setCollaborators(data);
@@ -44,10 +45,15 @@ function Collaborators() {
                 dispatch(hide());
             });
     };
+
     useEffect(() => {
         getCollaborators();
         setUser(getUser());
     }, []);
+
+    useEffect(() => {
+        getCollaborators()
+    }, [filter, paging])
 
     const filterResult = () => {
         getCollaborators();
@@ -70,13 +76,24 @@ function Collaborators() {
                 filterResult={filterResult}
                 setFilter={setFilter}
             />
-            <Space size="middle" className="collaborators">
+                <Row className="row" gutter={[30, 30]}>
+
                 {collaborators.length ? (
-                    collaborators.map((collaborator) => card(collaborator))
+                    collaborators.map((collaborator) => (
+                        <Col flex="1 0 20%" className="column Green">{card(collaborator)}</Col>
+                    ))
                 ) : (
                     <h3>Không tìm thấy dữ liệu</h3>
                 )}
-            </Space>
+            </Row>
+            <Pagination
+                    defaultCurrent={1}
+                    total={100}
+                    responsive
+                    onChange={(index, pageSize) => setPaging({ pageIndex: index - 1, pageSize })}
+                    defaultPageSize={20}
+                    pageSize={paging.pageSize}
+                />
         </Flex>
     );
 }

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Layout, theme, Button } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import AppHeader from "./Header";
-import { Footer } from "antd/es/layout/layout";
+import "./index.css"
 const { Header, Content } = Layout;
 
 const AppLayout = () => {

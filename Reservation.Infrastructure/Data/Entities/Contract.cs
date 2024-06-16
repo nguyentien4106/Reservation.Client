@@ -8,13 +8,9 @@
 
         public Job Job { get; set; }
 
-        public string LesseeId { get; set; }
+        public string LesseeUserId { get; set; }
 
         public ApplicationUser LesseeUser { get; set; }
-
-        public string LessorId { get; set; }
-
-        public ApplicationUser LessorUser { get; set; }
 
         public string? Description { get; set; }
 

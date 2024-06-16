@@ -38,22 +38,13 @@ function BookingInfo() {
     return (
         <>
             {contextHolder}
-            <Flex vertical>
-                <Space>
+            <Flex vertical gap={30}>
+                <Space style={{ fontSize: 20 }}>
                     <Text style={{ textAlign: "center" }}>
                         {showNumber(collaborator?.view.count)}
                     </Text>
                     <EyeOutlined />
                 </Space>
-                <Text
-                    className="price-booking-info"
-                    style={{ textAlign: "center" }}
-                >
-                    {showMoney(collaborator?.pricePerHour) + " /h"}
-                </Text>
-                {/* <button className="button-booking" onClick={handleShowPhone}>
-                    {phoneInfo}
-                </button> */}
                 <button
                     className="button-booking"
                     onClick={ handleOrder}

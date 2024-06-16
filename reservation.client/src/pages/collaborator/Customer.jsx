@@ -16,7 +16,7 @@ export default function Customer() {
 
     useEffect(() => {
         if (user?.collaboratorId)
-            DataService.get(ORDER_PATH.getOrders + user.collaboratorId).then(res => {
+            DataService.get(ORDER_PATH.getCollaboratorOrders + user.collaboratorId).then(res => {
                 setCustomers(res.data.data)
             }).catch(console.error)
     }, [user])

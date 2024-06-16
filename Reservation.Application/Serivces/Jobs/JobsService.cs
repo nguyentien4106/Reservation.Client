@@ -4,10 +4,10 @@ using Reservation.Infrastructure.Data;
 using Reservation.Infrastructure.Data.Entities;
 using Reservation.Domain.Extensions;
 using Reservation.Domain.Models.DTO.Auth;
-using Reservation.Domain.Models.DTO.Common;
 using Reservation.Domain.Models.DTO.Jobs;
 using Reservation.Domain.Models.ViewModel.Jobs;
 using Reservation.Applicattion.Serivces.Email;
+using Reservation.Domain.Models.Request;
 
 namespace Reservation.Application.Serivces.Jobs
 {
@@ -46,7 +46,7 @@ namespace Reservation.Application.Serivces.Jobs
             return new AppResponse<bool>().SetSuccessResponse(true);
         }
 
-        public async Task<AppResponse<JobsViewModel>> GetAll(PaginationModel paging)
+        public async Task<AppResponse<JobsViewModel>> GetAll(PagingRequest paging)
         {
             var count = await _context.Jobs.CountAsync();
             var jobs = await _context.Jobs

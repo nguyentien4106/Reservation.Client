@@ -14,5 +14,8 @@ namespace Reservation.Infrastructure.Data
         public List<JobService> JobServices { get; set; } = [];
 
         public List<Contract> Contracts { get; set; } = [];
+
+        public string? Name { get; set; }
+
     }
 }

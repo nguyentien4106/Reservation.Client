@@ -69,7 +69,7 @@
 
 .info-item{
     font-weight: 550;
-    color: #676767;
+    color: #e01c1c;
     font-size: 14px;
 }
 
@@ -104,4 +104,34 @@
 .job-description-header{
     padding-left: 3%;
     padding-right: 3%;
+}
+
+
+
+@media only screen and (max-width: 600px){
+    .job-header{
+        flex-direction: column;
+    }
+
+    .job-action{
+        order: 1;
+    }
+
+    .job-header-title{
+        order: 2;
+    }
+
+    .info-item{
+        font-size: 8px;
+    }
+
+    #post-job-form{
+        width: 100%;
+        min-width: 100% !important;
+    }
+
+    .payment_info{
+        padding-left: 5px;
+        gap: 5px;
+    }
 }

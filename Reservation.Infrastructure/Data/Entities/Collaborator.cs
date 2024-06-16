@@ -31,7 +31,7 @@ namespace Reservation.Infrastructure.Data.Entities
 
         public int? PricePerHour { get; set; }
 
-        public DateTime? JoinedDate { get; set; }
+        public DateTime? JoinedDate { get; set; } = DateTime.Now;
 
         public string? Introduction { get; set; }
 

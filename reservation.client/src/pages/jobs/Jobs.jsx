@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Grid, Input, Space } from "antd";
+import { Button, Card, Flex, Grid, Input, Modal, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import "./index.css";
 import DataService from "../../lib/DataService";
@@ -8,12 +8,15 @@ import { useDispatch } from "react-redux";
 import { hide, show } from "@/state/loading/loadingSlice";
 import { Pagination } from 'antd';
 import { defaultPaging } from "../../constant/options";
+import ModalJob from "../../components/jobs/ModalJob";
+import PostJob from "./PostJob"
 
 export default function Jobs() {
     const [jobs, setJobs] = useState([]);
     const [seach, setSearch] = useState("")
     const [paging, setPaging] = useState(defaultPaging)
     const [total, setTotal] = useState(0)
+    const [open, setOpen] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -27,13 +30,17 @@ export default function Jobs() {
             setJobs(data.jobs);
             setTotal(data.total)
         })
-        .catch(err => {
-            alert(err)
-        })
-        .finally(() => {
-            dispatch(hide())
-        });
+            .catch(err => {
+                alert(err)
+            })
+            .finally(() => {
+                dispatch(hide())
+            });
     }, [paging]);
+
+    const quickPostJob = () => {
+        setOpen(true)
+    }
 
     return (
         <>
@@ -44,36 +51,52 @@ export default function Jobs() {
                 }}
                 vertical
             >
-                <div
+                <Flex
                     style={{
-                        width: "60%",
                         marginBottom: "50px",
                         alignItems: "center",
+                        cursor: "pointer"
                     }}
+                    justify="space-between"
                 >
-                   <Input.Search 
-                        onChange={(e) => setSearch(e.target.value)} 
+                    <Input.Search
+                        style={{
+                            width: "50%"
+                        }}
+                        onChange={(e) => setSearch(e.target.value)}
                         onSearch={() => console.log(seach)}
                         placeholder="Tìm kiếm từ khoá"
-                    >
-                        
-                   </Input.Search>
-                </div>
+                    />
+                    <Space align="center" onClick={quickPostJob}>
+                        <strong>Post a job</strong>
+                        <img width="40" height="40" src="https://img.icons8.com/ios/50/add--v1.png" alt="add--v1"/>
+                    </Space>
+                </Flex>
                 {jobs.length ? (
                     jobs.map((item) => <Job key={item.id} job={item}>{item.title}</Job>)
                 ) : (
                     <h2>Hiện tại chưa có jobs nào đang mở. Xin quay lại sau</h2>
                 )}
-                <Pagination 
-                    defaultCurrent={1} 
-                    total={total} 
-                    responsive 
+                <Pagination
+                    defaultCurrent={1}
+                    total={total}
+                    responsive
                     onChange={(index, pageSize) => setPaging({ pageIndex: index - 1, pageSize })}
                     defaultPageSize={20}
                     pageSize={paging.pageSize}
                 />
 
             </Flex>
+            {
+                open && <Modal
+                    width={"70%"}
+                    open={true}
+                    onCancel={() => setOpen(false)}
+                    
+                >
+                    <PostJob quick={true}/>
+                </Modal>
+            }
         </>
     );
 }

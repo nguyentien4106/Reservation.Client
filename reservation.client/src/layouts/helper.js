@@ -3,83 +3,37 @@ import { ACTION_ROUTE_PATH, COLLABORATORS_ROUTE_PATH, COLLABORATOR_ROUTE_PATH, C
 export const menuItems = (navigate, isAdmin) => isAdmin ? adminItems(navigate) : userItems(navigate)
 
 const userItems = navigate => [
-    // {
-    //     key: "collaborator",
-    //     label: "Cài đặt cho thuê",
-    //     children: [
-    //         {
-    //             key: "collaborator-overall",
-    //             label: "Tổng quan",
-    //             onClick: () => navigate(COLLABORATOR_ROUTE_PATH.overall),
-
-    //         },
-    //         {
-    //             key: "collaborator-customer",
-    //             label: "Danh sách khách hàng",
-    //             onClick: () => navigate(COLLABORATOR_ROUTE_PATH.customer),
-
-    //         },
-    //         {
-    //             key: "setting",
-    //             label: "Chỉnh sửa hồ sơ",
-    //             onClick: () => navigate(COLLABORATOR_ROUTE_PATH.setting),
-    //         },
-    //     ],
-    // },
-
-    // {
-    //     key: "customer",
-    //     label: "Thông tin tài khoản",
-    //     children: [
-    //         {
-    //             key: "customer-overall",
-    //             label: "Tổng quan",
-    //             onClick: () => navigate(CUSTOMER_ROUTE_PATH.overall),
-
-    //         },
-    //         {
-    //             key: "order-history",
-    //             label: "Lịch sử thuê",
-    //             onClick: () => navigate(CUSTOMER_ROUTE_PATH.orderHistory),
-
-    //         },
-    //         {
-    //             key: "customer-donate",
-    //             label: "Lịch sử donate",
-    //             onClick: () => navigate(CUSTOMER_ROUTE_PATH.findPeople),
-    //         },
-    //     ],
-    // },
     {
         key: "customer/find-talent",
-        label: "Tìm người để thuê",
+        label: "Talents",
         onClick: () => navigate(COLLABORATORS_ROUTE_PATH.collaborators)
     },
     {
         key: "jobs",
-        label: "Jobs đang tìm người",
+        label: "Jobs",
         onClick: () => navigate(JOBS_ROUTE_PATH.jobs)
+    },
+
+    {
+        key: "post-job",
+        label: "Tạo",
+        children: [
+            {
+                key: "create-profile",
+                label: "Hồ sơ Talent",
+                onClick: () => navigate(COLLABORATOR_ROUTE_PATH.setting)
+            },
+            {
+                key: "create-job",
+                label: "Job",
+                onClick: () => navigate(JOBS_ROUTE_PATH.post)
+            },
+        ]
     },
     {
         key: "donate",
         label: "Donate",
         onClick: () => navigate(DONATE_ROUTE_PATH.donate),
-    },
-    {
-        key: "post-job",
-        label: "Đăng bài",
-        children: [
-            {
-                key: "create-profile",
-                label: "Tạo hồ sơ cho thuê",
-                onClick: () => navigate(COLLABORATOR_ROUTE_PATH.setting)
-            },
-            {
-                key: "create-job",
-                label: "Đăng việc",
-                onClick: () => navigate(JOBS_ROUTE_PATH.post)
-            },
-        ]
     }
 ];
 

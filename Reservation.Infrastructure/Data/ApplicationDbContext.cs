@@ -91,8 +91,8 @@ namespace Reservation.Infrastructure.Data
 
             builder.Entity<Contract>()
                 .HasOne(cs => cs.LesseeUser)
-                .WithMany(s => s.Contracts)
-                .HasForeignKey(cs => cs.LesseeId);
+                .WithMany(c => c.Contracts)
+                .HasForeignKey(cs => cs.LesseeUserId);
         }
 
     }

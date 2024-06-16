@@ -7,6 +7,8 @@ namespace Reservation.Application.Serivces.Order
     {
         Task<AppResponse<List<OrderDTO>>> GetOrdersAsync(Guid? collaboratorId);
 
+        Task<AppResponse<List<OrderDTO>>> GetOrdersAsync(string? applicationUserId);
+
         Task<AppResponse<OrderDTO>> ComfirmOrderAsync(Guid? requestId, int status);
 
         Task<AppResponse<bool>> CreateOrderAsync(OrderDTO request);

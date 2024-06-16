@@ -33,7 +33,7 @@ const layout = {
     },
 };
 
-export default function PostJob() {
+export default function PostJob({ quick }) {
     const provinces = locationAPI.getProvinces();
     const services = useFetchServices();
     const dispatch = useDispatch()
@@ -100,12 +100,12 @@ export default function PostJob() {
             >
                 <Form
                     {...layout}
-                    name="nest-messages"
+                    name="post-job-form"
                     onFinish={onFinish}
                     style={{
                         backgroundColor: "rgb(232, 232, 232)",
-                        minWidth: "60%",
-                        width: "60%",
+                        minWidth: quick ? "100%": "60%",
+                        width: quick ? "100%": "60%",
                         padding: 30,
                         borderRadius: 20,
                     }}

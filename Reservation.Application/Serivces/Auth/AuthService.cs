@@ -7,8 +7,8 @@ using Reservation.Domain.Models.DTO.Auth;
 using Reservation.Domain.Models.DTO.Auth.Request;
 using Reservation.Domain.Models.DTO.Email;
 using Reservation.Domain.Models.DTO.Auth.Response;
-using Reservation.Domain.Models.Request;
 using Reservation.Applicattion.Serivces.Email;
+using Reservation.Domain.Models.Request.Auth;
 
 namespace Reservation.Application.Serivces.Auth
 {

@@ -6,10 +6,12 @@ using Reservation.Domain.Models.DTO.Email;
 using Reservation.Domain.Models.DTO.Home;
 using Reservation.Domain.Models.Enum;
 using Reservation.Applicattion.Serivces.Email;
+using Reservation.Infrastructure.Data.Entities;
 
 namespace Reservation.Application.Serivces.Order
 {
-    public class OrderService(ApplicationDbContext context, IMapper mapper, IEmailService emailService) : IOrderService
+    public class OrderService(ApplicationDbContext context, IMapper mapper, IEmailService emailService) 
+        : IOrderService
     {
         private readonly ApplicationDbContext _context = context;
         private readonly IMapper _mapper = mapper;
@@ -95,6 +97,19 @@ namespace Reservation.Application.Serivces.Order
             }
 
             return new AppResponse<bool>().SetSuccessResponse(true);
+        }
+
+        public async Task<AppResponse<List<OrderDTO>>> GetOrdersAsync(string? applicationUserId)
+        {
+            if (string.IsNullOrEmpty(applicationUserId))
+            {
+                return new AppResponse<List<OrderDTO>>().SetErrorResponse("user", "Không tìm thấy User");
+            }
+
+            var orders = await _context.Orders.Where(item => item.ApplicationUserId == applicationUserId).ToListAsync();
+
+            return new AppResponse<List<OrderDTO>>().SetSuccessResponse(_mapper.Map<List<OrderDTO>>(orders));
+
         }
     }
 }

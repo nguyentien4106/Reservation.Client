@@ -1,4 +1,4 @@
-﻿namespace Reservation.Domain.Models.Request
+﻿namespace Reservation.Domain.Models.Request.Auth
 {
     public class ChangePasswordRequest
     {

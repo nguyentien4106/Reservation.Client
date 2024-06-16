@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Reservation.Domain.Models.Request
+namespace Reservation.Domain.Models.Request.Auth
 {
     public class ForgotPasswordRequest
     {

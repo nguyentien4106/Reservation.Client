@@ -109,6 +109,17 @@ const Register = () => {
                     requiredMark="optional"
                 >
                     <Form.Item
+                        name="name"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input your name!",
+                            },
+                        ]}
+                    >
+                        <Input placeholder="Tên" />
+                    </Form.Item>
+                    <Form.Item
                         name="email"
                         rules={[
                             {

@@ -2,8 +2,16 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import { PAYMENT_TYPES } from "../../constant/settings";
 import { getUser, showMoney } from "../../lib/helper";
-import { Button, Divider, Typography, Modal } from "antd";
+import { Button, Divider, Typography, Modal, Space } from "antd";
 import ModalJob from "./ModalJob";
+
+const isMobile = window.innerWidth < 768
+const InfoItem = ({ img, text }) => (
+    <Space direction={isMobile ? "vertical" : "horizontal"}>
+        {img}
+        {text}
+    </Space>
+)
 
 export default function Job({ job }) {
     const [expanded, setExpanded] = useState(false);
@@ -23,7 +31,7 @@ export default function Job({ job }) {
                             <span>Posted </span>
                             <span>
                                 {dayjs(job.createdDate).format(
-                                    "HH:mm A DD-MM-YYYY"
+                                    "HH:mm DD-MM-YYYY"
                                 )}
                             </span>
                         </small>
@@ -33,20 +41,13 @@ export default function Job({ job }) {
                     </div>
                     <div className="job-action">
                         <Button
-                            style={{
-                                display: "flex",
-                                width: "100%",
-                                color: "#fff",
-                                backgroundColor: "#108a00",
-                                border: "2px solid transparent",
-                                fontSize: 16,
-                                fontWeight: 600,
-                                padding: "10px 20px",
-                                height: 50,
-                            }}
                             onClick={handleApply}
                         >
-                            Ứng tuyển ngay
+                            <Space>
+                                <img width="24" height="24" src="https://img.icons8.com/windows/32/reviewer-male--v1.png" alt="reviewer-male--v1" />
+                                <span>Ứng tuyển</span>
+                            </Space>
+
                         </Button>
                     </div>
                 </div>
@@ -54,25 +55,39 @@ export default function Job({ job }) {
                 <div className="job-content">
                     <ul className="payment_info">
                         <li className="info-item">
-                            <strong>
-                                {PAYMENT_TYPES[job.paymentType] +
-                                    ": " +
-                                    showMoney(job.cast, true)}
-                            </strong>
+                            <Space direction="horizontal">
+                                <img width="16" height="16" src="https://img.icons8.com/ios-glyphs/30/money--v1.png" alt="money--v1" />
+                                <strong>
+                                    {PAYMENT_TYPES[job.paymentType] +
+                                        " " +
+                                        showMoney(job.cast, true)}
+                                </strong>
+                            </Space>
+                        </li>
+
+                        <li className="info-item">
+                            <Space direction="horizontal">
+                                <img width="16" height="16" src="https://img.icons8.com/ios/50/marker--v1.png" alt="marker--v1" />
+                                <strong>
+                                    {job.location}
+                                </strong>
+
+                            </Space>
                         </li>
                         <li className="info-item">
-                            <strong>{"Địa điểm: " + job.location}</strong>
-                        </li>
-                        <li className="info-item">
-                            <strong>
-                                {"Ngày thực hiện: " +
-                                    dayjs(job.dateTime).format("DD-MM-YYYY")}
-                            </strong>
+
+                            <Space direction="horizontal">
+                                <img width="16" height="16" src="https://img.icons8.com/ios/50/calendar--v1.png" alt="calendar--v1" />
+                                <strong>
+                                    {dayjs(job.dateTime).format("DD-MM-YYYY")}
+                                </strong>
+                            </Space>
+
                         </li>
                     </ul>
                     <div>
                         <strong className="info-item job-description-header">
-                            Mô tả công việc:{" "}
+                            Mô tả công việc:
                         </strong>
                         <div className="job-description">
                             <Typography.Paragraph
@@ -89,7 +104,7 @@ export default function Job({ job }) {
                         </div>
                         <br />
                         <strong className="info-item job-description-header">
-                            Yêu cầu:{" "}
+                            Yêu cầu:
                         </strong>
                         <div className="job-description">
                             <Typography.Paragraph

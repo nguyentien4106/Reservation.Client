@@ -6,23 +6,29 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Reservation.API.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("[controller]")]
     [ApiController]
     [Authorize]
-    public class OrderController(IOrderService service) : ControllerBase
+    public class OrdersController(IOrderService service) : ControllerBase
     {
         private readonly IOrderService _orderService = service;
 
-        [HttpGet]
-        public async Task<AppResponse<List<OrderDTO>>> GetOrders(Guid? collaboratorId)
+        [HttpGet("[action]/{collaboratorId}")]
+        public async Task<AppResponse<List<OrderDTO>>> Collaborators([FromRoute]Guid? collaboratorId)
         {
             return await _orderService.GetOrdersAsync(collaboratorId);
         }
 
-        [HttpGet]
-        public async Task<AppResponse<OrderDTO>> ComfirmOrder(Guid? requestId, int status)
+        [HttpGet("[action]/{userId}")]
+        public async Task<AppResponse<List<OrderDTO>>> Customers([FromRoute] string? userId)
         {
-            return await _orderService.ComfirmOrderAsync(requestId, status);
+            return await _orderService.GetOrdersAsync(userId);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<AppResponse<OrderDTO>> Comfirm(Guid? orderId, int status)
+        {
+            return await _orderService.ComfirmOrderAsync(orderId, status);
         }
 
         [HttpPost]

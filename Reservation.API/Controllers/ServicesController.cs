@@ -6,9 +6,9 @@ using Reservation.Application.Serivces.Service;
 
 namespace Reservation.API.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("[controller]")]
     [ApiController]
-    public class ServiceController(IService service) : ControllerBase
+    public class ServicesController(IService service) : ControllerBase
     {
         private readonly IService _service = service;
 
