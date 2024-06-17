@@ -24,10 +24,10 @@ namespace Reservation.Application.Serivces.Jobs
                 return new AppResponse<bool>().SetCommonError();
             }
 
-            var contract = _mapper.Map<Contract>(dto);
+            //var contract = _mapper.Map<Contract>(dto);
 
-            await _context.Contracts.AddAsync(contract);
-            await _context.SaveChangesAsync();
+            //await _context.Contracts.AddAsync(contract);
+            //await _context.SaveChangesAsync();
 
             return new AppResponse<bool>().SetSuccessResponse(true);
         }

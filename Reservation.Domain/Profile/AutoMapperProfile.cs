@@ -41,7 +41,7 @@ namespace Reservation.Domain.Profile
 
             CreateMap<JobServiceDTO, JobService>().ReverseMap();
 
-            CreateMap<Contract, ContractDTO>().ReverseMap();
+            //CreateMap<Contract, ContractDTO>().ReverseMap();
         }
     }
 }

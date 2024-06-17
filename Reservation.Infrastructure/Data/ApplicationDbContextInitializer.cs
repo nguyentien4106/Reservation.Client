@@ -213,6 +213,12 @@ namespace Reservation.Infrastructure.Data
 
                 if(profile == null)
                 {
+                    var services = _context.Services.ToList();
+                    var collaboratorServices = services.Select(item => new CollaboratorService()
+                    {
+                        Service = item,
+                        Price = 500000
+                    }).ToList();
                     var collaborator = new Collaborator
                     {
                         ApplicationUser = user,
@@ -228,39 +234,8 @@ namespace Reservation.Infrastructure.Data
                         Weight = 70,
                         Job = $"Sinh viên {i}",
                         Title = $"You will never forget me",
-                        CollaboratorServices =
-                            [
-                                new CollaboratorService
-                                {
-                                    ServiceId = new Guid("8364ba10-3662-49de-b639-08dc7d01eef9"),
-                                    Price = 500000
-                                },
-                                new CollaboratorService
-                                {
-                                    ServiceId = new Guid("d6cfe2b4-3f90-4d13-b63a-08dc7d01eef9"),
-                                    Price = 500000
-                                },
-                                new CollaboratorService
-                                {
-                                    ServiceId = new Guid("127bb02a-9d7f-438b-b63b-08dc7d01eef9"),
-                                    Price = 500000
-                                },
-                                new CollaboratorService
-                                {
-                                    ServiceId = new Guid("da5beb1a-0399-43c9-b63c-08dc7d01eef9"),
-                                    Price = 500000
-                                },
-                                new CollaboratorService
-                                {
-                                    ServiceId = new Guid("85a4bc93-dd15-4705-b63d-08dc7d01eef9"),
-                                    Price = 500000
-                                },
-                                new CollaboratorService
-                                {
-                                    ServiceId = new Guid("783c4473-f5b4-4520-b63e-08dc7d01eef9"),
-                                    Price = 500000
-                                }
-                            ],
+                        
+                        CollaboratorServices = collaboratorServices,
                         Status = 0,
                         Sex = "Female",
                         OtherServices = "Nothings"
