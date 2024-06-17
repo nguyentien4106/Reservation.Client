@@ -16,6 +16,6 @@
 
         public DateTime? CreatedDate { get; set; }
 
-        public JobDTO Job { get; set; }
+        public JobDTO? Job { get; set; }
     }
 }

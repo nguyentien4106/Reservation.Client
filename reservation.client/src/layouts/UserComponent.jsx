@@ -35,6 +35,13 @@ function UserComponent({ user }) {
             <div className='user-option'>
                 <Item 
                     icon={<img width="16" height="16" src="https://img.icons8.com/windows/32/users-settings.png" alt="users-settings"/>} 
+                    value={user.userName} 
+                />
+
+            </div>
+            <div className='user-option'>
+                <Item 
+                    icon={<img width="16" height="16" src="https://img.icons8.com/windows/32/users-settings.png" alt="users-settings"/>} 
                     value={<Link to={"/account"}>Cài đặt tài khoản</Link>} 
                 />
 

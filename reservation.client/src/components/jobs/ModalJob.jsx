@@ -5,14 +5,17 @@ import { App, Button, Checkbox, Form, Input, Modal } from "antd";
 import DataService from "../../lib/DataService";
 import { JOBS_PATH } from "../../constant/urls";
 import { getUser } from "../../lib/helper";
+import dayjs from "dayjs";
 
-export default function ModalJob({ job, close, setOpen }) {
+export default function ModalJob({ job, close, setOpen, setAppliedJobs }) {
     const [confirmLoading, setConfirmLoading] = useState(false);
     const submit = useRef()
     const { message } = App.useApp()
 
     const handleOk = () => {
         submit.current.click()
+        Modal.destroyAll()
+        setAppliedJobs(prev => [...prev, job.id])
     };
 
     const handleCancel = () => {

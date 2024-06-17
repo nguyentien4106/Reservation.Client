@@ -40,7 +40,9 @@ export const CUSTOMER_PATH = {
 export const JOBS_PATH = {
     getAll: "Jobs",
     createJob: "Jobs",
-    applyJob: "Jobs/Apply"
+    applyJob: "Jobs/Apply",
+    users: "Jobs/Users/",
+    userApplies: "Jobs/UsersApplies/"
 }
 
 export const ORDER_PATH = {

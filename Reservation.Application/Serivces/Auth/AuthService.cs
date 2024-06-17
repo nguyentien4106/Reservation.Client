@@ -38,6 +38,8 @@ namespace Reservation.Application.Serivces.Auth
                 PhoneNumber = request.PhoneNumber,
                 PhoneNumberConfirmed = true,
                 JoinedDate = DateTime.UtcNow,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);

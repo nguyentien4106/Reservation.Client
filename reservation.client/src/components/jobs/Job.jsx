@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import { PAYMENT_TYPES } from "../../constant/settings";
-import { getUser, showMoney } from "../../lib/helper";
+import { getUser, getUserName, showMoney } from "../../lib/helper";
 import { Button, Divider, Typography, Modal, Space } from "antd";
 import ModalJob from "./ModalJob";
 
@@ -13,10 +13,9 @@ const InfoItem = ({ img, text }) => (
     </Space>
 )
 
-export default function Job({ job }) {
+export default function Job({ job, applied, setAppliedJobs }) {
     const [expanded, setExpanded] = useState(false);
     const [open, setOpen] = useState(false);
-
     const handleApply = () => {
         setOpen(true);
     };
@@ -27,12 +26,17 @@ export default function Job({ job }) {
                 <div className="job-header">
                     <div className="job-header-title">
                         <small>
-                            <span>Posted </span>
+                            <span>Posted at </span>
                             <span>
                                 {dayjs(job.createdDate).format(
                                     "HH:mm DD-MM-YYYY"
                                 )}
                             </span>
+                        </small>
+                        <small>
+                            <span> by </span>
+                            
+                            <span><b>{getUserName(job.userName)} </b></span>
                         </small>
                         <div>
                             <h2 className="title-name">{job.title}</h2>
@@ -41,10 +45,11 @@ export default function Job({ job }) {
                     <div className="job-action">
                         <Button
                             onClick={handleApply}
+                            disabled={applied}
                         >
                             <Space>
                                 <img width="24" height="24" src="https://img.icons8.com/windows/32/reviewer-male--v1.png" alt="reviewer-male--v1" />
-                                <span>Ứng tuyển</span>
+                                <span>{applied ? "Đã " : ""}Ứng tuyển</span>
                             </Space>
 
                         </Button>
@@ -140,7 +145,7 @@ export default function Job({ job }) {
             </section>
             <Divider />
             {open && (
-                <ModalJob job={job} setOpen={setOpen} close={() => setOpen(false)} />
+                <ModalJob job={job} setOpen={setOpen} close={() => setOpen(false)} setAppliedJobs={setAppliedJobs}/>
             )}
         </>
     );

@@ -10,13 +10,17 @@ import { Pagination } from 'antd';
 import { defaultPaging } from "../../constant/options";
 import ModalJob from "../../components/jobs/ModalJob";
 import PostJob from "./PostJob"
+import { getUser } from "../../lib/helper";
 
 export default function Jobs() {
     const [jobs, setJobs] = useState([]);
     const [seach, setSearch] = useState("")
     const [paging, setPaging] = useState(defaultPaging)
     const [total, setTotal] = useState(0)
+    const [appliedJobs, setAppliedJobs] = useState([])
     const [open, setOpen] = useState(false)
+
+    const user = getUser()
 
     const dispatch = useDispatch()
 
@@ -24,17 +28,19 @@ export default function Jobs() {
         dispatch(show())
         const searchParams = new URLSearchParams(paging);
 
-        DataService.get(JOBS_PATH.getAll + `?${searchParams.toString()}`).then((res) => {
-            const { data } = res.data
-            setJobs(data.jobs);
-            setTotal(data.total)
+        const getJobs = DataService.get(JOBS_PATH.getAll + `?${searchParams.toString()}`).then(res => res.data.data)
+        const getAppliedJobs = DataService.get(JOBS_PATH.userApplies + user.id + "?" + searchParams.toString()).then(res => res.data.data)
+        const a = async () => {
+            return await Promise.all([getJobs, getAppliedJobs])
+        }
+        a().then(res => {
+            setJobs(res[0].jobs)
+            setTotal(res[0].total)
+            setAppliedJobs(res[1].data.map(item => item.jobId))
+
+        }).finally(() => {
+            dispatch(hide())
         })
-            .catch(err => {
-                alert(err)
-            })
-            .finally(() => {
-                dispatch(hide())
-            });
     }, [paging]);
 
     const quickPostJob = () => {
@@ -74,7 +80,7 @@ export default function Jobs() {
                     </Space>
                 </Flex>
                 {jobs.length ? (
-                    jobs.map((item) => <Job key={item.id} job={item}>{item.title}</Job>)
+                    jobs.map((item) => <Job key={item.id} job={item} applied={appliedJobs.includes(item.id)} setAppliedJobs={setAppliedJobs}>{item.title}</Job>)
                 ) : (
                     <h2>Hiện tại chưa có jobs nào đang mở. Xin quay lại sau</h2>
                 )}
@@ -96,6 +102,7 @@ export default function Jobs() {
                     okText={"Đăng job"}
                     onOk={() => {
                         submitRef.current.click()
+                        setOpen(false)
                     }}
                 >
                     <PostJob inModal={true} submitRef={submitRef}/>

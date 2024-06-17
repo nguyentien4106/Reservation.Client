@@ -109,7 +109,8 @@ const Register = () => {
                     requiredMark="optional"
                 >
                     <Form.Item
-                        name="name"
+                        name="firstName"
+                        label="Họ"
                         rules={[
                             {
                                 required: true,
@@ -117,7 +118,19 @@ const Register = () => {
                             },
                         ]}
                     >
-                        <Input placeholder="Tên" />
+                        <Input placeholder="Nguyễn" />
+                    </Form.Item>
+                    <Form.Item
+                        name="lastName"
+                        label="Tên"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input your name!",
+                            },
+                        ]}
+                    >
+                        <Input placeholder="Văn Anh" />
                     </Form.Item>
                     <Form.Item
                         name="email"
