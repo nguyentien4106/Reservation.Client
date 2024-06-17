@@ -8,6 +8,8 @@ using Reservation.Domain.Models.DTO.Jobs;
 using Reservation.Domain.Models.ViewModel.Jobs;
 using Reservation.Applicattion.Serivces.Email;
 using Reservation.Domain.Models.Request;
+using System.Net.NetworkInformation;
+using Reservation.Domain.Models.ViewModel;
 
 namespace Reservation.Application.Serivces.Jobs
 {
@@ -19,15 +21,15 @@ namespace Reservation.Application.Serivces.Jobs
 
         public async Task<AppResponse<bool>> ApplyJobAsync(ContractDTO dto)
         {
-            if (string.IsNullOrEmpty(dto.LesseeId) || string.IsNullOrEmpty(dto.LessorId))
+            if (string.IsNullOrEmpty(dto.ApplicationUserId))
             {
                 return new AppResponse<bool>().SetCommonError();
             }
 
-            //var contract = _mapper.Map<Contract>(dto);
+            var contract = _mapper.Map<Contract>(dto);
 
-            //await _context.Contracts.AddAsync(contract);
-            //await _context.SaveChangesAsync();
+            await _context.Contracts.AddAsync(contract);
+            await _context.SaveChangesAsync();
 
             return new AppResponse<bool>().SetSuccessResponse(true);
         }
@@ -53,6 +55,47 @@ namespace Reservation.Application.Serivces.Jobs
                 .Include(item => item.ApplicationUser)
                 .Include(item => item.JobServices)
                 .ThenInclude(item => item.Service)
+                .AsNoTracking()
+                .OrderByDescending(item => item.CreatedDate)
+                .Select(entity => _mapper.Map<JobDTO>(entity))
+                .Paginate(paging)
+                .ToListAsync();
+
+            var model = new JobsViewModel()
+            {
+                Jobs = jobs,
+                Total = count
+            };
+            return new AppResponse<JobsViewModel>().SetSuccessResponse(model);
+        }
+
+        public async Task<AppResponse<PagingViewModel<ContractDTO>>> GetByUserApplies(PagingRequest paging, string userId)
+        {
+            var count = await _context.Jobs.CountAsync();
+            var contracts = await _context.Contracts
+                .Where(item => item.ApplicationUserId == userId)
+                .Include(item => item.Job)
+                .AsNoTracking()
+                .OrderByDescending(item => item.CreatedDate)
+                .Paginate(paging)
+                .ToListAsync();
+
+            var data = _mapper.Map<List<ContractDTO>>(contracts);
+
+            var model = new PagingViewModel<ContractDTO>()
+            {
+                Data = data,
+                Total = count
+            };
+            return new AppResponse<PagingViewModel<ContractDTO>>().SetSuccessResponse(model);
+        }
+
+        public async Task<AppResponse<JobsViewModel>> GetByUsers(PagingRequest paging, string userId)
+        {
+            var count = await _context.Jobs.CountAsync();
+            var jobs = await _context.Jobs
+                .Where(item => item.ApplicationUserId == userId)
+                .Include(item => item.Contracts)
                 .AsNoTracking()
                 .OrderByDescending(item => item.CreatedDate)
                 .Select(entity => _mapper.Map<JobDTO>(entity))

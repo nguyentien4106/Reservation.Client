@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Layout, Menu, theme } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import { SettingOutlined } from '@ant-design/icons';
-import { COLLABORATORS_ROUTE_PATH, COLLABORATOR_ROUTE_PATH, CUSTOMER_ROUTE_PATH } from "../../constant/paths";
+import { ACCOUNT_ROUTE_PATH, COLLABORATORS_ROUTE_PATH, COLLABORATOR_ROUTE_PATH, CUSTOMER_ROUTE_PATH } from "../../constant/paths";
 const { Header, Content, Sider } = Layout;
 
 const isMobile = window.innerWidth < 768;
@@ -43,19 +43,19 @@ const AccountLayout = () => {
                 {
                     key: "collaborator-overall",
                     label: "Tổng quan",
-                    onClick: () => navigate(COLLABORATOR_ROUTE_PATH.overall),
+                    onClick: () => navigate(ACCOUNT_ROUTE_PATH.collaboratorOverall),
 
                 },
                 {
                     key: "collaborator-customer",
                     label: "Danh sách khách hàng",
-                    onClick: () => navigate(COLLABORATOR_ROUTE_PATH.customer),
+                    onClick: () => navigate(ACCOUNT_ROUTE_PATH.collaboratorCustomer),
 
                 },
                 {
                     key: "setting",
                     label: "Chỉnh sửa hồ sơ",
-                    onClick: () => navigate(COLLABORATOR_ROUTE_PATH.setting),
+                    onClick: () => navigate(ACCOUNT_ROUTE_PATH.collaboratorSetting),
                 },
             ],
         },
@@ -67,19 +67,43 @@ const AccountLayout = () => {
                 {
                     key: "customer-overall",
                     label: "Tổng quan",
-                    onClick: () => navigate(CUSTOMER_ROUTE_PATH.overall),
+                    onClick: () => navigate(ACCOUNT_ROUTE_PATH.customerOverall),
 
                 },
                 {
                     key: "order-history",
                     label: "Lịch sử thuê",
-                    onClick: () => navigate(CUSTOMER_ROUTE_PATH.orderHistory),
+                    onClick: () => navigate(ACCOUNT_ROUTE_PATH.customerOrders),
 
                 },
                 {
                     key: "customer-donate",
                     label: "Lịch sử donate",
-                    onClick: () => navigate(CUSTOMER_ROUTE_PATH.findPeople),
+                    onClick: () => navigate(ACCOUNT_ROUTE_PATH.customerDonates),
+                },
+            ],
+        },
+        {
+            key: "jobs",
+            label: "Jobs",
+            icon: <img width="16" height="16" src="https://img.icons8.com/ios/50/activity-history.png" alt="activity-history"/>,
+            children: [
+                {
+                    key: "jobs-overall",
+                    label: "Job đã đăng",
+                    onClick: () => navigate(ACCOUNT_ROUTE_PATH.jobOverall),
+
+                },
+                {
+                    key: "jobs-history",
+                    label: "Job đã ứng tuyển",
+                    onClick: () => navigate(ACCOUNT_ROUTE_PATH.jobApplied),
+
+                },
+                {
+                    key: "jobs-donate",
+                    label: "Lịch sử donate",
+                    onClick: () => navigate(ACCOUNT_ROUTE_PATH.customerDonates),
                 },
             ],
         },

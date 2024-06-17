@@ -59,7 +59,11 @@ namespace Reservation.API
             builder.Services.AddTransient<IOrderService, OrderService>();
 
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddNewtonsoftJson(
+                options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.RequireHttpsMetadata = false;

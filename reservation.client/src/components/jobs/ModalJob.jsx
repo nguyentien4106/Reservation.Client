@@ -24,8 +24,7 @@ export default function ModalJob({ job, close, setOpen }) {
         setConfirmLoading(true)
         const params = Object.assign(values, {
             jobId: job.id,
-            lesseeId: getUser().id,
-            lessorId: job.applicationUserId
+            applicationUserId: getUser().id,
         })
         DataService.post(JOBS_PATH.applyJob, params).then(res => {
             const { data } = res.data
@@ -35,7 +34,6 @@ export default function ModalJob({ job, close, setOpen }) {
             }
         }).catch(err => {
             message.error("Đã có lỗi xảy ra. Vui lòng thử lại", err)
-
         }).finally(() => {
             setOpen(false)
         })

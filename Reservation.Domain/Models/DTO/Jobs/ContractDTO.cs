@@ -6,9 +6,7 @@
 
         public Guid JobId { get; set; }
 
-        public string LesseeId { get; set; } = string.Empty;
-
-        public string LessorId { get; set; } = string.Empty;
+        public string ApplicationUserId { get; set; } = string.Empty;
 
         public string? Description { get; set; }
 
@@ -17,5 +15,7 @@
         public int Status { get; set; }
 
         public DateTime? CreatedDate { get; set; }
+
+        public JobDTO Job { get; set; }
     }
 }

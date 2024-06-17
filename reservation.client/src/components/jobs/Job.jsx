@@ -19,7 +19,6 @@ export default function Job({ job }) {
 
     const handleApply = () => {
         setOpen(true);
-        console.log("open");
     };
 
     return (

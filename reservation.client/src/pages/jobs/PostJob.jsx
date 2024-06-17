@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import AuthorizeView from "@/components/auth/AuthorizeView";
 import { ROLES } from "../../constant/settings";
 import {
@@ -12,6 +12,7 @@ import {
     Space,
     Flex,
     App,
+    Modal,
 } from "antd";
 import locationAPI from "../../api/locationAPI";
 import useFetchServices from "../../hooks/useFetchServices";
@@ -33,7 +34,7 @@ const layout = {
     },
 };
 
-export default function PostJob({ quick }) {
+export default function PostJob({ inModal, submitRef }) {
     const provinces = locationAPI.getProvinces();
     const services = useFetchServices();
     const dispatch = useDispatch()
@@ -48,7 +49,6 @@ export default function PostJob({ quick }) {
             status: 0,
         });
         dispatch(show())
-        console.log(params)
         DataService.post(JOBS_PATH.createJob, params).then((res) => {
             const { data } = res
             if(data.isSucceed){
@@ -56,12 +56,13 @@ export default function PostJob({ quick }) {
                 navigate(JOBS_ROUTE_PATH.jobs)
             }
             else{
-                message.success("Đăng job thất bại. Vui lòng thử lại.")
+                message.error("Đăng job thất bại. Vui lòng thử lại.")
             }
         }).catch(err => {
-            console.log(err)
+            message.error("Đăng job thất bại. Vui lòng thử lại.")
         }).finally(() => {
             dispatch(hide())
+            Modal.destroyAll()
         });
     };
 
@@ -104,8 +105,8 @@ export default function PostJob({ quick }) {
                     onFinish={onFinish}
                     style={{
                         backgroundColor: "rgb(232, 232, 232)",
-                        minWidth: quick ? "100%": "60%",
-                        width: quick ? "100%": "60%",
+                        minWidth: inModal ? "100%": "60%",
+                        width: inModal ? "100%": "60%",
                         padding: 30,
                         borderRadius: 20,
                     }}
@@ -227,9 +228,10 @@ export default function PostJob({ quick }) {
                             // ...layout.wrapperCol,
                             offset: 8,
                         }}
+                        hidden={inModal}
                     >
                         {
-                            <Button type="primary" htmlType="submit">
+                            <Button type="primary" htmlType="submit" ref={submitRef}>
                                 Đăng "job"
                             </Button>
                         }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reservation.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Reservation.Infrastructure.Data;
 namespace Reservation.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240617045122_editapplicationuser-addname")]
+    partial class editapplicationuseraddname
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -320,38 +323,6 @@ namespace Reservation.API.Migrations
                     b.ToTable("CollaboratorServices");
                 });
 
-            modelBuilder.Entity("Reservation.Infrastructure.Data.Entities.Contract", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Contact")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("JobId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobId");
-
-                    b.ToTable("Contracts");
-                });
-
             modelBuilder.Entity("Reservation.Infrastructure.Data.Entities.Job", b =>
                 {
                     b.Property<Guid>("Id")
@@ -653,17 +624,6 @@ namespace Reservation.API.Migrations
                     b.Navigation("Collaborator");
 
                     b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("Reservation.Infrastructure.Data.Entities.Contract", b =>
-                {
-                    b.HasOne("Reservation.Infrastructure.Data.Entities.Job", "Job")
-                        .WithMany()
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("Reservation.Infrastructure.Data.Entities.Job", b =>

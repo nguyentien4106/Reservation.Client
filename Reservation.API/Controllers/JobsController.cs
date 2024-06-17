@@ -5,6 +5,7 @@ using Reservation.Domain.Models.DTO.Jobs;
 using Reservation.Domain.Models.ViewModel.Jobs;
 using Reservation.Application.Serivces.Jobs;
 using Reservation.Domain.Models.Request;
+using Reservation.Domain.Models.ViewModel;
 
 namespace Reservation.API.Controllers
 {
@@ -20,6 +21,18 @@ namespace Reservation.API.Controllers
         public async Task<AppResponse<JobsViewModel>> GetAll([FromQuery] PagingRequest paging)
         {
             return await _service.GetAll(paging);
+        }
+
+        [HttpGet("[action]/{applicationUserId}")]
+        public async Task<AppResponse<JobsViewModel>> Users(string applicationUserId, [FromQuery] PagingRequest paging)
+        {
+            return await _service.GetByUsers(paging, applicationUserId);
+        }
+
+        [HttpGet("[action]/{applicationUserId}")]
+        public async Task<AppResponse<PagingViewModel<ContractDTO>>> UsersApplies(string applicationUserId, [FromQuery] PagingRequest paging)
+        {
+            return await _service.GetByUserApplies(paging, applicationUserId);
         }
 
         [HttpPost]

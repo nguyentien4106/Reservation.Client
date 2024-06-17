@@ -14,12 +14,18 @@ export const CUSTOMER_ROUTE_PATH = {
     jobs: "/customer/jobs"
 }
 
-// export const ACCOUNT_ROUTE_PATH = {
-//     collaboratorSetting: "collaborator/setting",
-//     collaboratorCustomer: "/account/collaborator/customer",
-//     collaboratorOverall: "collaborator/overall",
+export const ACCOUNT_ROUTE_PATH = {
+    collaboratorSetting: "/account/collaborator-setting",
+    collaboratorCustomer: "/account/collaborator-customer",
+    collaboratorOverall: "/account/collaborator-overall",
+    customerOverall: "/account/customer-overall",
+    customerOrders: "/account/customer-orders",
+    customerDonates: "/account/customer-donates",
+    jobOverall: "/account/job-overall",
+    jobApplied: "/account/job-applied",
+    jobHistory: "/account/job-history",
 
-// }
+}
 
 export const COLLABORATORS_ROUTE_PATH = {
     collaborators: "/collaborators"

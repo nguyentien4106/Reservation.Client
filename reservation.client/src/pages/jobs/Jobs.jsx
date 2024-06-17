@@ -1,5 +1,5 @@
 import { Button, Card, Flex, Grid, Input, Modal, Space } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./index.css";
 import DataService from "../../lib/DataService";
 import { JOBS_PATH } from "../../constant/urls";
@@ -26,7 +26,6 @@ export default function Jobs() {
 
         DataService.get(JOBS_PATH.getAll + `?${searchParams.toString()}`).then((res) => {
             const { data } = res.data
-            console.log(data)
             setJobs(data.jobs);
             setTotal(data.total)
         })
@@ -41,6 +40,8 @@ export default function Jobs() {
     const quickPostJob = () => {
         setOpen(true)
     }
+
+    const submitRef = useRef()
 
     return (
         <>
@@ -92,9 +93,12 @@ export default function Jobs() {
                     width={"70%"}
                     open={true}
                     onCancel={() => setOpen(false)}
-                    
+                    okText={"Đăng job"}
+                    onOk={() => {
+                        submitRef.current.click()
+                    }}
                 >
-                    <PostJob quick={true}/>
+                    <PostJob inModal={true} submitRef={submitRef}/>
                 </Modal>
             }
         </>

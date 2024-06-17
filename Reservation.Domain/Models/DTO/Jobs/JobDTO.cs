@@ -30,5 +30,7 @@ namespace Reservation.Domain.Models.DTO.Jobs
 
         public string? UserName { get; set; }
 
+        public List<ContractDTO> Contracts { get; set; } = [];
+
     }
 }
