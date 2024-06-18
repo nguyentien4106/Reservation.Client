@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { App, Space, Tag, Typography, Popconfirm, Table } from "antd";
 import { generateMessages } from "@/lib/helper";
 import DataService from "@/lib/DataService";
-import { COLLABORATOR_PATH } from "@/constant/urls";
 import { useDispatch } from "react-redux";
 import { show, hide } from "@/state/loading/loadingSlice";
 import OrderTable from "../../common/OrderTable";
@@ -78,7 +77,6 @@ const CollaboratorOrders = ({ src}) => {
         DataService.get(ORDER_PATH.confirmOrder + queryString)
             .then(res => {
                 const { data } = res
-                console.log(data)
                 if (data.isSucceed) {
                     message.success("Đã xác nhận thành công")
                     setSource(prev => prev.map(item => item.id === data.data.id ? data.data : item))

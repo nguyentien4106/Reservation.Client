@@ -111,7 +111,11 @@ namespace Reservation.Application.Serivces.Order
                 return new AppResponse<List<OrderDTO>>().SetErrorResponse("user", "Không tìm thấy User");
             }
 
-            var orders = await _context.Orders.Where(item => item.ApplicationUserId == applicationUserId).ToListAsync();
+            var orders = await _context.Orders
+                .Where(item => item.ApplicationUserId == applicationUserId)
+                .Include(item => item.Collaborator)
+                .Include(item => item.Review)
+                .ToListAsync();
 
             return new AppResponse<List<OrderDTO>>().SetSuccessResponse(_mapper.Map<List<OrderDTO>>(orders));
 

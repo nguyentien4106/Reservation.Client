@@ -13,6 +13,8 @@ import {
     QuestionCircleOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { ACCOUNT_ROUTE_PATH } from "../../constant/paths";
+const AcceptStatus = 2;
 
 export default function Overall() {
     const { user } = useContext(UserContext);
@@ -25,6 +27,7 @@ export default function Overall() {
         DataService.get(COLLABORATOR_PATH.getProfile + user?.collaboratorId)
             .then((res) => {
                 const { orders } = res.data.data;
+                console.log(orders)
                 setReady(res.data.data.isReady);
                 setOrders(orders);
             })
@@ -33,8 +36,8 @@ export default function Overall() {
                 dispatch(hide());
             });
     }, []);
-    const getOrderAmount = (prev, cur) => prev + cur.offer * cur.times;
-    const totalMoney = orders.reduce(getOrderAmount, 0);
+    const getOrderAmount = (prev, cur) => prev + cur.price * cur.times + cur.tips;
+    const totalMoney = orders.filter(item => item.status === AcceptStatus).reduce(getOrderAmount, 0);
     const reviews = orders
         ?.filter((order) => order.review !== null)
         .map((item) => item.review);
@@ -71,7 +74,7 @@ export default function Overall() {
                             return orders?.length &&
                                 user?.collaboratorId &&
                                 user?.collaboratorId !== GUID ? (
-                                <Link to={"/collaborator/customer"}>
+                                <Link to={ACCOUNT_ROUTE_PATH.collaboratorCustomer}>
                                     {orders?.length}
                                 </Link>
                             ) : (

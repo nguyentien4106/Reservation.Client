@@ -42,7 +42,8 @@ namespace Reservation.Application.Serivces.Customer
                 rate = new Rate
                 {
                     Sum = reviewDto.Rate,
-                    Count = 1
+                    Count = 1,
+                    CollaboratorId = order.CollaboratorId
                 };
 
                 await _context.Rates.AddAsync(rate);

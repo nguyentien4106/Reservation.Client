@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Form, Input, InputNumber, Button, App, Modal, Checkbox } from "antd";
+import { Form, Input, Button, Modal, Checkbox } from "antd";
 import RateComponent from "./RateComponent";
 import UploadImageComponent from "./UploadImageComponent";
 import { generateMessages, getBase64, getUser, getUserName } from "../../../lib/helper";
 import { R2 } from "@/lib/R2";
 import DataService from "../../../lib/DataService";
 import { CUSTOMER_PATH } from "../../../constant/urls";
+import { useDispatch } from "react-redux";
+import { show, hide } from "@/state/loading/loadingSlice";
 
 const layout = {
     labelCol: {
@@ -19,6 +21,8 @@ const layout = {
 function ReviewContent({ order, message, setOrdersSrc }) {
     const [rate, setRate] = useState(5)
     const [images, setImages] = useState([])
+    const disaptch = useDispatch()
+
     const onFinish = async values => {
         if(!images.length) {
             message.error("Bạn cần upload ít nhất 1 hình ảnh hoặc video")
@@ -28,7 +32,7 @@ function ReviewContent({ order, message, setOrdersSrc }) {
         const imagesPush = await uploadImages()
 
         const params = Object.assign(values, { rate: rate, orderId: order.id, applicationUserId: getUser().id })
-
+        disaptch(show())
         DataService.post(CUSTOMER_PATH.addReview, params)
         .then(res => {
             const { data } = res
@@ -39,6 +43,7 @@ function ReviewContent({ order, message, setOrdersSrc }) {
         })
         .catch(err => message.error(generateMessages(err)))
         .finally(() => {
+            disaptch(hide())
             Modal.destroyAll()
         })
 

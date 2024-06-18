@@ -53,6 +53,7 @@ function CustomerOrders({ src }) {
                 title="Review"
                 key="review"
                 render={(_, order) => {
+                    console.log(order)
                     if(order.status === 2){
                         return order?.review ? <Link to={`/collaborators/${order.collaboratorId}`}>Đã review</Link> : <Button onClick={() => postReview(order)}>Đăng review</Button>
                     }

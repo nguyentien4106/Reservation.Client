@@ -16,9 +16,6 @@ function OrderHistory() {
     useEffect(() => {
         const user = getUser()
         if(user){
-            console.log(user)
-        console.log(ORDER_PATH.getCustomerOrders + user?.id)
-
             DataService.get(ORDER_PATH.getCustomerOrders + user?.id).then(res => {
                 const { data } = res
                 console.log(data)
