@@ -1,6 +1,7 @@
 ﻿using Reservation.Domain.Models.DTO.Auth;
 using Reservation.Domain.Models.DTO.Collaborator;
 using Reservation.Domain.Models.Request.Collaborators;
+using Reservation.Domain.Models.ViewModel;
 
 namespace Reservation.Application.Serivces.UserServiceRegister
 {
@@ -24,7 +25,7 @@ namespace Reservation.Application.Serivces.UserServiceRegister
 
         //Task<AppResponse<OrderDTO>> ComfirmRequestAsync(Guid? requestId, int status);
 
-        Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(GetAllRequest request);
+        Task<AppResponse<PagingViewModel<List<CollaboratorDTO>>>> GetAllAsync(GetAllRequest request);
 
     }
 }

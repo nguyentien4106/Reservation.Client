@@ -18,19 +18,19 @@ namespace Reservation.API.Controllers
         private readonly IJobsService _service = service;
 
         [HttpGet]
-        public async Task<AppResponse<JobsViewModel>> GetAll([FromQuery] PagingRequest paging)
+        public async Task<AppResponse<PagingViewModel<List<JobDTO>>>> GetAll([FromQuery] PagingRequest paging)
         {
             return await _service.GetAll(paging);
         }
 
         [HttpGet("[action]/{applicationUserId}")]
-        public async Task<AppResponse<JobsViewModel>> Users(string applicationUserId, [FromQuery] PagingRequest paging)
+        public async Task<AppResponse<PagingViewModel<List<JobDTO>>>> Users(string applicationUserId, [FromQuery] PagingRequest paging)
         {
             return await _service.GetByUsers(paging, applicationUserId);
         }
 
         [HttpGet("[action]/{applicationUserId}")]
-        public async Task<AppResponse<PagingViewModel<ContractDTO>>> UsersApplies(string applicationUserId, [FromQuery] PagingRequest paging)
+        public async Task<AppResponse<PagingViewModel<List<ContractDTO>>>> UsersApplies(string applicationUserId, [FromQuery] PagingRequest paging)
         {
             return await _service.GetByUserApplies(paging, applicationUserId);
         }

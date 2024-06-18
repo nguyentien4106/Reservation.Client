@@ -1,6 +1,4 @@
 ﻿using Reservation.Domain.Models.DTO.Home;
-using Reservation.Domain.Models.DTO.Service;
-using System.ComponentModel.DataAnnotations;
 
 namespace Reservation.Domain.Models.DTO.Collaborator
 {

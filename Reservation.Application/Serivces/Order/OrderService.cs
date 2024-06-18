@@ -6,16 +6,23 @@ using Reservation.Domain.Models.DTO.Email;
 using Reservation.Domain.Models.DTO.Home;
 using Reservation.Domain.Models.Enum;
 using Reservation.Applicattion.Serivces.Email;
-using Reservation.Infrastructure.Data.Entities;
+using Microsoft.AspNetCore.Hosting;
+using Reservation.Application.Serivces.Email.EmailBody;
 
 namespace Reservation.Application.Serivces.Order
 {
-    public class OrderService(ApplicationDbContext context, IMapper mapper, IEmailService emailService) 
+    public class OrderService(
+        ApplicationDbContext context, 
+        IMapper mapper, 
+        IEmailService emailService,
+        IHostingEnvironment hostingEnvironment
+    ) 
         : IOrderService
     {
         private readonly ApplicationDbContext _context = context;
         private readonly IMapper _mapper = mapper;
         private readonly IEmailService _emailService = emailService;
+        private readonly IHostingEnvironment _hostingEnvironment = hostingEnvironment;
 
         public async Task<AppResponse<OrderDTO>> ComfirmOrderAsync(Guid? requestId, int status)
         {
@@ -69,7 +76,7 @@ namespace Reservation.Application.Serivces.Order
 
         public async Task<AppResponse<bool>> CreateOrderAsync(OrderDTO orderDTO)
         {
-            if (string.IsNullOrEmpty(orderDTO.ApplicationUserId))
+            if (string.IsNullOrEmpty(orderDTO.ApplicationUserId) || orderDTO == null)
             {
                 return new AppResponse<bool>().SetErrorResponse("user", "User trống!");
             }
@@ -79,17 +86,15 @@ namespace Reservation.Application.Serivces.Order
             order.CreatedDate = DateTime.Now;
 
             await _context.Orders.AddAsync(order);
-
             await _context.SaveChangesAsync();
 
-            var email = new EmailContent()
-            {
-                Subject = "Bạn đang có một người muốn thuê mới.",
-                ToEmail = orderDTO.CollaboratorEmail,
-                ToName = orderDTO.NickName ?? "Customer",
-            };
-
-            var sended = _emailService.SendEmailNewOrder(email, orderDTO);
+            var emailBuilder = new EmailBuilder();
+            emailBuilder.SetFrom("ThueNguoiYeu.me", "customer-support@ThueNguoiYeu.me.com");
+            emailBuilder.SetTo(orderDTO.NickName ?? "Customer", orderDTO?.CollaboratorEmail ?? "nguyenvantien0620@gmail.com");
+            emailBuilder.SetSubject("Bạn có một người muốn thuê mới.");
+            emailBuilder.SetBody(new NewOrderEmailBodyBuiler(_hostingEnvironment, orderDTO, orderDTO.NickName ?? "Customer").GetBodyBuilder());
+            
+            var sended = _emailService.Sent(emailBuilder.Build()); 
 
             if (!sended)
             {

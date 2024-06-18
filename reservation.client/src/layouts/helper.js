@@ -1,4 +1,4 @@
-import { ACTION_ROUTE_PATH, COLLABORATORS_ROUTE_PATH, COLLABORATOR_ROUTE_PATH, CUSTOMER_ROUTE_PATH, DONATE_ROUTE_PATH, JOBS_ROUTE_PATH } from "../constant/paths";
+import { ACCOUNT_ROUTE_PATH, COLLABORATORS_ROUTE_PATH, DONATE_ROUTE_PATH, JOBS_ROUTE_PATH } from "../constant/paths";
 
 export const menuItems = (navigate, isAdmin) => isAdmin ? adminItems(navigate) : userItems(navigate)
 
@@ -21,7 +21,7 @@ const userItems = navigate => [
             {
                 key: "create-profile",
                 label: "Hồ sơ Talent",
-                onClick: () => navigate(COLLABORATOR_ROUTE_PATH.setting)
+                onClick: () => navigate(ACCOUNT_ROUTE_PATH.collaboratorSetting)
             },
             {
                 key: "create-job",

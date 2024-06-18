@@ -9,6 +9,7 @@ using Reservation.Domain.Models.DTO.Home;
 using Reservation.Application.Serivces.UserServiceRegister;
 using Reservation.Domain.Models.Request.Auth;
 using Reservation.Domain.Models.Request.Collaborators;
+using Reservation.Domain.Models.ViewModel;
 
 namespace Reservation.API.Controllers
 {
@@ -64,17 +65,10 @@ namespace Reservation.API.Controllers
             return await _collaboratorService.ChangeStatusAsync(request.CollaboratorId, request.Status);
         }
 
-        //[HttpGet]
-
-        //public async Task<AppResponse<List<CollaboratorDTO>>> GetAllFilter([FromQuery] string city, string district, string sex, int orderType)
-        //{
-        //    return await _collaboratorService.GetAllAsync(city, district, sex, orderType);
-        //}
-
         [Route("/[controller]")]
         [HttpGet]
         [AllowAnonymous]
-        public async Task<AppResponse<List<CollaboratorDTO>>> Collaborators([FromQuery] GetAllRequest request)
+        public async Task<AppResponse<PagingViewModel<List<CollaboratorDTO>>>> Collaborators([FromQuery] GetAllRequest request)
         {
             return await _collaboratorService.GetAllAsync(request);
         }

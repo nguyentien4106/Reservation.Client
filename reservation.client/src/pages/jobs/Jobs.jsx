@@ -25,16 +25,16 @@ export default function Jobs() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(show())
         const searchParams = new URLSearchParams(paging);
-
-        const getJobs = DataService.get(JOBS_PATH.getAll + `?${searchParams.toString()}`).then(res => res.data.data)
-        const getAppliedJobs = DataService.get(JOBS_PATH.userApplies + user.id + "?" + searchParams.toString()).then(res => res.data.data)
-        const a = async () => {
+        const getDataAsync = async () => {
+            dispatch(show())
+            const getJobs = DataService.get(JOBS_PATH.getAll + `?${searchParams.toString()}`).then(res => res.data.data)
+            const getAppliedJobs = DataService.get(JOBS_PATH.userApplies + user.id + "?" + searchParams.toString()).then(res => res.data.data)
             return await Promise.all([getJobs, getAppliedJobs])
         }
-        a().then(res => {
-            setJobs(res[0].jobs)
+
+        getDataAsync().then(res => {
+            setJobs(res[0].data)
             setTotal(res[0].total)
             setAppliedJobs(res[1].data.map(item => item.jobId))
 

@@ -30,6 +30,7 @@ function Collaborators() {
     const { setUser } = useContext(UserContext);
     const dispatch = useDispatch();
     const [paging, setPaging] = useState(defaultPaging)
+    const [total, setTotal] = useState(0);
 
     const getCollaborators = () => {
         dispatch(show());
@@ -38,7 +39,9 @@ function Collaborators() {
         DataService.get(COLLABORATOR_PATH.getAll + params)
             .then((res) => {
                 const { data } = res.data;
-                setCollaborators(data);
+                console.log(data)
+                setCollaborators(data.data);
+                setTotal(data.total)
             })
             .catch((err) => message.error(err.message))
             .finally(() => {
@@ -80,7 +83,7 @@ function Collaborators() {
 
                 {collaborators.length ? (
                     collaborators.map((collaborator) => (
-                        <Col flex="1 0 20%" className="column Green">{card(collaborator)}</Col>
+                        <Col key={collaborator.id} flex="1 0 20%" className="column Green">{card(collaborator)}</Col>
                     ))
                 ) : (
                     <h3>Không tìm thấy dữ liệu</h3>
@@ -88,7 +91,7 @@ function Collaborators() {
             </Row>
             <Pagination
                     defaultCurrent={1}
-                    total={100}
+                    total={total}
                     responsive
                     onChange={(index, pageSize) => setPaging({ pageIndex: index - 1, pageSize })}
                     defaultPageSize={20}

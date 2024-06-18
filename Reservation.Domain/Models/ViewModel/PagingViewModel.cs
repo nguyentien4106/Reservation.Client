@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Reservation.Domain.Models.ViewModel
+﻿namespace Reservation.Domain.Models.ViewModel
 {
-    public class PagingViewModel<T> where T : class
+    public class PagingViewModel<T>(int total, T data) where T : class
     {
-        public int Total { get; set; } = 0;
+        public PagingViewModel() : this(0, null)
+        {
 
-        public List<T> Data { get; set; } = [];
+        }
+
+        public int Total { get; set; } = total;
+
+        public T Data { get; set; } = data;
     }
 }

@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { R2 } from "../../../lib/R2";
 import { getUserName } from "../../../lib/helper";
 import { ContainerInfoProfile } from "@/pages/home/collaborator/CollaboratorPage";
+import dayjs from "dayjs";
 
 function AvatarImage() {
     const [avatarUrl, setAvatarUrl] = useState("");
@@ -40,11 +41,16 @@ function AvatarImage() {
             {loading ? (
                 <Spin height={250} />
             ) : (
-                <div className="avatar-container">
-                    <Avatar size={200} 
-                    src={avatarUrl}
-                />
-                </div>
+                <>
+                    <div className="avatar-container">
+                        <Avatar size={200} src={avatarUrl} />
+                    </div>
+                    <br/>
+                    <strong>Ngày tham gia: </strong>
+                    <strong>
+                        {dayjs(collaborator?.joinedDate).format("DD-MM-YYYY")}
+                    </strong>
+                </>
             )}
         </>
     );

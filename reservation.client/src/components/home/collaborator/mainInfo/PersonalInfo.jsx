@@ -40,7 +40,10 @@ const items = (collaborator) => [
         label: "Cân nặng",
         value: collaborator?.weight,
     },
-
+    {
+        label: "Giới tính",
+        value: collaborator?.sex === "Female" ? "Nữ" : "Nam",
+    },
 ];
 
 function PersonalInfo() {

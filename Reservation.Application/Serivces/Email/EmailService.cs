@@ -30,33 +30,6 @@ namespace Reservation.Application.Serivces.Email
             _hostingEnvironment = hostingEnvironment;
         }
 
-        public bool SendEmailNewOrder(EmailContent email, OrderDTO order)
-        {
-            var filePath = GetTemplateFilePath("newOrder.html");
-            var doc = new HtmlDocument();
-            doc.Load(filePath);
-            var node = doc.DocumentNode.SelectSingleNode("//body");
-
-            var body = new BodyBuilder();
-            body.HtmlBody = GetEmailContent(node.OuterHtml, order, email);
-
-            try
-            {
-                var message = new MimeMessage();
-                message.From.Add(new MailboxAddress(_fromName, _fromEmail));
-                message.To.Add(new MailboxAddress(email.ToName, email.ToEmail));
-                message.Subject = email.Subject;
-                message.Body = body.ToMessageBody();
-
-                return Sent(message);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-        }
-
         public bool SendMail(EmailContent email)
         {
             try
@@ -78,8 +51,10 @@ namespace Reservation.Application.Serivces.Email
             }
         }
 
-        private bool Sent(MimeMessage message)
+        public bool Sent(MimeMessage message)
         {
+            message.Sender = new MailboxAddress(_fromName, _fromEmail);
+            
             using var client = new SmtpClient();
             client.Connect(_server, 587, false);
 
@@ -90,23 +65,6 @@ namespace Reservation.Application.Serivces.Email
             client.Disconnect(true);
 
             return true;
-        }
-
-        private string GetEmailContent(string template, OrderDTO order, EmailContent email)
-        {
-            var builder = new StringBuilder(template);
-            builder.Replace("[COLLABORATOR_NAME]", email.ToName);
-            builder.Replace("[CUSTOMER_NAME]", order.Name);
-            builder.Replace("[PRICE]", order.Tips.ToString());
-            builder.Replace("[TIMES]", order.Times.ToString());
-            builder.Replace("[AMOUNT]", $"{order.Amount}");
-            builder.Replace("[DESCRIPTION]", order.Description);
-            builder.Replace("[EMAIL]", order.Email);
-            builder.Replace("[PHONE]", order.PhoneNumber);
-            builder.Replace("[ZALO]", order.Zalo);
-            builder.Replace("[CREATED_DATE]", order.CreatedDate.ToString());
-
-            return builder.ToString();
         }
 
         public string GetTemplateFilePath(string template)

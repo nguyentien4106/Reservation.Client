@@ -66,19 +66,22 @@ const CollaboratorOrders = ({ src}) => {
 
     const [source, setSource] = useState(src)
 
+    
     useEffect(() => {
         setSource(src)
+        console.log('src', src)
     }, [src])
 
     const handleAction = (customer, status) => {
         dispatch(show())
-        const queryString = `requestId=${customer.id}&status=${status}`
+        const queryString = `orderId=${customer.id}&status=${status}`
         DataService.get(ORDER_PATH.confirmOrder + queryString)
             .then(res => {
                 const { data } = res
-                setSource(prev => prev.map(item => item.id === data.data.id ? data.data : item))
+                console.log(data)
                 if (data.isSucceed) {
                     message.success("Đã xác nhận thành công")
+                    setSource(prev => prev.map(item => item.id === data.data.id ? data.data : item))
                 }
                 else {
                     message.error(generateMessages(data.messages))

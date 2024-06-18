@@ -11,6 +11,8 @@ using Reservation.Applicattion.Serivces.Email;
 using Reservation.Application.Serivces.UserServiceRegister;
 using Reservation.Domain.Extensions;
 using Reservation.Domain.Models.Request.Collaborators;
+using Reservation.Domain.Models.ViewModel;
+using System.Collections.Generic;
 
 namespace Reservation.Application.Serivces.UserServiceRegister
 {
@@ -204,7 +206,7 @@ namespace Reservation.Application.Serivces.UserServiceRegister
             await _context.SaveChangesAsync();
         }
 
-        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(GetAllRequest request)
+        public async Task<AppResponse<PagingViewModel<List<CollaboratorDTO>>>> GetAllAsync(GetAllRequest request)
         {
             var query = _context.Collaborators.Include(item => item.View).AsQueryable();
 
@@ -218,7 +220,7 @@ namespace Reservation.Application.Serivces.UserServiceRegister
 
             if (result == null)
             {
-                return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse([]);
+                return new AppResponse<PagingViewModel<List<CollaboratorDTO>>>().SetSuccessResponse(new());
             }
             var collaboratorDtos = _mapper.Map<List<CollaboratorDTO>>(result);
 
@@ -249,9 +251,12 @@ namespace Reservation.Application.Serivces.UserServiceRegister
                     break;
             }
 
+            var count = collaboratorDtos.Count;
             collaboratorDtos = collaboratorDtos.Paginate(request).ToList();
 
-            return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(collaboratorDtos);
+            var model = new PagingViewModel<List<CollaboratorDTO>>(count, collaboratorDtos);
+
+            return new AppResponse<PagingViewModel<List<CollaboratorDTO>>>().SetSuccessResponse(model);
         }
 
     }

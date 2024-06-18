@@ -35,7 +35,6 @@ const SettingPage = () => {
 
     return (
         <AuthorizeView role={ROLES.USER}>
-            {/* <ProfileContext.Provider value={{ collaborator, allowUpdate: true }}> */}
                 <div
                     style={{
                         display: "flex",

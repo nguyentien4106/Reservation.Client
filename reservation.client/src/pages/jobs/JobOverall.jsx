@@ -17,18 +17,14 @@ export default function JobOverall() {
         DataService.get(`Jobs/Users/${getUser().id}?`+ query.toString()).then(res => {
             console.log(res.data.data)
             const { data } = res.data
-            setJobs(data.jobs)
+            setJobs(data.data)
         })
     }, []);
 
     return (
         <>
-        <JobTable data={jobs}>
-
-        </JobTable>
-            {
-                jobs.map(item => <Job job={item} key={item.id}/>)
-            }
+            <JobTable data={jobs}>
+            </JobTable>
         </>
     );
 }

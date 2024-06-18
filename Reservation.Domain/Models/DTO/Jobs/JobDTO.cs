@@ -1,6 +1,4 @@
-﻿using Reservation.Domain.Models.DTO.Jobs;
-
-namespace Reservation.Domain.Models.DTO.Jobs
+﻿namespace Reservation.Domain.Models.DTO.Jobs
 {
     public class JobDTO
     {

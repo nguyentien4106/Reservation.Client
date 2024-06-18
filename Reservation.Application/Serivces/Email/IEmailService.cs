@@ -1,4 +1,5 @@
-﻿using Reservation.Domain.Models.DTO.Email;
+﻿using MimeKit;
+using Reservation.Domain.Models.DTO.Email;
 using Reservation.Domain.Models.DTO.Home;
 
 namespace Reservation.Applicattion.Serivces.Email
@@ -7,10 +8,10 @@ namespace Reservation.Applicattion.Serivces.Email
     {
         bool SendMail(EmailContent email);
 
-        bool SendEmailNewOrder(EmailContent email, OrderDTO order);
-
         string GetTemplateFilePath(string templateFilePath);
 
         string GetEmailTemplate(string template);
+
+        bool Sent(MimeMessage message);
     }
 }

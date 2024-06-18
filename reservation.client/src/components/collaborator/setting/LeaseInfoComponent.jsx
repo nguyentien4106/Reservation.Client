@@ -118,7 +118,7 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
                 <Form.Item
                     name="isReady"
                     label="Bật hồ sơ cho thuê ?"
-                    tooltip="Khi được kích hoạt, hồ sơ của bạn sẽ được public và khách hàng có thể liên hệ để thuê."
+                    tooltip="Hồ sơ của bạn sẽ được public tuy nhiên nếu ko bật Ready người dùng sẽ không thể thuê bạn."
                     valuePropName="checked"
                 >
                     <Switch />

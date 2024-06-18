@@ -1,7 +1,7 @@
-﻿using Reservation.Domain.Models.DTO.Jobs;
-using Reservation.Domain.Models.DTO.Collaborator;
+﻿using Reservation.Domain.Models.DTO.Collaborator;
 using Reservation.Domain.Models.DTO.Customer;
 using Reservation.Domain.Models.DTO.Home;
+using Reservation.Domain.Models.DTO.Jobs;
 using Reservation.Domain.Models.DTO.Service;
 using Reservation.Infrastructure.Data.Entities;
 

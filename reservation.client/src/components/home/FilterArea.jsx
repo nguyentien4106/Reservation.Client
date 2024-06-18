@@ -78,13 +78,6 @@ function FilterArea({ setFilter, filterResult }) {
             defaultValue: "All",
         },
         {
-            label: "Huyện",
-            defaultValue: "All",
-            options: districts,
-            onSelect: (value, item) =>
-                setFilter((prev) => Object.assign(prev, { district: item.label })),
-        },
-        {
             label: "Giới tính",
             defaultValue: "All",
             options: [

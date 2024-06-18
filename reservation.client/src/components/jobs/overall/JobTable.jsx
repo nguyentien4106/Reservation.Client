@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { Modal, Space, Table, Tag } from "antd";
 import dayjs from "dayjs";
+import { render } from "react-dom";
+import { showMoney } from "../../../lib/helper";
+import { PAYMENT_TYPES } from "../../../constant/settings";
 
 const JobTable = ({ data }) => {
     const [open, setOpen] = useState(false)
 
     const columns = [
         {
-            title: "Title",
+            title: "Tiêu đề",
             dataIndex: "title",
             key: "title",
             render: (text) => {
@@ -18,6 +21,13 @@ const JobTable = ({ data }) => {
             title: "Cast",
             dataIndex: "cast",
             key: "cast",
+            render: (value) => showMoney(value)
+        },
+        {
+            title: "Phương thức thanh toán",
+            dataIndex: "paymentType",
+            key: "cast",
+            render: (value) => PAYMENT_TYPES[value]
         },
         {
             title: "Ngày thực hiện",
@@ -44,7 +54,7 @@ const JobTable = ({ data }) => {
     
     return (
         <>
-            <Table columns={columns} dataSource={data} />
+            <Table columns={columns} dataSource={data} rowKey={"id"}/>
             {
                 open && <Modal open={true}>
                     
