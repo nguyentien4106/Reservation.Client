@@ -3,6 +3,7 @@ import "./homepage.css";
 import { Divider, Flex, Space } from "antd";
 import { Link } from "react-router-dom";
 import {
+    ACCOUNT_ROUTE_PATH,
     COLLABORATORS_ROUTE_PATH,
     JOBS_ROUTE_PATH,
 } from "../../constant/paths";
@@ -10,6 +11,8 @@ import image_1 from "@/assets/image_1.jpg";
 import trusted from "@/assets/trusted.jpg";
 import privacy from "@/assets/privacy.png";
 import hire from "@/assets/hire.png";
+import talent from "@/assets/talent.jpg";
+import job from "@/assets/job.jpg";
 
 export default function HomePage() {
     return (
@@ -65,6 +68,49 @@ export default function HomePage() {
 
             <Divider></Divider>
             <h2 className="why">Cách sử dụng?</h2>
+
+            <Flex vertical>
+                <div>
+                    <Divider></Divider>
+                    <Flex className="why-card">
+                        <div className="why-card-text">
+                            <h3 className="banner-text-h3 logo">Bạn là người có nhu cầu cho thuê ?</h3>
+                            <p className="short-desc">
+                                Chúng tôi quy ước mỗi một hồ sơ là một Talent. Talent sẽ được đăng hồ sơ của mình và chờ người khác thuê. <br />
+                                Bạn có thể tạo hồ sơ Talent <u><i><b><Link to={ACCOUNT_ROUTE_PATH.collaboratorSetting}>
+                                    tại đây
+                                </Link></b></i></u>
+                                <br></br>
+                                <b><i>Chúng tôi sẽ không public thông tin của bạn cho tới khi bạn đồng ý "yêu cầu cho thuê" của một ai đó.</i></b>
+                            </p>
+                        </div>
+                        <img
+                            src={talent}
+                            className="card-image"
+                            style={{ borderRadius: 20 }}
+                        />
+                    </Flex>
+                </div>
+                <div>
+                    <Divider></Divider>
+                    <Flex className="why-card">
+                        <div className="why-card-text">
+                            <h3 className="banner-text-h3 logo">Bạn đang cần tìm một người phù hợp với yêu cầu của bạn?</h3>
+                            <p className="short-desc">
+                                Chúng tôi gọi nó là Job. Bạn có thể post bất cứ job nào để mọi người có thể thấy job của bạn và apply vào chúng<br />
+                                Bạn có thể tạo một Job <u><i><b><Link to={JOBS_ROUTE_PATH.post}>
+                                    tại đây
+                                </Link></b></i></u>
+                            </p>
+                        </div>
+                        <img
+                            src={job}
+                            className="card-image"
+                            style={{ borderRadius: 20 }}
+                        />
+                    </Flex>
+                </div>
+            </Flex>
 
             <Divider></Divider>
             <h2 className="why">Tại sao ThueNguoiYeu.me?</h2>
