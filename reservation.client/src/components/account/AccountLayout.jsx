@@ -86,7 +86,7 @@ const AccountLayout = () => {
         {
             key: "jobs",
             label: "Jobs",
-            icon: <img width="16" height="16" src="https://img.icons8.com/ios/50/activity-history.png" alt="activity-history"/>,
+            icon: <img width="16" height="16" src="https://img.icons8.com/ios-filled/50/lawyer.png" alt="lawyer"/>,
             children: [
                 {
                     key: "jobs-overall",
@@ -121,6 +121,7 @@ const AccountLayout = () => {
                 collapsible
                 collapsed={collapsed}
                 onCollapse={(value) => setCollapsed(value)}
+                // width={40}
             >
                 <Menu 
                     theme="light" 

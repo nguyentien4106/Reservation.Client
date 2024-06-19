@@ -122,6 +122,7 @@ export default function Job({
                                     onExpand: (_, info) =>
                                         setExpanded(info.expanded),
                                 }}
+                                className="job-description-text"
                             >
                                 {job.description}
                             </Typography.Paragraph>
@@ -139,12 +140,15 @@ export default function Job({
                                     onExpand: (_, info) =>
                                         setExpanded(info.expanded),
                                 }}
+                                className="job-description-text"
                             >
                                 {job.required}
                             </Typography.Paragraph>
                         </div>
                     </div>
-
+                    <strong className="info-item job-description-header">
+                        Dịch vụ:
+                    </strong>
                     <div className="services-container">
                         {job.jobServices.length ? (
                             job.jobServices.map((item) => (

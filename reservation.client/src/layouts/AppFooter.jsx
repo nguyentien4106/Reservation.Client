@@ -7,7 +7,7 @@ export default function AppFooter() {
         <Flex justify="space-between">
             <div>
                 <Link href="https://thuenguoiyeu.me">ThueNguoiYeu.me</Link>
-                <span>&copy; 2024 creativeLabs.</span>
+                <span>&copy; 2024.</span>
             </div>
             <Space>
                 <a href="https://t.me/+4M0vWKnqYho4NTg1" target="_blank">

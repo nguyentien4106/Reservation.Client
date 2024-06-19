@@ -111,6 +111,7 @@
 @media only screen and (max-width: 600px){
     .job-header{
         flex-direction: column;
+        gap: 10px;
     }
 
     .job-action{
@@ -133,5 +134,23 @@
     .payment_info{
         padding-left: 5px;
         gap: 5px;
+    }
+
+    .job-description-text{
+        font-size: 8px;
+    }
+
+    .services-container{
+        padding: 10px 6px;
+    }
+
+    .service-item{
+        font-size: 8px;
+        padding: 0 6px;
+        line-height: calc(16px - 1px);
+    }
+
+    .ant-modal{
+        width: 100% !important;
     }
 }

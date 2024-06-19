@@ -11,6 +11,7 @@ import {
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import DataService from "@/lib/DataService";
 import { AUTH_PATH } from "../../constant/urls";
+import "./changePassword.css"
 
 function ChangePassword() {
     const dispatch = useDispatch();
@@ -52,6 +53,7 @@ function ChangePassword() {
             onFinish={onFinish}
             layout="vertical"
             style={{ width: "30%" }}
+            name="change-password"
         >
             <Form.Item name="email" label="Tên đăng nhập">
                 <Input prefix={<MailOutlined />} placeholder="Email" disabled />

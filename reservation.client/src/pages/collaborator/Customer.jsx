@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import DataService from "../../lib/DataService";
 import { COLLABORATOR_PATH, ORDER_PATH } from "../../constant/urls";
-import { COLLABORATOR_ROUTE_PATH } from "../../constant/paths";
+import { ACCOUNT_ROUTE_PATH, COLLABORATOR_ROUTE_PATH } from "../../constant/paths";
 import { Flex, Typography } from "antd";
 import AuthorizeView from "../../components/auth/AuthorizeView";
 import { ROLES } from "../../constant/settings";
 import { Link } from "react-router-dom";
 import CollaboratorOrders from "../../components/collaborator/customer/CollaboratorOrders";
 import { useSelector } from "react-redux";
+import "./customer.css"
 const { Title } = Typography
 
 export default function Customer() {
@@ -23,9 +24,9 @@ export default function Customer() {
 
     return (
         <AuthorizeView role={ROLES.USER}>
-            <Flex justify="space-between">
+            <Flex justify="space-between" className="customer-header">
                 <Title>Khách hàng</Title>
-                <Link to={COLLABORATOR_ROUTE_PATH.setting}>
+                <Link to={ACCOUNT_ROUTE_PATH.collaboratorSetting}>
                     <h2>Chỉnh sửa hồ sơ</h2>
                 </Link>
             </Flex>

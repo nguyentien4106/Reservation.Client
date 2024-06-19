@@ -76,7 +76,7 @@ export default function Jobs() {
                     />
                     <Space align="center" onClick={quickPostJob}>
                         <strong>Tạo Job</strong>
-                        <img width="40" height="40" src="https://img.icons8.com/ios/50/add--v1.png" alt="add--v1"/>
+                        <img width="40" height="40" src="https://img.icons8.com/ios/50/add--v1.png" alt="add--v1" />
                     </Space>
                 </Flex>
                 {jobs.length ? (
@@ -105,7 +105,7 @@ export default function Jobs() {
                         setOpen(false)
                     }}
                 >
-                    <PostJob inModal={true} submitRef={submitRef}/>
+                    <PostJob inModal={true} submitRef={submitRef} />
                 </Modal>
             }
         </>

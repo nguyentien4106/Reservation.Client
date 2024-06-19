@@ -43,9 +43,10 @@ export default function PostJob({ inModal, submitRef }) {
 
     const onFinish = (values) => {
         const userId = getUser().id;
+        console.log(values)
         const params = Object.assign(values, {
             applicationUserId: userId,
-            jobServices: values.services.map((item) => ({ serviceId: item })),
+            jobServices: values.services && values.services.map((item) => ({ serviceId: item })),
             status: 0,
         });
         dispatch(show())
@@ -95,7 +96,7 @@ export default function PostJob({ inModal, submitRef }) {
                 style={{
                     alignItems: "center",
                     width: "100%",
-                    padding: 20,
+                    padding: inModal ? 0 : 20,
                 }}
                 align="center"
             >

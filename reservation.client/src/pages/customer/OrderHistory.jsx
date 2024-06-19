@@ -31,7 +31,7 @@ function OrderHistory() {
 
     return (
         <AuthorizeView role={ROLES.USER}>
-            <Flex justify='space-between'>
+            <Flex justify='space-between' className='order-history-header'>
                 <h1>Lịch sử thuê</h1>
                 <Link to="/" ><h2>Tìm người để thuê</h2></Link>
             </Flex>

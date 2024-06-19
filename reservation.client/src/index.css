@@ -13,12 +13,16 @@
     color: rgb(20, 168, 0);
 }
 
+.ant-layout-sider-trigger{
+    position: absolute !important;
+}
+
 .footer{
-    padding: 20px !important;
-    position: fixed;
-    bottom: 0;
+    padding: 10px !important;
+    /* position: absolute;
+    bottom: 20px;
     left: 0;
-    right: 0;
+    right: 0; */
 }
 
 @media only screen and (max-width: 600px){
@@ -29,6 +33,12 @@
     .collaborator-setting{
         flex-direction: column;
     }
+
+    .footer div div:nth-child(3){
+        display: none;
+    }
+
+
 }
 
 
