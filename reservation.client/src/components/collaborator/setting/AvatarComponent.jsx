@@ -3,13 +3,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { getBase64, getUserName } from "../../../lib/helper";
 import { PlusOutlined } from "@ant-design/icons";
 import { R2 } from "../../../lib/R2";
-import { UserContext } from "../../../context/useUserContext";
 import ImgCrop from "antd-img-crop";
+import { useSelector } from "react-redux";
 
 function AvatarComponent({ setHasAvatar }) {
     const [fileList, setFileList] = useState([]);
     const { message } = App.useApp();
-    const { user } = useContext(UserContext);
+    const { user } = useSelector(store => store.user);
     const userName = getUserName(user?.userName);
 
     useEffect(() => {

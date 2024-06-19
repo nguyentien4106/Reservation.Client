@@ -9,7 +9,6 @@ import { LockOutlined, MailOutlined, UserOutlined, PhoneOutlined } from "@ant-de
 import { useNavigate } from 'react-router-dom';
 import DataService from '@/lib/DataService';
 import { AUTH_PATH } from '@/constant/urls';
-import { UserContext } from '../../context/useUserContext';
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -22,7 +21,7 @@ const Register = () => {
     const navigate = useNavigate()
     const { token } = useToken();
     const screens = useBreakpoint();
-    const { user } = useContext(UserContext)
+    const { user } = useSelector(store => store.user)
 
     const styles = {
         container: {

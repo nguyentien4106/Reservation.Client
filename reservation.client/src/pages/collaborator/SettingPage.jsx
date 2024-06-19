@@ -6,12 +6,10 @@ import { App } from "antd";
 import { ROLES } from "../../constant/settings";
 import LeaseAlbumComponent from "../../components/collaborator/setting/LeaseAlbumComponent";
 import LeaseInfoComponent from "../../components/collaborator/setting/LeaseInfoComponent";
-import { UserContext } from "../../context/useUserContext";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../state/user/userSlice";
+import { getUser } from "../../lib/helper";
 
 const SettingPage = () => {
-    const { user } = useContext(UserContext);
+    const user = getUser();
     const [collaborator, setCollaborator] = useState({ id: "" });
     const { message } = App.useApp();
     const [initialValues, setInitialValues] = useState({});
@@ -58,7 +56,6 @@ const SettingPage = () => {
                             Hồ sơ
                         </h2>
                         <LeaseInfoComponent
-                            user={user}
                             collaborator={collaborator}
                             initialValues={initialValues}
                         />

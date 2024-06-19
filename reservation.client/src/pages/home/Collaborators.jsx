@@ -5,11 +5,11 @@ import { COLLABORATOR_PATH, HOME_PATH } from "../../constant/urls.js";
 import FilterArea from "../../components/home/FilterArea.jsx";
 import useFetchServices from "../../hooks/useFetchServices.jsx";
 import "./index.css";
-import { UserContext } from "../../context/useUserContext.jsx";
 import { getUser } from "../../lib/helper.js";
 import { useDispatch } from "react-redux";
 import { show, hide } from "@/state/loading/loadingSlice";
 import { defaultPaging } from "../../constant/options.js";
+import { setUser } from "../../state/user/userSlice.js";
 
 const CollaboratorCard = lazy(() =>
     import("../../components/home/collaborators/CollaboratorCard.jsx")
@@ -27,9 +27,8 @@ function Collaborators() {
     const { message } = App.useApp();
     const [collaborators, setCollaborators] = useState([]);
     const services = useFetchServices();
-    const { setUser } = useContext(UserContext);
     const dispatch = useDispatch();
-    const [paging, setPaging] = useState(defaultPaging)
+    const [paging, setPaging] = useState(defaultPaging);
     const [total, setTotal] = useState(0);
 
     const getCollaborators = () => {
@@ -39,9 +38,8 @@ function Collaborators() {
         DataService.get(COLLABORATOR_PATH.getAll + params)
             .then((res) => {
                 const { data } = res.data;
-                console.log(data)
                 setCollaborators(data.data);
-                setTotal(data.total)
+                setTotal(data.total);
             })
             .catch((err) => message.error(err.message))
             .finally(() => {
@@ -51,12 +49,12 @@ function Collaborators() {
 
     useEffect(() => {
         getCollaborators();
-        setUser(getUser());
+        dispatch(setUser(getUser()))
     }, []);
 
     useEffect(() => {
-        getCollaborators()
-    }, [filter, paging])
+        getCollaborators();
+    }, [filter, paging]);
 
     const filterResult = () => {
         getCollaborators();
@@ -79,24 +77,44 @@ function Collaborators() {
                 filterResult={filterResult}
                 setFilter={setFilter}
             />
-                <Row className="row" gutter={[30, 30]}>
-
+            <Row className="row" gutter={[30, 30]} wrap={true}>
                 {collaborators.length ? (
                     collaborators.map((collaborator) => (
-                        <Col key={collaborator.id} flex="1 0 20%" className="column Green">{card(collaborator)}</Col>
+                        <Col
+                            key={collaborator.id}
+                            xs={{
+                                flex: "100%",
+                            }}
+                            sm={{
+                                flex: "50%",
+                            }}
+                            md={{
+                                flex: "40%",
+                            }}
+                            lg={{
+                                flex: "20%",
+                            }}
+                            xl={{
+                                flex: "20%",
+                            }}
+                        >
+                            {card(collaborator)}
+                        </Col>
                     ))
                 ) : (
                     <h3>Không tìm thấy dữ liệu</h3>
                 )}
             </Row>
             <Pagination
-                    defaultCurrent={1}
-                    total={total}
-                    responsive
-                    onChange={(index, pageSize) => setPaging({ pageIndex: index - 1, pageSize })}
-                    defaultPageSize={20}
-                    pageSize={paging.pageSize}
-                />
+                defaultCurrent={1}
+                total={total}
+                responsive
+                onChange={(index, pageSize) =>
+                    setPaging({ pageIndex: index - 1, pageSize })
+                }
+                defaultPageSize={20}
+                pageSize={paging.pageSize}
+            />
         </Flex>
     );
 }

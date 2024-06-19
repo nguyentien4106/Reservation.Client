@@ -16,10 +16,9 @@ import dayjs from "dayjs";
 import AvatarComponent from "./AvatarComponent";
 import { COLLABORATOR_PATH } from "../../../constant/urls";
 import DataService from "../../../lib/DataService";
-import { UserContext } from "../../../context/useUserContext";
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import locationAPI from "../../../api/locationAPI";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../../state/user/userSlice";
 const layout = {
     labelCol: {
@@ -45,7 +44,7 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
     const districts = locationAPI.getDistrcits(provinceId);
     const services = useFetchServices();
     const [form] = Form.useForm();
-    const { user } = useContext(UserContext)
+    const { user } = useSelector(store => store.user)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -87,6 +86,7 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
         DataService.post(url, params).then((res) => {
             const { data } = res;
             if(url === COLLABORATOR_PATH.add){
+                localStorage.setItem("collaboratorId", data.data)
                 dispatch(setUser({ collaboratorId: data.data }))
             }
             message.open({

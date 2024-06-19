@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { hide, show } from "@/state/loading/loadingSlice";
 import { generateMessages, setLocal } from "@/lib/helper";
 import {
@@ -11,11 +11,10 @@ import {
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import DataService from "@/lib/DataService";
 import { AUTH_PATH } from "../../constant/urls";
-import { UserContext } from "../../context/useUserContext";
 
 function ChangePassword() {
     const dispatch = useDispatch();
-    const { user } = useContext(UserContext)
+    const { user } = useSelector(store => store.user)
 
     const { message } = App.useApp();
 

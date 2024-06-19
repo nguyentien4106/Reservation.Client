@@ -4,8 +4,7 @@ import { GUID, ROLES } from "../../constant/settings";
 import { Col, Row, Space, Statistic, Tooltip } from "antd";
 import DataService from "../../lib/DataService";
 import { COLLABORATOR_PATH } from "../../constant/urls";
-import { UserContext } from "../../context/useUserContext";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { hide, show } from "@/state/loading/loadingSlice";
 import {
     CheckOutlined,
@@ -17,7 +16,7 @@ import { ACCOUNT_ROUTE_PATH } from "../../constant/paths";
 const AcceptStatus = 2;
 
 export default function Overall() {
-    const { user } = useContext(UserContext);
+    const { user } = useSelector(store => store.user);
     const [orders, setOrders] = useState([]);
     const [ready, setReady] = useState(false);
     const dispatch = useDispatch();

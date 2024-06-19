@@ -6,9 +6,6 @@ import { message } from "antd";
 import { App as AntdApp } from "antd";
 import { AppRoutes } from "./routes";
 import AppLayout from "./layouts/AppLayout";
-import { UserContext } from "./context/useUserContext";
-import { getUser } from "./lib/helper";
-import { useEffect, useState } from "react";
 import ReactGA from "react-ga4";
 
 const trackingId = "G-F7XRJBGWJS"; // Replace with your Google Analytics tracking ID
@@ -22,14 +19,13 @@ ReactGA.send({
 function App() {
     const isLoading = useSelector((state) => state.loading.isLoading);
     const [msg, contextHolder] = message.useMessage();
-    const [user, setUser] = useState(getUser());
-
+    const a = useSelector(item => item.user)
+    console.log(a)
     return (
         <>
             {contextHolder}
             {isLoading && <Loading />}
             <AntdApp>
-                <UserContext.Provider value={{ user: user, setUser: setUser }}>
                     <BrowserRouter>
                         <Routes>
                             <Route path="/" element={<AppLayout />}>
@@ -37,7 +33,6 @@ function App() {
                             </Route>
                         </Routes>
                     </BrowserRouter>
-                </UserContext.Provider>
             </AntdApp>
         </>
     );

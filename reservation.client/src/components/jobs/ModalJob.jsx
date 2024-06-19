@@ -5,7 +5,6 @@ import { App, Button, Checkbox, Form, Input, Modal } from "antd";
 import DataService from "../../lib/DataService";
 import { JOBS_PATH } from "../../constant/urls";
 import { getUser } from "../../lib/helper";
-import dayjs from "dayjs";
 
 export default function ModalJob({ job, close, setOpen, setAppliedJobs }) {
     const [confirmLoading, setConfirmLoading] = useState(false);
@@ -23,7 +22,6 @@ export default function ModalJob({ job, close, setOpen, setAppliedJobs }) {
     };
 
     const onFinish = (values) => {
-        console.log("Success:", values);
         setConfirmLoading(true)
         const params = Object.assign(values, {
             jobId: job.id,
@@ -113,6 +111,7 @@ export default function ModalJob({ job, close, setOpen, setAppliedJobs }) {
                             Submit
                         </Button>
                     </Form.Item>
+                    
                 </Form>
             </AuthorizeView>
         </Modal>

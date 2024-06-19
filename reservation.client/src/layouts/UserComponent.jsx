@@ -3,6 +3,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Popover, Space } from 'antd';
 import LogoutLink from '@/components/auth/LogoutLink';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Item = ({ icon, value }) => (
     <Space align='center'>
@@ -10,9 +11,11 @@ const Item = ({ icon, value }) => (
         {value}
     </Space>
 )
-function UserComponent({ user }) {
+function UserComponent() {
     const [open, setOpen] = useState(false)
     const userRef = useRef()
+    const { user } = useSelector(store => store.user)
+    console.log(user)
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -49,7 +52,7 @@ function UserComponent({ user }) {
             <div className='user-option'>
                 <Item 
                     icon={<img width="16" height="16" src="https://img.icons8.com/ios/50/user--v1.png" alt="user--v1" />} 
-                    value={<Link to={`/collaborators/${user.collaboratorId}`}>Hồ sơ cho thuê</Link>} 
+                    value={<Link to={`/collaborators/${localStorage.getItem("collaboratorId")}`}>Hồ sơ cho thuê</Link>} 
                 />
             </div>
             <div className='user-option'>

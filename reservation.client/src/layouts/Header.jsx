@@ -4,7 +4,7 @@ import { MenuOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { getStyles, menuItems } from "./helper";
 import UserComponent from "./UserComponent";
-import { UserContext } from "../context/useUserContext";
+import { useSelector } from "react-redux";
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
 
@@ -14,14 +14,13 @@ export default function Header() {
     const navigate = useNavigate()
     const [current, setCurrent] = useState("");
     const styles = getStyles(screens, token)
-    const { user } = useContext(UserContext)
+    const { user } = useSelector(store => store.user)
 
     const onClick = (e) => {
         setCurrent(e.key);
     };
 
     const renderAuth = () => {
-        const { user } = useContext(UserContext);
         return user ? (
             <UserComponent user={user} />
         ) : (

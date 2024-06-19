@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { hide, show } from "@/state/loading/loadingSlice";
 import { generateMessages, setLocal } from "@/lib/helper";
 import { App, Button, Checkbox, Form, Grid, Input, theme, Typography } from "antd";
@@ -9,7 +9,7 @@ import DataService from "@/lib/DataService";
 import { getUser } from "../../lib/helper";
 import { useContext, useEffect } from "react";
 import { AUTH_PATH } from "../../constant/urls";
-import { UserContext } from "../../context/useUserContext";
+import { setUser } from "../../state/user/userSlice";
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
@@ -20,7 +20,7 @@ function Login() {
     const { message } = App.useApp();
     const { token } = useToken();
     const screens = useBreakpoint();
-    const { user, setUser} = useContext(UserContext)
+    const { user } = useSelector(store => store.user)
 
     const styles = {
         container: {
@@ -54,6 +54,7 @@ function Login() {
         }
     };
 
+
     if(user){
         navigate("/")
     }
@@ -76,7 +77,9 @@ function Login() {
 
                 Cookie.setAccessToken(data.data.accessToken)
                 Cookie.setRefreshToken(data.data.refreshToken)
-                setUser(getUser())
+                const newUser = getUser()
+                console.log("new", newUser)
+                dispatch(setUser(newUser))
                 navigate('/')
             }
 

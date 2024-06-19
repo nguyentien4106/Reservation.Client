@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { App, Button, Image, Upload } from "antd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { hide, show } from "@/state/loading/loadingSlice";
 import { getBase64, getUserName } from "@/lib/helper";
 import { R2 } from "@/lib/R2";
-import { UserContext } from "../../../context/useUserContext";
 
 const LeaseAlbumComponent = ({ max, buttonTitle }) => {
     const dispatch = useDispatch();
@@ -13,7 +12,7 @@ const LeaseAlbumComponent = ({ max, buttonTitle }) => {
     const [previewImage, setPreviewImage] = useState("");
     const [fileList, setFileList] = useState([]);
     const { message } = App.useApp();
-    const { user } = useContext(UserContext)
+    const { user } = useSelector(store => store.user)
     const userName = getUserName(user?.userName)
 
     useEffect(() => {
