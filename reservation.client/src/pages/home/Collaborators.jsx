@@ -1,13 +1,4 @@
-import {
-    App,
-    Col,
-    Flex,
-    Modal,
-    Pagination,
-    Row,
-    Space,
-    Spin,
-} from "antd";
+import { App, Col, Flex, Modal, Pagination, Row, Space, Spin } from "antd";
 import DataService from "../../lib/DataService.js";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { COLLABORATOR_PATH } from "../../constant/urls.js";
@@ -51,7 +42,7 @@ function Collaborators() {
         DataService.get(COLLABORATOR_PATH.getAll + params)
             .then((res) => {
                 const { data } = res.data;
-                setCollaborators(data.data);
+                setCollaborators(data.data.slice(0,7));
                 setTotal(data.total);
             })
             .catch((err) => message.error(err.message))
@@ -70,7 +61,7 @@ function Collaborators() {
     }, [filter, paging]);
 
     const filterResult = () => {
-        setOpenFilter(false)
+        setOpenFilter(false);
         getCollaborators();
     };
 
@@ -85,8 +76,16 @@ function Collaborators() {
     );
 
     return (
-        <Flex vertical gap={50} wrap>
-            <Flex justify="space-between" style={{ marginTop: 20, backgroundColor: "rgb(223 223 237)", padding: "10px", borderRadius: "8px" }}>
+        <Flex vertical gap={50} wrap style={{ paddingBottom: 50 }}>
+            <Flex
+                justify="space-between"
+                style={{
+                    marginTop: 20,
+                    backgroundColor: "rgb(223 223 237)",
+                    padding: "10px",
+                    borderRadius: "8px",
+                }}
+            >
                 <Space
                     align="center"
                     onClick={() => setOpenFilter(true)}
@@ -117,36 +116,44 @@ function Collaborators() {
                 </Space>
             </Flex>
 
-            <Row className="row" gutter={[30, 30]} wrap={true}>
-                {collaborators.length ? (
-                    collaborators.map((collaborator) => (
-                        <Col
-                            key={collaborator.id}
-                            xs={{
-                                flex: "100%",
-                            }}
-                            sm={{
-                                flex: "50%",
-                            }}
-                            md={{
-                                flex: "40%",
-                            }}
-                            lg={{
-                                flex: "20%",
-                            }}
-                            xl={{
-                                flex: "20%",
-                            }}
-                        >
-                            {card(collaborator)}
+            <div style={{
+                overflowY: "auto",
+                overflowX: "hidden",
+                padding: 20
+            }}>
+                <Row className="row" gutter={[30, 30]} wrap={true}>
+                    {collaborators.length ? (
+                        collaborators.map((collaborator) => (
+                            <Col
+                                key={collaborator.id}
+                                xs={{
+                                    flex: "100%",
+                                }}
+                                sm={{
+                                    flex: "50%",
+                                }}
+                                md={{
+                                    flex: "40%",
+                                }}
+                                lg={{
+                                    flex: "20%",
+                                }}
+                                xl={{
+                                    flex: "20%",
+                                }}
+                            >
+                                {card(collaborator)}
+                            </Col>
+                        ))
+                    ) : (
+                        <Col>
+                            <strong style={{ color: "red" }}>
+                                Hiện tại chưa có talents nào đang mở.
+                            </strong>
                         </Col>
-                    ))
-                ) : (
-                    <Col>
-                        <strong style={{ color: "red" }}>Hiện tại chưa có talents nào đang mở.</strong>
-                    </Col>
-                )}
-            </Row>
+                    )}
+                </Row>
+            </div>
             <Pagination
                 defaultCurrent={1}
                 total={total}
@@ -157,7 +164,12 @@ function Collaborators() {
                 defaultPageSize={20}
                 pageSize={paging.pageSize}
             />
-            <Modal onCancel={() => setOpenFilter(false)} open={openFilter} footer={null} >
+
+            <Modal
+                onCancel={() => setOpenFilter(false)}
+                open={openFilter}
+                footer={null}
+            >
                 <FilterArea
                     services={services}
                     filterResult={filterResult}

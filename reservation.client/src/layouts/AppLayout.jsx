@@ -3,6 +3,8 @@ import { Layout, theme, Button } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import AppHeader from "./Header";
 import "./index.css"
+import { Footer } from "antd/es/layout/layout";
+import AppFooter from "./AppFooter";
 const { Header, Content } = Layout;
 
 const AppLayout = () => {
@@ -12,11 +14,12 @@ const AppLayout = () => {
 
     return (
         <>
-            <Layout style={{ minWidth: "100%", height: "100vh" }}>
+            <Layout style={{ minWidth: "100%", height: "100vh", overflowY: "hidden" }}>
                 <AppHeader />
                 <Content
                     style={{
                         padding: "0 16px",
+                        overflowY: "auto"
                     }}
                 >
                     <div
@@ -25,16 +28,18 @@ const AppLayout = () => {
                             minHeight: 280,
                             padding: 10,
                             borderRadius: borderRadiusLG,
+                            height: "fit-content",
                         }}
                     >
                         <Outlet />
                     </div>
                 </Content>
-
-                {/* <Footer style={{ textAlign: "center" }}>
-                    ThueNguoiYeu.me ©{new Date().getFullYear()}
-                </Footer> */}
+                <Footer>
+                    <AppFooter />
+                </Footer>
+                
             </Layout>
+            
         </>
     );
 };

@@ -75,7 +75,7 @@ export default function Jobs() {
                         placeholder="Tìm kiếm từ khoá"
                     />
                     <Space align="center" onClick={quickPostJob}>
-                        <strong>Post a job</strong>
+                        <strong>Tạo Job</strong>
                         <img width="40" height="40" src="https://img.icons8.com/ios/50/add--v1.png" alt="add--v1"/>
                     </Space>
                 </Flex>
