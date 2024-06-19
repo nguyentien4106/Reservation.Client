@@ -68,7 +68,6 @@ const CollaboratorOrders = ({ src}) => {
     
     useEffect(() => {
         setSource(src)
-        console.log('src', src)
     }, [src])
 
     const handleAction = (customer, status) => {

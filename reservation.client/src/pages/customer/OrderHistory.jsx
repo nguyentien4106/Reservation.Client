@@ -18,7 +18,6 @@ function OrderHistory() {
         if(user){
             DataService.get(ORDER_PATH.getCustomerOrders + user?.id).then(res => {
                 const { data } = res
-                console.log(data)
                 if (data.isSucceed) {
                     setCustomers(data.data)
                 }

@@ -8,7 +8,7 @@ const hasAll = true;
 const orderFilters = [
     {
         value: 0,
-        label: "Giá tăng dần"
+        label: "Giá tăng dần",
     },
     {
         value: 1,
@@ -28,10 +28,9 @@ const orderFilters = [
     },
     {
         value: 5,
-        label: "Độ tuổi tăng dần"
+        label: "Độ tuổi tăng dần",
     },
-]
-
+];
 
 const getFilterItem = ({
     label,
@@ -59,15 +58,11 @@ const getFilterItem = ({
     </Space>
 );
 
-
 function FilterArea({ setFilter, filterResult }) {
-    const [provinceId, setProvinceId] = useState(-1);
     const provinces = locationAPI.getProvinces(hasAll);
-    const districts = locationAPI.getDistrcits(provinceId, hasAll);
 
     const onProvinceSelect = (e, province) => {
         setFilter((prev) => Object.assign(prev, { city: province.value }));
-        setProvinceId(province.id);
     };
 
     const filterItems = [
@@ -109,16 +104,14 @@ function FilterArea({ setFilter, filterResult }) {
     ];
 
     return (
-        <FilterCollapse>
-            <Space direction="vertical" size={30}>
-                <Flex className="filter-area" wrap gap={20}>
-                    {filterItems.map((item) => getFilterItem(item))}
-                </Flex>
-                <Button type="primary" onClick={filterResult}>
-                    Tìm kiếm
-                </Button>
-            </Space>
-        </FilterCollapse>
+        <Space direction="vertical" size={30}>
+            <Flex className="filter-area" wrap gap={20}>
+                {filterItems.map((item) => getFilterItem(item))}
+            </Flex>
+            <Button type="primary" onClick={filterResult}>
+                Tìm kiếm
+            </Button>
+        </Space>
     );
 }
 

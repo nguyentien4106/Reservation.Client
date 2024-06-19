@@ -30,6 +30,18 @@ namespace Reservation.Infrastructure.Data
             {
                 await TrySeedAsync();
                 await TrySeedServices();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task SeedDevAsync()
+        {
+            try
+            {
                 await TrySeedUsersAsync();
                 await TrySeedCollaboratorAsync();
 

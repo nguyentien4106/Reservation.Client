@@ -19,8 +19,7 @@ ReactGA.send({
 function App() {
     const isLoading = useSelector((state) => state.loading.isLoading);
     const [msg, contextHolder] = message.useMessage();
-    const a = useSelector(item => item.user)
-    console.log(a)
+
     return (
         <>
             {contextHolder}

@@ -9,7 +9,6 @@ export default function JobApplied() {
     useEffect(() => {
         const query = new URLSearchParams(defaultPaging)
         DataService.get("Jobs/UsersApplies/" + getUser().id + "?" + query.toString()).then(res => {
-            console.log(res.data.data)
             setData(res.data.data.data)
         })
     }, [])

@@ -1,7 +1,16 @@
-import { App, Col, Flex, Pagination, Row, Space, Spin } from "antd";
+import {
+    App,
+    Col,
+    Flex,
+    Modal,
+    Pagination,
+    Row,
+    Space,
+    Spin,
+} from "antd";
 import DataService from "../../lib/DataService.js";
-import { Suspense, lazy, useContext, useEffect, useState } from "react";
-import { COLLABORATOR_PATH, HOME_PATH } from "../../constant/urls.js";
+import { Suspense, lazy, useEffect, useState } from "react";
+import { COLLABORATOR_PATH } from "../../constant/urls.js";
 import FilterArea from "../../components/home/FilterArea.jsx";
 import useFetchServices from "../../hooks/useFetchServices.jsx";
 import "./index.css";
@@ -10,6 +19,8 @@ import { useDispatch } from "react-redux";
 import { show, hide } from "@/state/loading/loadingSlice";
 import { defaultPaging } from "../../constant/options.js";
 import { setUser } from "../../state/user/userSlice.js";
+import { useNavigate } from "react-router-dom";
+import { ACCOUNT_ROUTE_PATH } from "../../constant/paths.js";
 
 const CollaboratorCard = lazy(() =>
     import("../../components/home/collaborators/CollaboratorCard.jsx")
@@ -30,6 +41,8 @@ function Collaborators() {
     const dispatch = useDispatch();
     const [paging, setPaging] = useState(defaultPaging);
     const [total, setTotal] = useState(0);
+    const navigate = useNavigate();
+    const [openFilter, setOpenFilter] = useState(false);
 
     const getCollaborators = () => {
         dispatch(show());
@@ -49,7 +62,7 @@ function Collaborators() {
 
     useEffect(() => {
         getCollaborators();
-        dispatch(setUser(getUser()))
+        dispatch(setUser(getUser()));
     }, []);
 
     useEffect(() => {
@@ -57,6 +70,7 @@ function Collaborators() {
     }, [filter, paging]);
 
     const filterResult = () => {
+        setOpenFilter(false)
         getCollaborators();
     };
 
@@ -72,11 +86,37 @@ function Collaborators() {
 
     return (
         <Flex vertical gap={50} wrap>
-            <FilterArea
-                services={services}
-                filterResult={filterResult}
-                setFilter={setFilter}
-            />
+            <Flex justify="space-between" style={{ marginTop: 20, backgroundColor: "rgb(223 223 237)", padding: "10px", borderRadius: "8px" }}>
+                <Space
+                    align="center"
+                    onClick={() => setOpenFilter(true)}
+                    className="pointer"
+                >
+                    <img
+                        width="40"
+                        height="40"
+                        src="https://img.icons8.com/ios/50/filter--v1.png"
+                        alt="filter--v1"
+                    />
+                    <strong>Lọc</strong>
+                </Space>
+                <Space
+                    align="center"
+                    onClick={() =>
+                        navigate(ACCOUNT_ROUTE_PATH.collaboratorSetting)
+                    }
+                    className="pointer"
+                >
+                    <strong>Tạo profile</strong>
+                    <img
+                        width="40"
+                        height="40"
+                        src="https://img.icons8.com/ios/50/add--v1.png"
+                        alt="add--v1"
+                    />
+                </Space>
+            </Flex>
+
             <Row className="row" gutter={[30, 30]} wrap={true}>
                 {collaborators.length ? (
                     collaborators.map((collaborator) => (
@@ -102,7 +142,9 @@ function Collaborators() {
                         </Col>
                     ))
                 ) : (
-                    <h3>Không tìm thấy dữ liệu</h3>
+                    <Col>
+                        <strong style={{ color: "red" }}>Hiện tại chưa có talents nào đang mở.</strong>
+                    </Col>
                 )}
             </Row>
             <Pagination
@@ -115,6 +157,13 @@ function Collaborators() {
                 defaultPageSize={20}
                 pageSize={paging.pageSize}
             />
+            <Modal onCancel={() => setOpenFilter(false)} open={openFilter} footer={null} >
+                <FilterArea
+                    services={services}
+                    filterResult={filterResult}
+                    setFilter={setFilter}
+                />
+            </Modal>
         </Flex>
     );
 }

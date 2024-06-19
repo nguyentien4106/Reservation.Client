@@ -4,15 +4,12 @@ import { Divider, Flex, Space } from "antd";
 import { Link } from "react-router-dom";
 import {
     COLLABORATORS_ROUTE_PATH,
-    COLLABORATOR_ROUTE_PATH,
-    CUSTOMER_ROUTE_PATH,
     JOBS_ROUTE_PATH,
 } from "../../constant/paths";
 import image_1 from "@/assets/image_1.jpg";
 import trusted from "@/assets/trusted.jpg";
 import privacy from "@/assets/privacy.png";
 import hire from "@/assets/hire.png";
-import { JOBS_PATH } from "../../constant/urls";
 
 export default function HomePage() {
     return (
@@ -43,7 +40,7 @@ export default function HomePage() {
                                     className="button-primary"
                                     title="Tới trang danh sách người cho thuê"
                                 >
-                                    Tìm nửa kia
+                                    Tìm "Talents"
                                 </p>
                             </Link>
                             <Link to={JOBS_ROUTE_PATH.jobs}>
@@ -51,18 +48,7 @@ export default function HomePage() {
                                     className="button-primary"
                                     title="Tới trang danh sách người cho thuê"
                                 >
-                                    Tìm "jobs"
-                                </p>
-                            </Link>
-                            <Link to={COLLABORATOR_ROUTE_PATH.setting}>
-                                <p className="button-primary">
-                                    Tạo hồ sơ cho thuê
-                                </p>
-                            </Link>
-
-                            <Link to={JOBS_ROUTE_PATH.post}>
-                                <p className="button-primary">
-                                    Đăng bài tìm người
+                                    Tìm "Jobs"
                                 </p>
                             </Link>
                         </Space>
@@ -76,6 +62,9 @@ export default function HomePage() {
                     />
                 </div>
             </Flex>
+
+            <Divider></Divider>
+            <h2 className="why">Cách sử dụng?</h2>
 
             <Divider></Divider>
             <h2 className="why">Tại sao ThueNguoiYeu.me?</h2>

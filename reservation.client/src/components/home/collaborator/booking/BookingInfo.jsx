@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
 import { ContainerInfoProfile } from "@/pages/home/collaborator/CollaboratorPage";
 import { Flex, Modal, Space, Typography } from "antd";
-import { showNumber } from "@/lib/helper";
-import { EyeOutlined } from "@ant-design/icons";
 import { getUser } from "../../../../lib/helper";
 import OrderContent from "./OrderContent";
 const { Text } = Typography;
@@ -31,18 +29,11 @@ function BookingInfo() {
             okType: "default",
         });
     };
-    console.log(collaborator);
 
     return (
         <>
             {contextHolder}
             <Flex vertical gap={30}>
-                <Space style={{ fontSize: 20 }}>
-                    <Text style={{ textAlign: "center" }}>
-                        {showNumber(collaborator?.view.count)}
-                    </Text>
-                    <EyeOutlined />
-                </Space>
                 {collaborator?.isReady ? (
                     <button className="button-booking" onClick={handleOrder}>
                         Thuê

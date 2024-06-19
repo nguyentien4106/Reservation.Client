@@ -78,7 +78,6 @@ function Login() {
                 Cookie.setAccessToken(data.data.accessToken)
                 Cookie.setRefreshToken(data.data.refreshToken)
                 const newUser = getUser()
-                console.log("new", newUser)
                 dispatch(setUser(newUser))
                 navigate('/')
             }

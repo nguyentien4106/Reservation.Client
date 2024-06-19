@@ -15,7 +15,6 @@ function UserComponent() {
     const [open, setOpen] = useState(false)
     const userRef = useRef()
     const { user } = useSelector(store => store.user)
-    console.log(user)
 
     useEffect(() => {
         function handleClickOutside(event) {

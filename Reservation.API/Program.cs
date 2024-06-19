@@ -129,16 +129,21 @@ namespace Reservation.API
             app.MapIdentityApi<ApplicationUser>();
 
             // Configure the HTTP request pipeline.
+            using var scope = app.Services.CreateScope();
+            var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                await initialiser.InitialiseAsync();
+                await initialiser.SeedDevAsync();
+            }
+            else
+            {
+                await initialiser.SeedAsync();
             }
 
-            using var scope = app.Services.CreateScope();
-            var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
-            await initialiser.InitialiseAsync();
-            await initialiser.SeedAsync();
 
             app.UseHttpsRedirection();
             app.UseCors("webAppRequests");

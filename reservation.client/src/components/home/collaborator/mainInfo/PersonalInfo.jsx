@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { ContainerInfoProfile } from "../../../../pages/home/collaborator/CollaboratorPage";
 import { Space, Flex, Divider, Typography } from "antd";
 import { getYear, showMoney, showNumber } from "../../../../lib/helper";
+import { EyeOutlined } from "@ant-design/icons";
 const { Text } = Typography;
 
 const getItem = ({ label, value }) => (
@@ -52,13 +53,26 @@ function PersonalInfo() {
         <div className="service-panel text-header" key={service.name}>
             <Space>
                 <Text style={{ color: "white" }}>{service.name}</Text>
-                <Text style={{ color: "rgb(60, 118, 52, 1)" }}>{showMoney(service.price)}/h</Text>
+                <Text style={{ color: "rgb(60, 118, 52, 1)" }}>
+                    {showMoney(service.price)}/h
+                </Text>
             </Space>
         </div>
     );
     return (
         <>
-            <h2 style={{ textAlign: "center" }}>{collaborator?.nickName}</h2>
+            <Flex justify="space-between">
+                <h2 style={{ textAlign: "center" }}>
+                    {collaborator?.nickName}
+                </h2>
+
+                <Space style={{ fontSize: 20 }}>
+                    <EyeOutlined />
+                    <Text style={{ textAlign: "center", fontWeight: 700, fontSize: 16 }}>
+                        {showNumber(collaborator?.view.count)}
+                    </Text>
+                </Space>
+            </Flex>
             <Divider />
             <Flex gap="middle" wrap={true}>
                 {items(collaborator).map((item) => getItem(item))}
