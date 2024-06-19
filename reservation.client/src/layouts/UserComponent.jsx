@@ -36,8 +36,7 @@ function UserComponent() {
         >
             <div className='user-option'>
                 <Item 
-                    icon={<img width="16" height="16" src="https://img.icons8.com/windows/32/users-settings.png" alt="users-settings"/>} 
-                    value={user.userName} 
+                    value={<strong style={{textAlign: "center"}}>{user.userName}</strong>} 
                 />
 
             </div>

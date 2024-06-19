@@ -14,12 +14,12 @@ const AppLayout = () => {
 
     return (
         <>
-            <Layout style={{ minWidth: "100%", height: "100vh", overflowY: "hidden" }}>
+            <Layout style={{ minWidth: "100%", overflowY: "hidden" }}>
                 <AppHeader />
                 <Content
                     style={{
                         padding: "0 16px",
-                        overflowY: "auto"
+                        overflowY: "auto",
                     }}
                 >
                     <div
@@ -34,7 +34,7 @@ const AppLayout = () => {
                         <Outlet />
                     </div>
                 </Content>
-                <Footer>
+                <Footer className="footer">
                     <AppFooter />
                 </Footer>
                 

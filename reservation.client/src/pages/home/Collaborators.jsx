@@ -42,7 +42,7 @@ function Collaborators() {
         DataService.get(COLLABORATOR_PATH.getAll + params)
             .then((res) => {
                 const { data } = res.data;
-                setCollaborators(data.data.slice(0,7));
+                setCollaborators(data.data);
                 setTotal(data.total);
             })
             .catch((err) => message.error(err.message))
@@ -76,7 +76,7 @@ function Collaborators() {
     );
 
     return (
-        <Flex vertical gap={50} wrap style={{ paddingBottom: 50 }}>
+        <Flex vertical gap={50} style={{ paddingBottom: 50 }}>
             <Flex
                 justify="space-between"
                 style={{
@@ -116,11 +116,14 @@ function Collaborators() {
                 </Space>
             </Flex>
 
-            <div style={{
-                overflowY: "auto",
-                overflowX: "hidden",
-                padding: 20
-            }}>
+            <div
+                style={{
+                    overflowY: "auto",
+                    overflowX: "hidden",
+                    padding: 20,
+                    boxSizing: "border-box",
+                }}
+            >
                 <Row className="row" gutter={[30, 30]} wrap={true}>
                     {collaborators.length ? (
                         collaborators.map((collaborator) => (
