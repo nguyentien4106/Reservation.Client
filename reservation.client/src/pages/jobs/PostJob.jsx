@@ -178,7 +178,7 @@ export default function PostJob({ inModal, submitRef }) {
                     </Form.Item>
 
                     <Form.Item
-                        name="requried"
+                        name="required"
                         label="Yêu cầu ?"
                         rules={[
                             {
