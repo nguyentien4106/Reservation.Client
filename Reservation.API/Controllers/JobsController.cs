@@ -23,6 +23,13 @@ namespace Reservation.API.Controllers
             return await _service.GetAll(paging);
         }
 
+        [HttpGet("{jobId}")]
+        public async Task<AppResponse<JobDTO>> Job(Guid? jobId)
+        {
+            return await _service.GetJob(jobId);
+        }
+
+
         [HttpGet("[action]/{applicationUserId}")]
         public async Task<AppResponse<PagingViewModel<List<JobDTO>>>> Users(string applicationUserId, [FromQuery] PagingRequest paging)
         {
@@ -46,5 +53,12 @@ namespace Reservation.API.Controllers
         {
             return await _service.ApplyJobAsync(contract);
         }
+
+        [HttpGet("{jobId}/Contracts")]
+        public async Task<AppResponse<List<ContractDTO>>> Contracts(Guid? jobId)
+        {
+            return await _service.GetContractsByJobId(jobId);
+        }
+
     }
 }

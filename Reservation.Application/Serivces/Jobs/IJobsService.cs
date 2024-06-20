@@ -12,11 +12,14 @@ namespace Reservation.Application.Serivces.Jobs
 
         Task<AppResponse<PagingViewModel<List<JobDTO>>>> GetAll(PagingRequest model);
 
+        Task<AppResponse<JobDTO>> GetJob(Guid? jobId);
+
         Task<AppResponse<bool>> ApplyJobAsync(ContractDTO contract);
 
         Task<AppResponse<PagingViewModel<List<JobDTO>>>> GetByUsers(PagingRequest model, string userId);
 
         Task<AppResponse<PagingViewModel<List<ContractDTO>>>> GetByUserApplies(PagingRequest model, string userId);
 
+        Task<AppResponse<List<ContractDTO>>> GetContractsByJobId(Guid? jobId);
     }
 }

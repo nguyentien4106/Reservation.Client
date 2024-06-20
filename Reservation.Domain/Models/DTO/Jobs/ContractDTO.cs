@@ -1,4 +1,6 @@
-﻿namespace Reservation.Domain.Models.DTO.Jobs
+﻿using Reservation.Infrastructure.Data;
+
+namespace Reservation.Domain.Models.DTO.Jobs
 {
     public class ContractDTO
     {
@@ -14,8 +16,10 @@
 
         public int Status { get; set; }
 
-        public DateTime? CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; } = DateTime.Now;
 
         public JobDTO? Job { get; set; }
+
+        public ApplicationUser? ApplicationUser { get; set; }
     }
 }

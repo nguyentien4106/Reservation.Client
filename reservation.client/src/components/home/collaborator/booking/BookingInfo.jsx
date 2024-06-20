@@ -3,7 +3,6 @@ import { ContainerInfoProfile } from "@/pages/home/collaborator/CollaboratorPage
 import { Flex, Modal, Space, Typography } from "antd";
 import { getUser } from "../../../../lib/helper";
 import OrderContent from "./OrderContent";
-const { Text } = Typography;
 
 function BookingInfo() {
     const collaborator = useContext(ContainerInfoProfile);

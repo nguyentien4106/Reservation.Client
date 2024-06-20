@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AuthorizeView from "../../components/auth/AuthorizeView";
 import DataService from "../../lib/DataService";
 import { COLLABORATOR_PATH } from "../../constant/urls";
@@ -22,8 +22,11 @@ const SettingPage = () => {
                     const { data } = res.data;
                     setCollaborator(data);
                     setInitialValues(data ?? { email: user.userName });
+                    localStorage.setItem("collaboratorId", data?.id ?? null)
+
                 }
             ).catch((err) => {
+                console.log(err)
                 if(err.response.status == 400){
                     message.error("Không tìm thấy hồ sơ theo đường dẫn này. Hãy thử lại !")
                 }

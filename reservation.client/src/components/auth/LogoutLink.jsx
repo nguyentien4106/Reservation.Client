@@ -20,6 +20,7 @@ function LogoutLink() {
         DataService.post(AUTH_PATH.logout).then(res => {
             Cookie.remove("accessToken")
             Cookie.remove("refreshToken")
+            localStorage.removeItem("collaboratorId")
             dispatch(removeUser())
         })
         .finally(() => {

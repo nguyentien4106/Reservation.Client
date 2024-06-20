@@ -7,7 +7,7 @@ namespace Reservation.Infrastructure.Data
     {
         public DateTimeOffset JoinedDate { get; set; }
     
-        public Collaborator? CollaboratorProfile { get; set; }
+        public Collaborator? Collaborator { get; set; }
 
         public List<Order> Orders { get; set; } = [];
 

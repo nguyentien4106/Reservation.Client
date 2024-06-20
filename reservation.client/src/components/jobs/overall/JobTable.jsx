@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Space, Table, Tag } from "antd";
 import dayjs from "dayjs";
-import { render } from "react-dom";
 import { showMoney } from "../../../lib/helper";
 import { PAYMENT_TYPES } from "../../../constant/settings";
 import Job from "../Job";
-
+import DataService from "../../../lib/DataService";
+import UserContracts from "./UserContracts";
+const UserContract = ({ contract }) => {
+    return <div>{contract.id}</div>
+}
 const JobTable = ({ data }) => {
     const [open, setOpen] = useState(false);
     const [contractsModal, setContractsModal] = useState(false);
     const [job, setJob] = useState(null);
-
+    const [contracts, setContracts] = useState([])
     const columns = [
         {
             title: "Tiêu đề",
@@ -61,9 +64,17 @@ const JobTable = ({ data }) => {
         },
     ];
 
+    useEffect(() => {
+        if(open){
+            DataService.get(`Jobs/${job.id}/Contracts`).then(res => {
+                setContracts(res.data.data)
+            })
+        }
+    }, [open])
+
     return (
         <>
-            <Table columns={columns} dataSource={data} rowKey={"id"} />
+            <Table columns={columns} dataSource={data} rowKey={"id"} style={{ overflow: "auto hidden"}}/>
             {open && (
                 <Modal
                     open={true}
@@ -75,6 +86,7 @@ const JobTable = ({ data }) => {
                     width={"70%"}
                 >
                     <Job job={job} renderApplyButton={false}></Job>
+                    <UserContracts contracts={contracts} />
                 </Modal>
             )}
             {contractsModal && (
@@ -86,9 +98,8 @@ const JobTable = ({ data }) => {
                     footer={null}
                     width={"70%"}
                 >
-                    {
-                        job && job.contracts.map(item => <h3>{item.applicationUserId}</h3>)
-                    }
+                    <UserContracts contracts={contracts} />
+
                 </Modal>
             )}
         </>

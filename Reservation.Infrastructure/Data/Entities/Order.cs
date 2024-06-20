@@ -24,6 +24,7 @@ namespace Reservation.Infrastructure.Data.Entities
         public string? PhoneNumber { get; set; }
 
         public int? Tips { get; set; }
+
         public decimal? Price { get; set; }
 
         public string? Description { get; set; }
@@ -39,6 +40,7 @@ namespace Reservation.Infrastructure.Data.Entities
         public DateTime? ConfirmedDate { get; set; }
 
         public Review? Review { get; set; }
+
         public decimal? Amount { get; set; }
 
     }

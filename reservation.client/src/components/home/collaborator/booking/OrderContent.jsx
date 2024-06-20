@@ -73,8 +73,10 @@ const OrderContent = ({ collaboratorEmail, collaboratorId, nickName, collaborato
                 maxWidth: 1000,
             }}
             initialValues={{
+                name: `${user?.firstName} ${user?.lastName}`,
                 email: user?.userName,
-                price: price
+                price: price,
+                phoneNumber: user.phoneNumber
             }}
         >
             <Form.Item
@@ -86,7 +88,7 @@ const OrderContent = ({ collaboratorEmail, collaboratorId, nickName, collaborato
                     },
                 ]}
             >
-                <Input />
+                <Input disabled/>
             </Form.Item>
 
             <Form.Item name="email" label="Email">

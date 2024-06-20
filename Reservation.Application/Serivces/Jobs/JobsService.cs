@@ -13,7 +13,8 @@ using Reservation.Domain.Models.ViewModel;
 
 namespace Reservation.Application.Serivces.Jobs
 {
-    public class JobsService(ApplicationDbContext context, IMapper mapper, IEmailService emailService) : IJobsService
+    public class JobsService(ApplicationDbContext context, IMapper mapper, IEmailService emailService) 
+        : IJobsService
     {
         private readonly ApplicationDbContext _context = context;
         private readonly IMapper _mapper = mapper;
@@ -27,7 +28,6 @@ namespace Reservation.Application.Serivces.Jobs
             }
 
             var contract = _mapper.Map<Contract>(dto);
-
             await _context.Contracts.AddAsync(contract);
             await _context.SaveChangesAsync();
 
@@ -89,7 +89,6 @@ namespace Reservation.Application.Serivces.Jobs
 
             var count = await query.CountAsync();
             var jobs = await query
-                .Include(item => item.Contracts)
                 .AsNoTracking()
                 .OrderByDescending(item => item.CreatedDate)
                 .Select(entity => _mapper.Map<JobDTO>(entity))
@@ -99,6 +98,34 @@ namespace Reservation.Application.Serivces.Jobs
             var model = new PagingViewModel<List<JobDTO>>(count, jobs);
 
             return new AppResponse<PagingViewModel<List<JobDTO>>>().SetSuccessResponse(model);
+        }
+
+        public async Task<AppResponse<List<ContractDTO>>> GetContractsByJobId(Guid? jobId)
+        {
+            if(jobId == null || !jobId.HasValue)
+            {
+                return new AppResponse<List<ContractDTO>>().SetCommonError();
+            }
+
+            var contracts = await _context.Contracts
+                .Include(i => i.ApplicationUser)
+                .ThenInclude(i => i.Collaborator)
+                .Where(item => item.JobId == jobId)
+                .ToListAsync();
+
+            return new AppResponse<List<ContractDTO>>().SetSuccessResponse(_mapper.Map<List<ContractDTO>>(contracts));
+        }
+
+        public async Task<AppResponse<JobDTO>> GetJob(Guid? jobId)
+        {
+            if(jobId == null)
+            {
+                return new AppResponse<JobDTO>().SetCommonError();
+            }
+
+            var job = await _context.Jobs.Include(job => job.ApplicationUser).SingleOrDefaultAsync(job => job.Id == jobId);
+        
+            return new AppResponse<JobDTO>().SetSuccessResponse(_mapper.Map<JobDTO>(job));
         }
     }
 }

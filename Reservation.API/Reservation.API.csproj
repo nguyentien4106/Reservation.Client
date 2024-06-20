@@ -55,4 +55,8 @@
 
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Remove="Template\orderConfirmation.html" />
+	</ItemGroup>
+
 </Project>

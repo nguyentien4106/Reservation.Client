@@ -17,7 +17,10 @@ namespace Reservation.Application.Serivces.Auth
             var userClaims = new List<Claim>
             {
                 new ("id", user.Id.ToString()),
-                new ("userName", user.UserName??"") 
+                new ("userName", user.UserName??"") ,
+                new ("firstName", user.FirstName?? ""),
+                new ("lastName", user.LastName?? ""),
+                new ("phoneNumber", user.PhoneNumber?? ""),
             };
             userClaims.AddRange(roleClaims);
             var tokeOptions = new JwtSecurityToken(

@@ -28,7 +28,7 @@ const UploadImageComponent = ({ images, setImages }) => {
                 onChange={onFileChange}
                 beforeUpload={() => false}
                 maxCount={30}
-                accept="image/*, video/*"
+                accept="image/*"
             >
                 <button
                     style={{

@@ -41,6 +41,7 @@ export const ACTION_ROUTE_PATH = {
 
 export const JOBS_ROUTE_PATH = {
     jobs: "/jobs",
+    job: "/jobs/:jobId",
     post: "/jobs/post",
 
 }

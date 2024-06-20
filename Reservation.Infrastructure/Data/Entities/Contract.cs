@@ -13,6 +13,8 @@ namespace Reservation.Infrastructure.Data.Entities
         [Required]
         public required string ApplicationUserId { get; set; }
 
+        public ApplicationUser? ApplicationUser { get; set; }
+
         public string? Description { get; set; }
 
         public string? Contact { get; set; }

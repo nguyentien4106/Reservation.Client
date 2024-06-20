@@ -18,6 +18,7 @@ using Reservation.Application.Serivces.Jobs;
 using Reservation.Application.Serivces.Order;
 using Reservation.API.Middleware;
 using Reservation.Applicattion.Serivces.Email;
+using Reservation.Application.Serivces.Account;
 
 namespace Reservation.API
 {
@@ -57,6 +58,7 @@ namespace Reservation.API
             builder.Services.AddTransient<ICustomerService, CustomerService>();
             builder.Services.AddTransient<IJobsService, JobsService>();
             builder.Services.AddTransient<IOrderService, OrderService>();
+            builder.Services.AddTransient<IAccountService, AccountService>();
 
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
             builder.Services.AddControllers().AddNewtonsoftJson(

@@ -78,7 +78,9 @@
     overflow: hidden;
     gap: 8px;
     flex-wrap: wrap;
-    padding: 20px 12px;
+    padding-left: 4%;
+    padding-right: 4%;
+    padding-bottom: 20px;
     width: 100%;
 }
 
@@ -152,5 +154,10 @@
 
     .ant-modal{
         width: 100% !important;
+    }
+
+    .title-name{
+        text-align: center;
+        font-size: 18px;
     }
 }

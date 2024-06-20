@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Modal, Checkbox } from "antd";
 import RateComponent from "./RateComponent";
-import UploadImageComponent from "./UploadImageComponent";
+import UploadImageComponent from "../../common/UploadImageComponent";
 import { generateMessages, getBase64, getUser, getUserName } from "../../../lib/helper";
 import { R2 } from "@/lib/R2";
 import DataService from "../../../lib/DataService";

@@ -8,7 +8,6 @@ import { useDispatch } from "react-redux";
 import { hide, show } from "@/state/loading/loadingSlice";
 import { Pagination } from 'antd';
 import { defaultPaging } from "../../constant/options";
-import ModalJob from "../../components/jobs/ModalJob";
 import PostJob from "./PostJob"
 import { getUser } from "../../lib/helper";
 
@@ -79,8 +78,15 @@ export default function Jobs() {
                         <img width="40" height="40" src="https://img.icons8.com/ios/50/add--v1.png" alt="add--v1" />
                     </Space>
                 </Flex>
-                {jobs.length ? (
-                    jobs.map((item) => <Job key={item.id} job={item} applied={appliedJobs.includes(item.id)} setAppliedJobs={setAppliedJobs}>{item.title}</Job>)
+                {
+                    jobs.length ? (
+                        jobs.map((item) => <Job 
+                                                key={item.id} 
+                                                job={item} 
+                                                applied={appliedJobs.includes(item.id)} 
+                                                setAppliedJobs={setAppliedJobs}
+                                                >{item.title}</Job>
+                                            )
                 ) : (
                     <h2>Hiện tại chưa có jobs nào đang mở. Xin quay lại sau</h2>
                 )}

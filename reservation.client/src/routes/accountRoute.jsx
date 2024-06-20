@@ -9,7 +9,7 @@ import Overall from "@/pages/collaborator/Overall"
 import CustomerOverall from "../pages/customer/CustomerOverall";
 import DonateHistory from "../pages/customer/DonateHistory";
 import OrderHistory from "@/pages/customer/OrderHistory"
-import JobOverall from "../pages/jobs/JobOverall";
+import JobOverall from "../pages/jobs/overall/JobOverall";
 import JobApplied from "../pages/jobs/JobApplied";
 
 export const AccountRoutes = (

@@ -15,7 +15,8 @@ namespace Reservation.Application.Serivces.Order
         ApplicationDbContext context, 
         IMapper mapper, 
         IEmailService emailService,
-        IHostingEnvironment hostingEnvironment
+        IHostingEnvironment hostingEnvironment,
+        TokenSettings tokenSettings
     ) 
         : IOrderService
     {
@@ -23,43 +24,45 @@ namespace Reservation.Application.Serivces.Order
         private readonly IMapper _mapper = mapper;
         private readonly IEmailService _emailService = emailService;
         private readonly IHostingEnvironment _hostingEnvironment = hostingEnvironment;
+        private readonly TokenSettings _tokenSettings = tokenSettings;
 
-        public async Task<AppResponse<OrderDTO>> ComfirmOrderAsync(Guid? requestId, int status)
+        public async Task<AppResponse<OrderDTO>> ComfirmOrderAsync(Guid? orderId, int status)
         {
-            if (!requestId.HasValue)
+            if (!orderId.HasValue)
             {
                 return new AppResponse<OrderDTO>().SetErrorResponse("bind", "Không tìm thấy request");
             }
 
-            var request = await _context.Orders.SingleOrDefaultAsync(item => item.Id == requestId);
+            var order = await _context.Orders.Include(order => order.ApplicationUser).SingleOrDefaultAsync(item => item.Id == orderId);
 
-            if (request == null)
+            if (order == null)
             {
                 return new AppResponse<OrderDTO>().SetErrorResponse("request", "Không tìm thấy request trả về");
             }
 
-            request.Status = status;
-            request.ConfirmedDate = DateTime.Now;
+            order.Status = status;
+            order.ConfirmedDate = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
-            var collaborator = await _context.Collaborators.SingleOrDefaultAsync(item => item.Id == request.CollaboratorId);
-            var email = new EmailContent()
-            {
-                ToEmail = request.Email,
-                ToName = request.Name,
-                Subject = "Thông báo mới về yêu cầu cho thuê",
-                Content = $"{collaborator?.NickName ?? ""} đã xác nhận yêu cầu cho thuê của bạn đã tạo vào hồi {request.CreatedDate}. Xin hãy kiểm tra lại trang phản hồi để biết thêm thông tin chi tiết và số diện thoại của CTV. Nếu xảy ra bất cứ vấn đề xin hãy liên lạc lại chúng tôi để giải quyết yêu cầu."
-            };
+            var collaborator = await _context.Collaborators.Include(item => item.ApplicationUser).SingleOrDefaultAsync(item => item.Id == order.CollaboratorId);
 
-            var sent = _emailService.SendMail(email);
+            var emailBuilder = new EmailBuilder();
+            emailBuilder.SetFrom("ThueNguoiYeu.me", "customer-support@ThueNguoiYeu.me.com");
+            emailBuilder.SetTo(order.Name, order.Email);
+            emailBuilder.SetSubject("Thông báo mới về yêu cầu cho thuê.");
+            emailBuilder.SetBody(
+                new OrderConfirmationEmailBodyBuilder(_hostingEnvironment, _tokenSettings, order).GetBodyBuilder()
+            );
+
+            var sent = _emailService.Sent(emailBuilder.Build());
 
             if (!sent)
             {
                 return new AppResponse<OrderDTO>().SetErrorResponse("mail", "Đã xác nhận thành công nhưng chưa thể gửi email cho người yêu cầu");
             }
 
-            return new AppResponse<OrderDTO>().SetSuccessResponse(_mapper.Map<OrderDTO>(request));
+            return new AppResponse<OrderDTO>().SetSuccessResponse(_mapper.Map<OrderDTO>(order));
         }
 
         public async Task<AppResponse<List<OrderDTO>>> GetOrdersAsync(Guid? collaboratorId)

@@ -6,7 +6,9 @@ import { useNavigate } from 'react-router-dom'
 function UseFetchCollaborator(collaboratorId) {
     const [collaborator, setCollaborator] = useState(null)
     const navigate = useNavigate()
-
+    if(collaboratorId === "null"){
+        return null
+    }
     useEffect(() => {
         DataService.get(COLLABORATOR_PATH.getProfile + collaboratorId)
         .then(res => {

@@ -99,12 +99,7 @@ const AccountLayout = () => {
                     label: "Job đã ứng tuyển",
                     onClick: () => navigate(ACCOUNT_ROUTE_PATH.jobApplied),
 
-                },
-                {
-                    key: "jobs-donate",
-                    label: "Lịch sử donate",
-                    onClick: () => navigate(ACCOUNT_ROUTE_PATH.customerDonates),
-                },
+                }
             ],
         },
     ];

@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import CustomerOrders from '../../components/customer/orderHistory/CustomerOrders'
 import AuthorizeView from '../../components/auth/AuthorizeView'
 import { ROLES } from '../../constant/settings'
+import { ACCOUNT_ROUTE_PATH, COLLABORATORS_ROUTE_PATH } from '../../constant/paths'
 
 function OrderHistory() {
     const [customerOrders, setCustomers] = useState([])
@@ -32,8 +33,8 @@ function OrderHistory() {
     return (
         <AuthorizeView role={ROLES.USER}>
             <Flex justify='space-between' className='order-history-header'>
-                <h1>Lịch sử thuê</h1>
-                <Link to="/" ><h2>Tìm người để thuê</h2></Link>
+                <h2>Lịch sử thuê</h2>
+                <Link to={COLLABORATORS_ROUTE_PATH.collaborators}><h2>Tìm Talents</h2></Link>
             </Flex>
             <CustomerOrders src={customerOrders} />
         </AuthorizeView>

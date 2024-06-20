@@ -1,15 +1,11 @@
 import {
-    ListBucketsCommand,
     ListObjectsV2Command,
     PutObjectCommand,
     S3Client,
     GetObjectCommand,
     DeleteObjectCommand,
-    DeleteObjectsCommand,
-    S3,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import axios from "axios";
 import {
     cloudflareAccountId,
     cloudflareR2AccessKeyId,
@@ -125,10 +121,30 @@ const deleteObject = async (object) => {
     }
 };
 
+const getJobImages = async (userName, jobId) => {
+    const prefix = `${userName}/jobs/${jobId}`
+    // return []
+    const objects = await s3Client.send(
+                                        new ListObjectsV2Command({
+                                            Bucket: cloudflareR2BucketName,
+                                            Prefix: prefix
+                                        })
+                                    )
+        
+
+    const images = objects.Contents && objects.Contents.map(async (content) => ({
+        url: await getUrl(content),
+        content: content,
+    }))
+
+    return Promise.all(images ?? [])
+}
+
 export const R2 = {
     upload: upload,
     get: get,
     delete: deleteObject,
     getAvatar: getAvatar,
-    getReviewImages: getReviewImages
+    getReviewImages: getReviewImages,
+    getJobImages: getJobImages
 };

@@ -148,7 +148,7 @@ namespace Reservation.Infrastructure.Data
                         await _userManager.AddToRolesAsync(user, new[] { userRole.Name });
                     }
 
-                    if (result.Succeeded && user.CollaboratorProfile == null)
+                    if (result.Succeeded && user.Collaborator == null)
                     {
                         var collaborator = new Collaborator
                         {

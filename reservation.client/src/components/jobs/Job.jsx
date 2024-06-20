@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import { PAYMENT_TYPES } from "../../constant/settings";
 import { getUser, getUserName, showMoney } from "../../lib/helper";
 import { Button, Divider, Typography, Modal, Space } from "antd";
-import ModalJob from "./ModalJob";
+import JobApplyInformation from "./JobApplyInformation";
+import { useNavigate } from "react-router-dom";
 
 const isMobile = window.innerWidth < 768;
 const InfoItem = ({ img, text }) => (
@@ -25,11 +26,13 @@ export default function Job({
         setOpen(true);
     };
 
+    const navigate = useNavigate()
+
     return (
         <>
             <section className="job">
                 <div className="job-header">
-                    <div className="job-header-title">
+                    <div className="job-header-title" >
                         <small>
                             <span>Posted at </span>
                             <span>
@@ -45,21 +48,21 @@ export default function Job({
                                 <b>{getUserName(job.userName)} </b>
                             </span>
                         </small>
-                        <div>
+                        <div  onClick={() => navigate(`/jobs/${job.id}`)}>
                             <h2 className="title-name">{job.title}</h2>
                         </div>
                     </div>
                     {renderApplyButton && (
                         <div className="job-action">
                             <Button onClick={handleApply} disabled={applied}>
-                                <Space>
+                                <Space styles={{ item: { height: 30 }}}>
                                     <img
                                         width="24"
                                         height="24"
                                         src="https://img.icons8.com/windows/32/reviewer-male--v1.png"
                                         alt="reviewer-male--v1"
                                     />
-                                    <span>{applied ? "Đã " : ""}Ứng tuyển</span>
+                                    <b className="logo">{applied ? "Đã ứng tuyển" : "Ứng tuyển"}</b>
                                 </Space>
                             </Button>
                         </div>
@@ -127,7 +130,6 @@ export default function Job({
                                 {job.description}
                             </Typography.Paragraph>
                         </div>
-                        <br />
                         <strong className="info-item job-description-header">
                             Yêu cầu:
                         </strong>
@@ -169,7 +171,7 @@ export default function Job({
             </section>
             <Divider />
             {open && (
-                <ModalJob
+                <JobApplyInformation
                     job={job}
                     setOpen={setOpen}
                     close={() => setOpen(false)}

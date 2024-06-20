@@ -8,7 +8,6 @@ import {
     StarOutlined
 } from '@ant-design/icons';
 const { Meta } = Card;
-
 const { Text } = Typography;
 
 const CollaboratorCard = ({ collaborator }) => {
@@ -18,7 +17,7 @@ const CollaboratorCard = ({ collaborator }) => {
     useEffect(() => {
         R2.getAvatar(getUserName(collaborator.email))
             .then((res) => {
-                setUrl(res.url);
+                setUrl(res?.url);
             })
             .finally(() => {
                 setLoading(false);

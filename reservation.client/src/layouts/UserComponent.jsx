@@ -43,14 +43,14 @@ function UserComponent() {
             <div className='user-option'>
                 <Item 
                     icon={<img width="16" height="16" src="https://img.icons8.com/windows/32/users-settings.png" alt="users-settings"/>} 
-                    value={<Link to={"/account"}>Cài đặt tài khoản</Link>} 
+                    value={<Link onClick={() => setOpen(false)}  to={"/account"}>Cài đặt tài khoản</Link>} 
                 />
 
             </div>
             <div className='user-option'>
                 <Item 
                     icon={<img width="16" height="16" src="https://img.icons8.com/ios/50/user--v1.png" alt="user--v1" />} 
-                    value={<Link to={`/collaborators/${localStorage.getItem("collaboratorId")}`}>Hồ sơ cho thuê</Link>} 
+                    value={<Link onClick={() => setOpen(false)} to={`/collaborators/${localStorage.getItem("collaboratorId")}`}>Hồ sơ cho thuê</Link>} 
                 />
             </div>
             <div className='user-option'>

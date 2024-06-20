@@ -34,7 +34,7 @@ namespace Reservation.Infrastructure.Data
             base.OnModelCreating(builder);
 
             builder.Entity<ApplicationUser>()
-                .HasOne(e => e.CollaboratorProfile)
+                .HasOne(e => e.Collaborator)
                 .WithOne(e => e.ApplicationUser)
                 .HasForeignKey<Collaborator>(e => e.ApplicationUserId)
             .IsRequired(false);

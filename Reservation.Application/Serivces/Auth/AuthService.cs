@@ -149,7 +149,7 @@ namespace Reservation.Application.Serivces.Auth
             return errorDictionary;
         }
 
-        private async Task<UserLoginResponse> GenerateUserToken(ApplicationUser user)
+        public async Task<UserLoginResponse> GenerateUserToken(ApplicationUser user)
         {
             var token = TokenUtil.GetToken(_tokenSettings, user, GetClaims(user));
             await _userManager.RemoveAuthenticationTokenAsync(user, "REFRESHTOKENPROVIDER", "RefreshToken");

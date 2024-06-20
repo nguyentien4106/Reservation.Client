@@ -3,6 +3,7 @@ using Reservation.Domain.Models.DTO.Auth;
 using Reservation.Domain.Models.DTO.Auth.Request;
 using Reservation.Domain.Models.DTO.Auth.Response;
 using Reservation.Domain.Models.Request.Auth;
+using Reservation.Infrastructure.Data;
 using System.Security.Claims;
 
 namespace Reservation.Application.Serivces.Auth
@@ -17,6 +18,8 @@ namespace Reservation.Application.Serivces.Auth
 
         Task<AppResponse<UserLoginResponse>> LoginAsync(UserLoginRequest request);
 
+        Task<UserLoginResponse> GenerateUserToken(ApplicationUser user);
+
         Task<AppResponse<UserLoginResponse>> UserRefreshTokenAsync(UserLoginResponse request);
 
         Task<AppResponse<string>> ForgotPasswordAsync(ForgotPasswordRequest request, string path);
@@ -24,5 +27,7 @@ namespace Reservation.Application.Serivces.Auth
         Task<AppResponse<string>> ResetPasswordAsync(ResetPasswordRequest request);
 
         Task<AppResponse<IdentityResult>> ChangePasswordAsync(ChangePasswordRequest request);
+
+
     }
 }
