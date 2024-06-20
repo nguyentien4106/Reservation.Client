@@ -16,7 +16,6 @@ export default function JobOverall() {
         const query = new URLSearchParams(paging)
         DataService.get(`Jobs/Users/${getUser().id}?`+ query.toString()).then(res => {
             const { data } = res.data
-            console.log(data)
             setJobs(data.data)
         })
     }, []);

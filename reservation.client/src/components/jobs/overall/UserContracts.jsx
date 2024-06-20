@@ -6,7 +6,6 @@ import { R2 } from "@/lib/R2.js";
 import { getUserName } from "../../../lib/helper";
 
 export default function UserContracts({ contracts }) {
-    console.log(contracts);
     const [open, setOpen] = useState(false);
     const [images, setImages] = useState([]);
 

@@ -31,7 +31,6 @@ export default function Account() {
                 }
             });
         } else {
-            console.log("not change");
             message.success("Đổi thông tin thành công");
         }
     };

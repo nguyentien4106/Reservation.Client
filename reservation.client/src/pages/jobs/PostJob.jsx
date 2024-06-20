@@ -43,7 +43,6 @@ export default function PostJob({ inModal, submitRef }) {
 
     const onFinish = (values) => {
         const userId = getUser().id;
-        console.log(values)
         const params = Object.assign(values, {
             applicationUserId: userId,
             jobServices: values.services && values.services.map((item) => ({ serviceId: item })),

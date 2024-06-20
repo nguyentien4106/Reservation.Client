@@ -21,7 +21,6 @@ export default function JobApplyInformation({
     const { message } = App.useApp();
     const user = getUser();
     const collaboratorId = getLocal("collaboratorId");
-    console.log(collaboratorId)
     const [imagesApplied, setImagesApplied] = useState([]);
 
     const handleOk = async () => {
