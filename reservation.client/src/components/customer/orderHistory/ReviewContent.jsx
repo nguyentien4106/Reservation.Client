@@ -18,10 +18,11 @@ const layout = {
     },
 };
 
-function ReviewContent({ order, message, setOrdersSrc }) {
+function ReviewContent({ order, message, setOrdersSrc, submit }) {
+    const dispatch = useDispatch();
+
     const [rate, setRate] = useState(5)
     const [images, setImages] = useState([])
-    const disaptch = useDispatch()
 
     const onFinish = async values => {
         if(!images.length) {
@@ -32,7 +33,7 @@ function ReviewContent({ order, message, setOrdersSrc }) {
         const imagesPush = await uploadImages()
 
         const params = Object.assign(values, { rate: rate, orderId: order.id, applicationUserId: getUser().id })
-        disaptch(show())
+        dispatch(show())
         DataService.post(CUSTOMER_PATH.addReview, params)
         .then(res => {
             const { data } = res
@@ -43,7 +44,7 @@ function ReviewContent({ order, message, setOrdersSrc }) {
         })
         .catch(err => message.error(generateMessages(err)))
         .finally(() => {
-            disaptch(hide())
+            dispatch(hide())
             Modal.destroyAll()
         })
 
@@ -81,18 +82,15 @@ function ReviewContent({ order, message, setOrdersSrc }) {
                 onFinish={onFinish}
                 style={{
                     maxWidth: 1000,
+                    marginTop: 20
                 }}
                 initialValues={{
                     recommend: true
                 }}
             >
                 <Form.Item
-                    style={{
-                        textAlign: "center",
-                        marginLeft: 200
-                    }}
                 >
-                    <RateComponent setRate={setRate} rate={rate}/>
+                    <RateComponent  setRate={setRate} rate={rate}/>
                 </Form.Item>
 
                 <Form.Item
@@ -135,9 +133,10 @@ function ReviewContent({ order, message, setOrdersSrc }) {
                         ...layout.wrapperCol,
                         offset: 8,
                     }}
+                    hidden
                 >
                     {
-                        <Button type="primary" htmlType="submit" >
+                        <Button type="primary" htmlType="submit" ref={submit}>
                             Đăng Review
                         </Button>
                     }

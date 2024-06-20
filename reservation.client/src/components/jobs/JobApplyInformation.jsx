@@ -24,7 +24,7 @@ export default function JobApplyInformation({
     const [imagesApplied, setImagesApplied] = useState([]);
 
     const handleOk = async () => {
-        if (!imagesApplied.length) {
+        if (!imagesApplied.length && !collaboratorId) {
             message.error("Bạn phải upload ít nhất 1 tấm hình");
             return;
         }

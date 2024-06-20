@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
+import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { App, Button, Modal, Table, Tag } from "antd";
 import { Link } from "react-router-dom";
 import ReviewContent from "./ReviewContent";
@@ -29,45 +29,64 @@ const sort = (a, b) => b.status - a.status
 
 function CustomerOrders({ src }) {
     const { message } = App.useApp()
+    const [open, setOpen] = useState(false)
+    const [order, setOrder] = useState(null)
     const [ordersSrc, setOrdersSrc] = useState([])
+    const submit = useRef()
 
     useEffect(() => {
-        if(src.length){
+        if (src.length) {
             setOrdersSrc(src)
         }
     }, [src])
 
     const postReview = order => {
-        Modal.info({
-            title: `Review về ${order.nickName}`,
-            content: <ReviewContent message={message} order={order} setOrdersSrc={setOrdersSrc}/>,
-            width: "60%",
-            okText: "Huỷ",
-            okType: "default"
-        })
+        setOpen(true)
+        setOrder(order)
     }
 
     return (
-        <OrderTable src={ordersSrc} renderAction={(_, order) => renderAction(order)} title="Trạng thái" sort={sort}>
-            <Table.Column
-                title="Review"
-                key="review"
-                render={(_, order) => {
-                    if(order.status === 2){
-                        return order?.review ? <Link to={`/collaborators/${order.collaboratorId}`}>Đã review</Link> : <Button onClick={() => postReview(order)}>Đăng review</Button>
-                    }
+        <>
+            <OrderTable src={ordersSrc} renderAction={(_, order) => renderAction(order)} title="Trạng thái" sort={sort}>
+                <Table.Column
+                    title="Review"
+                    key="review"
+                    render={(_, order) => {
+                        if (order.status === 2) {
+                            return order?.review ?
+                            <Link to={`/collaborators/${order.collaboratorId}`}>Đã review</Link> 
+                            : <Button onClick={() => postReview(order)}>Đăng review</Button>
+                        }
 
-                    return order.status === 0 ? <Tag color={"green"}><a>Review khi được chấp thuận</a></Tag> : <Tag color={"red"}><a>Không được review</a></Tag>
+                        return order.status === 0 ? <Tag color={"green"}><a>Review khi được chấp thuận</a></Tag> : <Tag color={"red"}><a>Không được review</a></Tag>
+                    }}
+                />
+                <Table.Column
+                    title="Người cho thuê"
+                    key="collaborator"
+                    render={(_, order) => {
+                        return <Link target="_blank" to={`/collaborators/${order.collaboratorId}`}>{order.nickName}</Link>;
+                    }}
+                />
+            </OrderTable>
+            <Modal
+                open={open}
+                title={`Review ${order?.nickName}`}
+                okText="Review"
+                onCancel={() => {
+                    setOpen(false)
+                    setOrder(null)
                 }}
-            />
-            <Table.Column
-                title="Người cho thuê"
-                key="collaborator"
-                render={(_, order) => {
-                    return <Link target="_blank" to={`/collaborators/${order.collaboratorId}`}>{order.nickName}</Link>;
+                onOk={() => {
+                    submit.current.click()
+                    setOpen(false)
+                    setOrder(null)
                 }}
-            />
-        </OrderTable>
+            >
+                <ReviewContent message={message} order={order} setOrdersSrc={setOrdersSrc} submit={submit}/>
+            </Modal>
+        </>
+
     );
 }
 
