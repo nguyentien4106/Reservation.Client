@@ -144,7 +144,6 @@ namespace Reservation.API
             }
             else
             {
-                await initialiser.SeedDevAsync();
                 await initialiser.SeedAsync();
             }
 
