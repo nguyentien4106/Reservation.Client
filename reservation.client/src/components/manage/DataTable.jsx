@@ -11,7 +11,7 @@ const ActionTypes = {
     Verified: 2,
 };
 
-const DataTable = ({ collaborators }) => {
+const DataTable = ({ users }) => {
     const { message } = App.useApp();
 
     const handleAction = (collaboratorId, status) => {
@@ -27,18 +27,23 @@ const DataTable = ({ collaborators }) => {
             }
         }).catch(err => console.log(err))
     };
+    console.log(users)
 
     return (
-        <Table dataSource={collaborators}>
+        <Table dataSource={users}>
             <Column
                 title="Id"
-                dataIndex="collaboratorId"
-                render={(text, collaborator) => {
-                    return (
-                        <Link to={`/collaborator/${collaborator.id}`} target="_blank">
-                            Details
+                dataIndex="id"
+                render={(text, user) => text.substring(0, 8)}
+            />
+            <Column
+                title="Profile"
+                render={(text, user) => {
+                    return user?.collaborator ?  (
+                        <Link to={`/collaborators/${user?.collaborator.id}`} target="_blank">
+                            Profile
                         </Link>
-                    );
+                    ) : <strong>No profile</strong>
                 }}
             />
             <Column
@@ -50,10 +55,13 @@ const DataTable = ({ collaborators }) => {
                     </Tag>
                 )}
             />
-            <Column title="Nick Name" dataIndex="nickName" />
-            <Column title="Phone" dataIndex="phoneNumber" key="phoneNumber" />
             <Column title="Email" dataIndex="email" key="email" />
-            <Column
+            <Column title="Phone" dataIndex="phoneNumber" key="phoneNumber" />
+            <Column title="First Name" dataIndex="firstName" />
+            <Column title="Last Name" dataIndex="lastName" />
+            <Column title="Nick Name" dataIndex="nickName" />
+            <Column title="Joined Date" dataIndex="joinedDate" key="joinedDate" />
+            {/* <Column
                 title="Action"
                 key="action"
                 render={(_, collaborator) => (
@@ -84,7 +92,7 @@ const DataTable = ({ collaborators }) => {
                         </Tag>
                     </Space>
                 )}
-            />
+            /> */}
         </Table>
     );
 };

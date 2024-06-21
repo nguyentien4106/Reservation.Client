@@ -13,7 +13,6 @@ const userItems = navigate => [
         label: "Jobs",
         onClick: () => navigate(JOBS_ROUTE_PATH.jobs)
     },
-
     {
         key: "post-job",
         label: "Tạo",
@@ -39,13 +38,44 @@ const userItems = navigate => [
 
 const adminItems = navigate => [
     {
+        key: "customer/find-talent",
+        label: "Talents",
+        onClick: () => navigate(COLLABORATORS_ROUTE_PATH.collaborators)
+    },
+    {
+        key: "jobs",
+        label: "Jobs",
+        onClick: () => navigate(JOBS_ROUTE_PATH.jobs)
+    },
+    {
+        key: "post-job",
+        label: "Tạo",
+        children: [
+            {
+                key: "create-profile",
+                label: "Hồ sơ Talent",
+                onClick: () => navigate(ACCOUNT_ROUTE_PATH.collaboratorSetting)
+            },
+            {
+                key: "create-job",
+                label: "Job",
+                onClick: () => navigate(JOBS_ROUTE_PATH.post)
+            },
+        ]
+    },
+    {
+        key: "donate",
+        label: "Donate",
+        onClick: () => navigate(DONATE_ROUTE_PATH.donate),
+    },
+    {
         key: "manage",
         label: "Quản lý",
         children: [
             {
                 key: "manage-collaborator",
                 label: "Quản lý Collaborator",
-                onClick: () => navigate("/manage-collaborator")
+                onClick: () => navigate("/manage/users")
             },
             {
                 key: "services",

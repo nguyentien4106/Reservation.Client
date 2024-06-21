@@ -140,9 +140,11 @@ namespace Reservation.API
                 app.UseSwaggerUI();
                 await initialiser.InitialiseAsync();
                 await initialiser.SeedDevAsync();
+                await initialiser.SeedAsync();
             }
             else
             {
+                await initialiser.SeedDevAsync();
                 await initialiser.SeedAsync();
             }
 

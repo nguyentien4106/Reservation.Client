@@ -100,7 +100,7 @@ namespace Reservation.Infrastructure.Data
             }
 
             // Default users
-            var administrator = new ApplicationUser { UserName = "admin@gmail.com", Email = "admin@gmail.com" };
+            var administrator = new ApplicationUser { UserName = "admin@gmail.com", Email = "admin@gmail.com", EmailConfirmed = true };
 
             if (_userManager.Users.All(u => u.UserName != administrator.UserName))
             {
@@ -112,7 +112,7 @@ namespace Reservation.Infrastructure.Data
             }
 
             // Default users
-            var user = new ApplicationUser { UserName = "user@gmail.com", Email = "user@gmail.com" };
+            var user = new ApplicationUser { UserName = "user@gmail.com", Email = "user@gmail.com", EmailConfirmed = true};
 
             if (_userManager.Users.All(u => u.UserName != user.UserName))
             {

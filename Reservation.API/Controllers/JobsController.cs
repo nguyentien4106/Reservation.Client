@@ -6,24 +6,27 @@ using Reservation.Domain.Models.ViewModel.Jobs;
 using Reservation.Application.Serivces.Jobs;
 using Reservation.Domain.Models.Request;
 using Reservation.Domain.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Reservation.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class JobsController(IJobsService service) : Controller
     {
 
         private readonly IJobsService _service = service;
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<AppResponse<PagingViewModel<List<JobDTO>>>> GetAll([FromQuery] PagingRequest paging)
         {
             return await _service.GetAll(paging);
         }
 
         [HttpGet("{jobId}")]
+        [AllowAnonymous]
         public async Task<AppResponse<JobDTO>> Job(Guid? jobId)
         {
             return await _service.GetJob(jobId);

@@ -43,7 +43,7 @@ namespace Reservation.Application.Serivces.Account
 
         public async Task<AppResponse<List<ApplicationUser>>> GetUsersAsync()
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _context.Users.Include(item => item.Collaborator).ToListAsync();
             return new AppResponse<List<ApplicationUser>>().SetSuccessResponse(users);
         }
 

@@ -8,6 +8,7 @@ import { Route } from 'react-router-dom';
 import { CustomerRoutes } from './customerRoute';
 import { ActionRoutes } from './actionRoute';
 import { JobsRoute } from './jobsRoute';
+import { AdminRoutes } from './adminRoutes';
 export const AppRoutes = (
     <>
         <Route path="/error" element={<ErrorPage />}/>
@@ -19,5 +20,6 @@ export const AppRoutes = (
         { CustomerRoutes }
         { ActionRoutes }
         { JobsRoute }
+        { AdminRoutes }
     </>
 )

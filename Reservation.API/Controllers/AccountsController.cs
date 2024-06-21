@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Reservation.Application.Serivces.Account;
 using Reservation.Domain.Models.DTO.Account;
@@ -9,6 +10,7 @@ using Reservation.Infrastructure.Data;
 namespace Reservation.API.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     [ApiController]
     public class AccountsController(IAccountService accountService) : ControllerBase
     {
