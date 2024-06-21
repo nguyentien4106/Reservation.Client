@@ -1,15 +1,10 @@
 import React from "react";
-import { App, Space, Table, Tag, Typography } from "antd";
+import { App, Table, Tag,  } from "antd";
 const { Column } = Table;
 import { Link } from "react-router-dom";
 import DataService from "../../lib/DataService";
 import { COLLABORATOR_PATH } from "../../constant/urls";
 import { generateMessages } from "../../lib/helper";
-
-const ActionTypes = {
-    Denied: -1,
-    Verified: 2,
-};
 
 const DataTable = ({ users }) => {
     const { message } = App.useApp();

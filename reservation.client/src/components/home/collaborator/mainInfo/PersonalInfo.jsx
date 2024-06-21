@@ -92,7 +92,7 @@ function PersonalInfo() {
                         Các dịch vụ khác
                     </Text>
                     <Text className="text-value">
-                        {collaborator?.otherServices}
+                        {collaborator?.otherServices ?? "Không có dịch vụ thêm"}
                     </Text>
                 </Space>
             </Flex>

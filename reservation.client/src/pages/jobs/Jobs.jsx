@@ -51,11 +51,8 @@ export default function Jobs() {
     return (
         <>
             <Flex
-                style={{
-                    paddingLeft: "10%",
-                    paddingRight: "10%",
-                }}
                 vertical
+                className="jobs"
             >
                 <Flex
                     style={{

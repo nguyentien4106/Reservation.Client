@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Reservation.Domain.Models.DTO.Auth;
 using Reservation.Domain.Models.DTO.Service;
 using Reservation.Application.Serivces.Service;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Reservation.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class ServicesController(IService service) : ControllerBase
     {
         private readonly IService _service = service;

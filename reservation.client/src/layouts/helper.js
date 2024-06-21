@@ -79,7 +79,9 @@ const adminItems = navigate => [
             },
             {
                 key: "services",
-                label: "Services"
+                label: "Services",
+                onClick: () => navigate("/manage/services")
+
             }
         ]
     }
