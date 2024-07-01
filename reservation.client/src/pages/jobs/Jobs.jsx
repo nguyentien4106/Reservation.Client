@@ -28,14 +28,23 @@ export default function Jobs() {
         const getDataAsync = async () => {
             dispatch(show())
             const getJobs = DataService.get(JOBS_PATH.getAll + `?${searchParams.toString()}`).then(res => res.data.data)
-            const getAppliedJobs = DataService.get(JOBS_PATH.userApplies + user.id + "?" + searchParams.toString()).then(res => res.data.data)
-            return await Promise.all([getJobs, getAppliedJobs])
+            
+            if(user){
+                const getAppliedJobs = DataService.get(JOBS_PATH.userApplies + user.id + "?" + searchParams.toString()).then(res => res.data.data)
+                return await Promise.all([getJobs, getAppliedJobs])
+            
+            }
+            return await Promise.all([getJobs])
+
         }
 
         getDataAsync().then(res => {
+            console.log(res)
             setJobs(res[0].data)
             setTotal(res[0].total)
-            setAppliedJobs(res[1].data.map(item => item.jobId))
+            if(res[1]){
+                setAppliedJobs(res[1].data.map(item => item.jobId))
+            }
 
         }).finally(() => {
             dispatch(hide())

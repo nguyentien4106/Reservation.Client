@@ -20,6 +20,7 @@ const AppLayout = () => {
                     style={{
                         padding: "0 16px",
                         overflowY: "auto",
+                        backgroundColor: "white"
                     }}
                 >
                     <div

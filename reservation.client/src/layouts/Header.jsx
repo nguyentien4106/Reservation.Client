@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { getStyles, menuItems } from "./helper";
 import UserComponent from "./UserComponent";
 import { useSelector } from "react-redux";
+import { getUser } from "../lib/helper";
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
 
@@ -14,7 +15,7 @@ export default function Header() {
     const navigate = useNavigate()
     const [current, setCurrent] = useState("");
     const styles = getStyles(screens, token)
-    const { user } = useSelector(store => store.user)
+    const user = getUser()
 
     const onClick = (e) => {
         setCurrent(e.key);

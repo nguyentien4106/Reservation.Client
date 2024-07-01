@@ -19,7 +19,9 @@ import DataService from "../../../lib/DataService";
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import locationAPI from "../../../api/locationAPI";
 import { useDispatch, useSelector } from "react-redux";
+import { show, hide } from "@/state/loading/loadingSlice";
 import { setUser } from "../../../state/user/userSlice";
+import { getLocal } from "../../../lib/helper";
 const layout = {
     labelCol: {
         span: 8,
@@ -37,7 +39,7 @@ const validateMessages = {
     },
 };
 
-export default function LeaseInfoComponent({ initialValues, collaborator }) {
+export default function LeaseInfoComponent({ initialValues }) {
     const [provinceId, setProvinceId] = useState(0);
     const [hasAvatar, setHasAvatar] = useState(false)
     const provinces = locationAPI.getProvinces();
@@ -46,6 +48,7 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
     const [form] = Form.useForm();
     const { user } = useSelector(store => store.user)
     const dispatch = useDispatch()
+    const collaboratorId = getLocal("collaboratorId")
 
     useEffect(() => {
         const newValues = {
@@ -67,22 +70,28 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
             values.collaboratorServices &&
             values.collaboratorServices.map((item) => ({
                 serviceId: item.serviceId,
-                collaboratorId: collaborator?.id,
+                collaboratorId: collaboratorId,
                 price: item.price
             }));
+        console.log(services)
+        if(!services || !services.length){
+            message.error("Bạn cần chọn ít nhất một dịch vụ cho thuê.")
+            return
+        }
 
         const params = {
             ...values,
             applicationUserId: user?.id,
             collaboratorServices: services,
             city: values.city,
-            id: collaborator?.id
+            id: collaboratorId
         };
 
-        const url = collaborator?.id && collaborator?.id != "00000000-0000-0000-0000-000000000000"
+        const url = collaboratorId && collaboratorId != "00000000-0000-0000-0000-000000000000"
             ? COLLABORATOR_PATH.update
             : COLLABORATOR_PATH.add;
 
+        dispatch(show())
         DataService.post(url, params).then((res) => {
             const { data } = res;
             if(url === COLLABORATOR_PATH.add){
@@ -96,6 +105,10 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
                     : generateMessages(data.messages),
                 duration: 5,
             });
+        }).catch((e) => {
+            message.error("Đã có lỗi xảy ra xin kiểm tra lại.")
+        }).finally(() => {
+            dispatch(hide())
         });
     };
 
@@ -107,6 +120,7 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
                 onFinish={onFinish}
                 style={{
                     maxWidth: 600,
+                    padding: 10
                 }}
                 validateMessages={validateMessages}
                 initialValues={{
@@ -145,7 +159,7 @@ export default function LeaseInfoComponent({ initialValues, collaborator }) {
                         },
                     ]}
                 >
-                    <Input />
+                    <Input maxLength={25}/>
                 </Form.Item>
 
                 <Form.Item

@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import CollaboratorOrders from "../../components/collaborator/customer/CollaboratorOrders";
 import { useSelector } from "react-redux";
 import "./customer.css"
+import { getLocal } from "../../lib/helper";
 const { Title } = Typography
 
 export default function Customer() {
@@ -16,8 +17,9 @@ export default function Customer() {
     const [customers, setCustomers] = useState([])
 
     useEffect(() => {
-        if (user?.collaboratorId)
-            DataService.get(ORDER_PATH.getCollaboratorOrders + user.collaboratorId).then(res => {
+        const collaboratorid = getLocal("collaboratorId")
+        if (collaboratorid)
+            DataService.get(ORDER_PATH.getCollaboratorOrders + collaboratorid).then(res => {
                 setCustomers(res.data.data)
             }).catch(console.error)
     }, [user])

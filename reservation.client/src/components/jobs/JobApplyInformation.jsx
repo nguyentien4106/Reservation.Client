@@ -9,6 +9,8 @@ import UploadImageComponent from "../common/UploadImageComponent";
 import { ACCOUNT_ROUTE_PATH } from "@/constant/paths.js";
 import { Link } from "react-router-dom";
 import { R2 } from "@/lib/R2";
+import { useDispatch } from "react-redux";
+import { show, hide } from "@/state/loading/loadingSlice";
 
 export default function JobApplyInformation({
     job,
@@ -22,8 +24,13 @@ export default function JobApplyInformation({
     const user = getUser();
     const collaboratorId = getLocal("collaboratorId");
     const [imagesApplied, setImagesApplied] = useState([]);
+    const dispatch = useDispatch()
 
     const handleOk = async () => {
+        if(!user){
+            message.error("Bạn cần đăng nhập trước !")
+            return
+        }
         if (!imagesApplied.length && !collaboratorId) {
             message.error("Bạn phải upload ít nhất 1 tấm hình");
             return;
@@ -69,6 +76,7 @@ export default function JobApplyInformation({
             jobId: job.id,
             applicationUserId: getUser().id,
         });
+        dispatch(show())
         DataService.post(JOBS_PATH.applyJob, params)
             .then((res) => {
                 const { data } = res.data;
@@ -85,10 +93,13 @@ export default function JobApplyInformation({
             })
             .finally(() => {
                 setOpen(false);
+                dispatch(hide())
+
             });
     };
 
     return (
+
         <Modal
             title={
                 <div style={{ color: "rgb(16, 138, 0)", textAlign: "center" }}>
@@ -104,6 +115,7 @@ export default function JobApplyInformation({
             open={true}
         >
             <AuthorizeView role={ROLES.USER}>
+
                 <Form
                     name="basic"
                     labelCol={{
@@ -118,8 +130,8 @@ export default function JobApplyInformation({
                     onFinish={onFinish}
                     disabled={confirmLoading}
                     initialValues={{
-                        name: `${user.firstName} ${user.lastName}`,
-                        phoneNumber: user.phoneNumber,
+                        name: `${user?.firstName} ${user?.lastName}`,
+                        phoneNumber: user?.phoneNumber,
                     }}
                 >
                     <Form.Item label="Tên" name="name">
@@ -234,6 +246,8 @@ export default function JobApplyInformation({
                     )}
                 </Form>
             </AuthorizeView>
+
         </Modal>
+
     );
 }

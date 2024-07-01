@@ -4,7 +4,8 @@ import "./index.css";
 import { getUser, getUserName } from "../../lib/helper";
 import DataService from "../../lib/DataService";
 import { Cookie } from "../../lib/cookies";
-const { Text } = Typography;
+import { useDispatch } from "react-redux";
+import { show, hide } from "@/state/loading/loadingSlice";
 
 const isChange = (values, user) => {
     const fields = ["phoneNumber", "firstName", "lastName"];
@@ -19,9 +20,11 @@ const isChange = (values, user) => {
 export default function Account() {
     const user = getUser();
     const { message } = App.useApp();
+    const dispatch = useDispatch()
 
     const onFinish = (values) => {
         if (isChange(values, user)) {
+            dispatch(show())
             DataService.post("Accounts/" + user.id, values).then((res) => {
                 if (res.data.isSucceed) {
                     const { data } = res.data;
@@ -29,13 +32,15 @@ export default function Account() {
                     Cookie.setRefreshToken(data.refreshToken);
                     message.success("Đổi thông tin thành công");
                 }
+            }).catch((e) => message.error("Đã có lỗi xảy ra xin thử lại sau!"))
+            .finally(() => {
+                dispatch(hide())
+
             });
         } else {
             message.success("Đổi thông tin thành công");
         }
     };
-
-    useEffect(() => {}, []);
 
     return (
         <>
@@ -82,17 +87,7 @@ export default function Account() {
                         >
                             <Input placeholder="Nguyễn" />
                         </Form.Item>
-                        <Form.Item
-                            name="phoneNumber"
-                            label="SĐT"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <Input placeholder="0123456789" />
-                        </Form.Item>
+                        
                         <Form.Item
                             name="lastName"
                             label="Tên"
@@ -103,6 +98,18 @@ export default function Account() {
                             ]}
                         >
                             <Input placeholder="Văn A" />
+                        </Form.Item>
+
+                        <Form.Item
+                            name="phoneNumber"
+                            label="SĐT"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
+                            <Input placeholder="0123456789" />
                         </Form.Item>
                     </div>
                 </Flex>
