@@ -38,7 +38,6 @@ export default function Jobs() {
         }
 
         getDataAsync().then(res => {
-            console.log(res)
             setJobs(res[0].data)
             setTotal(res[0].total)
             if(res[1]){

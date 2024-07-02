@@ -57,6 +57,7 @@ function Collaborators() {
     }, []);
 
     useEffect(() => {
+        console.log(filter)
         getCollaborators();
     }, [filter, paging]);
 
@@ -177,6 +178,7 @@ function Collaborators() {
                     services={services}
                     filterResult={filterResult}
                     setFilter={setFilter}
+                    filter={filter}
                 />
             </Modal>
         </Flex>

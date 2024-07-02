@@ -9,7 +9,5 @@ using System.Threading.Tasks;
 
 namespace Reservation.Application.Serivces.Repositories
 {
-    public class AccountRepository : IGenericRepository<ApplicationUser>
-    {
-    }
+    
 }

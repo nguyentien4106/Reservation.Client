@@ -123,7 +123,11 @@ namespace Reservation.Application.Serivces.Jobs
                 return new AppResponse<JobDTO>().SetCommonError();
             }
 
-            var job = await _context.Jobs.Include(job => job.ApplicationUser).SingleOrDefaultAsync(job => job.Id == jobId);
+            var job = await _context.Jobs
+                .Include(job => job.ApplicationUser)
+                .Include(item => item.JobServices)
+                .ThenInclude(item => item.Service)
+                .SingleOrDefaultAsync(job => job.Id == jobId);
         
             return new AppResponse<JobDTO>().SetSuccessResponse(_mapper.Map<JobDTO>(job));
         }

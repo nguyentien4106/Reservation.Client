@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Reservation.Application.Serivces.IRepositories;
+using Reservation.Infrastructure.Data;
 namespace Reservation.Application.Serivces.Repositories
 {
     public class UnitOfWork(

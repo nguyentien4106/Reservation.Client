@@ -58,9 +58,9 @@ const getFilterItem = ({
     </Space>
 );
 
-function FilterArea({ setFilter, filterResult }) {
+function FilterArea({ setFilter, filterResult, filter }) {
     const provinces = locationAPI.getProvinces(hasAll);
-
+    console.log(filter)
     const onProvinceSelect = (e, province) => {
         setFilter((prev) => Object.assign(prev, { city: province.value }));
     };
@@ -70,11 +70,11 @@ function FilterArea({ setFilter, filterResult }) {
             options: provinces,
             label: "Tỉnh",
             onSelect: onProvinceSelect,
-            defaultValue: "All",
+            defaultValue: filter.city,
         },
         {
             label: "Giới tính",
-            defaultValue: "All",
+            defaultValue: filter.sex,
             options: [
                 {
                     label: "All",
@@ -95,7 +95,7 @@ function FilterArea({ setFilter, filterResult }) {
         },
         {
             label: "Sắp xếp",
-            defaultValue: 0,
+            defaultValue: filter.orderType,
             options: orderFilters,
             width: 200,
             onSelect: (value) =>

@@ -48,7 +48,7 @@ export default function Job({
                                 <b>{getUserName(job.userName)} </b>
                             </span>
                         </small>
-                        <div  onClick={() => navigate(`/jobs/${job.id}`)}>
+                        <div  onClick={() => navigate(`/jobs/${job.id}`, { state : { applied }})}>
                             <h2 className="title-name">{job.title}</h2>
                         </div>
                     </div>
@@ -152,8 +152,8 @@ export default function Job({
                         Dịch vụ:
                     </strong>
                     <div className="services-container">
-                        {job.jobServices.length ? (
-                            job.jobServices.map((item) => (
+                        {job.jobServices?.length ? (
+                            job.jobServices?.map((item) => (
                                 <span
                                     key={item.serviceName}
                                     className="service-item"
