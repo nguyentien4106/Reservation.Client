@@ -22,11 +22,12 @@ export default function HomePage() {
                     <div className="dichvu_banner_text_left dichvu_banner_text">
                         <h3 className="banner-text-h3 logo">ThueNguoiYeu.me</h3>
                         <h4 className="banner-text-h4">
-                            Một nền tảng được tạo ra để tạo thêm sự kết nối cho
-                            mọi người cô đơn.
+                            Nền tảng đặt chỗ hàng đầu để thuê một người phù hợp với bạn nhất
+                            
                         </h4>
                         <p className="short-desc">
-                            Giúp bạn tìm được một nửa kia một cách nhanh nhất,
+                            Một nền tảng được tạo ra để tạo thêm sự kết nối cho mọi người cô đơn.
+                            <br/>Giúp bạn tìm được một nửa kia một cách nhanh nhất,
                             một người bạn tâm giao...
                         </p>
                         <Space
