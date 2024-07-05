@@ -30,7 +30,7 @@ namespace Reservation.Domain.Models.DTO.Home
 
         public string? CollaboratorEmail { get; set; }
 
-        public DateTime? CreatedDate { get; set; }
+        public DateTime? CreateAt { get; set; }
 
         public DateTime? ConfirmedDate { get; set; }
 

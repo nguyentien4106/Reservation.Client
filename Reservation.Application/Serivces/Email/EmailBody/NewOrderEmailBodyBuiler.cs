@@ -28,7 +28,7 @@ namespace Reservation.Application.Serivces.Email.EmailBody
             builder.Replace("[EMAIL]", _order.Email);
             builder.Replace("[PHONE]", _order.PhoneNumber);
             builder.Replace("[ZALO]", _order.Zalo);
-            builder.Replace("[CREATED_DATE]", _order.CreatedDate.ToString());
+            builder.Replace("[CREATED_DATE]", _order.CreateAt.ToString());
 
             _html = builder.ToString();
         }

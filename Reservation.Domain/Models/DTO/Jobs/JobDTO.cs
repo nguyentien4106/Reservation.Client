@@ -24,7 +24,7 @@
 
         public int? Status { get; set; }
 
-        public DateTime? CreatedDate { get; set; } = DateTime.Now;
+        public DateTime? CreateAt { get; set; } = DateTime.Now;
 
         public string? UserName { get; set; }
 

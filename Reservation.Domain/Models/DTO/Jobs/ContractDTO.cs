@@ -16,7 +16,7 @@ namespace Reservation.Domain.Models.DTO.Jobs
 
         public int Status { get; set; }
 
-        public DateTime? CreatedDate { get; set; } = DateTime.Now;
+        public DateTime? CreateAt { get; set; } = DateTime.Now;
 
         public JobDTO? Job { get; set; }
 

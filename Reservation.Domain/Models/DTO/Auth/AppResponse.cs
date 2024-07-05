@@ -81,5 +81,19 @@
 
             return this;
         }
+
+        public static AppResponse<T> Success(T data)
+        {
+            var result = new AppResponse<T>();
+            result.SetSuccessResponse(data);
+            return result;
+        }
+
+        public static AppResponse<T> Fail(string key, string value)
+        {
+            var result = new AppResponse<T>();
+            result.SetErrorResponse(key, value);
+            return result;
+        }
     }
 }

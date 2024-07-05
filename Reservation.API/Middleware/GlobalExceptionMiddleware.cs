@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace Reservation.API.Middleware
 {
-    public class GlobalExceptionMiddleware(RequestDelegate next)
+    public class GlobalExceptionMiddleware(RequestDelegate next )
     {
         private readonly RequestDelegate _next = next;
 
@@ -21,7 +21,7 @@ namespace Reservation.API.Middleware
             }
         }
 
-        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -30,7 +30,8 @@ namespace Reservation.API.Middleware
             {
                 response.SetErrorResponse("message1", exception?.InnerException?.Message);
             }
-            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            var message = JsonSerializer.Serialize(response);
+            await context.Response.WriteAsync(message);
         }
     }
 }

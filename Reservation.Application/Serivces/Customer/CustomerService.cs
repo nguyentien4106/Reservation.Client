@@ -80,7 +80,7 @@ namespace Reservation.Application.Serivces.Customer
 
         //    var order = _mapper.Map<Order>(request);
         //    order.Status = (int)OrderStatus.Sent;
-        //    order.CreatedDate = DateTime.Now;
+        //    order.CreateAt = DateTime.Now;
 
         //    await _context.Orders.AddAsync(order);
 

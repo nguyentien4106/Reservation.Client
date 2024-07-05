@@ -13,6 +13,7 @@ using Reservation.Domain.Extensions;
 using Reservation.Domain.Models.Request.Collaborators;
 using Reservation.Domain.Models.ViewModel;
 using System.Collections.Generic;
+using Reservation.Application.Serivces.IRepositories;
 
 namespace Reservation.Application.Serivces.UserServiceRegister
 {
@@ -20,7 +21,8 @@ namespace Reservation.Application.Serivces.UserServiceRegister
         ApplicationDbContext context, 
         UserManager<ApplicationUser> userManager, 
         IMapper mapper,
-        IEmailService emailService
+        IEmailService emailService,
+        IUnitOfWork unitOfWork
     ) 
         : ICollaboratorService
     {
@@ -29,20 +31,28 @@ namespace Reservation.Application.Serivces.UserServiceRegister
         private readonly IMapper _mapper = mapper;
         private readonly IEmailService _emailService = emailService;
         private const string All = "All";
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(int type)
         {
-            Expression<Func<Collaborator, bool>> predict = type switch
+            Expression<Func<Collaborator, bool>> filter = type switch
             {
                 (int)CollaboratorGetType.All => (Collaborator c) => true,
                 (int)CollaboratorGetType.ReadyAndReviewing => (Collaborator c) => c.IsReady == true && c.Status == (int)ProfileStatus.Reviewing,
                 _ => (Collaborator c) => c.IsReady == false,
             };
 
+            //var collaborators = await _unitOfWork
+            //    .Collaborators
+            //    .GetAllAsync(
+            //        filter, 
+            //        include: o => o.Include(i => i.CollaboratorServices).ThenInclude(i => i.Service)
+            //    );
+
             var collaborators = await _context.Collaborators
                 .Include(item => item.CollaboratorServices)
                 .ThenInclude(item => item.Service)
-                .Where(predict)
+                .Where(filter)
                 .ToListAsync();
 
             return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(_mapper.Map<List<CollaboratorDTO>>(collaborators));
@@ -208,15 +218,22 @@ namespace Reservation.Application.Serivces.UserServiceRegister
 
         public async Task<AppResponse<PagingViewModel<List<CollaboratorDTO>>>> GetAllAsync(GetAllRequest request)
         {
-            var query = _context.Collaborators.Include(item => item.View).AsQueryable();
+            var query = _context.Collaborators
+                .Where(collaborator => request.City == All || collaborator.City == request.City)
+                .Where(collaborator => request.Sex == All || collaborator.Sex == request.Sex);
 
-            query = query.Where(collaborator => request.City == All || collaborator.City == request.City);
+            //query = query.Where(collaborator => request.City == All || collaborator.City == request.City);
+            //query = query.Where(collaborator => request.District == All || collaborator.District == request.District);
+            //query = query.Where(collaborator => request.Sex == All || collaborator.Sex == request.Sex);
 
-            query = query.Where(collaborator => request.District == All || collaborator.District == request.District);
-
-            query = query.Where(collaborator => request.Sex == All || collaborator.Sex == request.Sex);
-
-            var result = await query.ToListAsync();
+            Expression<Func<Collaborator, bool>> filterByCity = c => request.City == All || c.City == request.City;
+            Expression<Func<Collaborator, bool>> filterBySex = c => request.City == All || c.City == request.City;
+ 
+            var result = await _unitOfWork.Collaborators.GetAllAsync(
+                    filters: [filterByCity, filterBySex],
+                    paging: request
+                );
+            //var result = await query.ToListAsync();
 
             if (result == null)
             {

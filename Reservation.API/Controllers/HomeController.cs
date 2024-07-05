@@ -4,6 +4,7 @@ using Reservation.Domain.Models.DTO.Auth;
 using Reservation.Domain.Models.DTO.Collaborator;
 using Reservation.Domain.Models.DTO.Home;
 using Reservation.Application.Serivces.Home;
+using Reservation.Application.Serivces.IRepositories;
 
 namespace Reservation.API.Controllers
 {

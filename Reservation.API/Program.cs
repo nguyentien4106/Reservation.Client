@@ -19,6 +19,8 @@ using Reservation.Application.Serivces.Order;
 using Reservation.API.Middleware;
 using Reservation.Applicattion.Serivces.Email;
 using Reservation.Application.Serivces.Account;
+using Reservation.Application.Serivces.IRepositories;
+using Reservation.Application.Serivces.Repositories;
 
 namespace Reservation.API
 {
@@ -59,6 +61,7 @@ namespace Reservation.API
             builder.Services.AddTransient<IJobsService, JobsService>();
             builder.Services.AddTransient<IOrderService, OrderService>();
             builder.Services.AddTransient<IAccountService, AccountService>();
+            builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
             builder.Services.AddControllers().AddNewtonsoftJson(
@@ -121,7 +124,7 @@ namespace Reservation.API
                     }
                 });
             });
-            builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
+            builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
             var app = builder.Build();
 

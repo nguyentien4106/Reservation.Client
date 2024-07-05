@@ -24,7 +24,7 @@ namespace Reservation.Domain.Models.DTO.Collaborator
 
         public int? PricePerHour { get; set; }
 
-        public DateTime? JoinedDate { get; set; }
+        public DateTime? CreateAt { get; set; }
 
         public string? Introduction { get; set; }
 

@@ -13,7 +13,7 @@ namespace Reservation.Domain.Models.DTO.Customer
 
         public string Description { get; set; } = null!;
 
-        public DateTime? CreatedDate { get; set; }
+        public DateTime? CreateAt { get; set; }
 
         public bool Recommend { get; set; }
 

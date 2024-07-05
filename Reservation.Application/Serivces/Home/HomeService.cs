@@ -6,22 +6,24 @@ using Reservation.Domain.Models.DTO.Auth;
 using Reservation.Domain.Models.DTO.Collaborator;
 using Reservation.Domain.Models.Enum;
 using Reservation.Applicattion.Serivces.Email;
+using Reservation.Application.Serivces.IRepositories;
 
 namespace Reservation.Application.Serivces.Home
 {
-    public class HomeService(ApplicationDbContext context, IMapper mapper, IEmailService emailService) : IHomeService
+    public class HomeService(ApplicationDbContext context, IMapper mapper, IEmailService emailService, IUnitOfWork unitOfWork) : IHomeService
     {
         private readonly IEmailService _emailService = emailService;
         private readonly ApplicationDbContext _context = context;
         private readonly IMapper _mapper = mapper;
-
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private const string All = "All";
 
         public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync()
         {
-            var collaborators = await _context.Collaborators.Include(item=> item.View).Where(item => item.IsReady == true).ToListAsync();
+            //var collaborators = await _context.Collaborators.Include(item=> item.View).Where(item => item.IsReady == true).ToListAsync();
+            var result = await _unitOfWork.Collaborators.GetAllAsync();
 
-            return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(_mapper.Map<List<CollaboratorDTO>>(collaborators).OrderByAvgRate());
+            return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(_mapper.Map<List<CollaboratorDTO>>(result).OrderByAvgRate());
         }
 
         public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(string city, string district, string sex, int orderType)
