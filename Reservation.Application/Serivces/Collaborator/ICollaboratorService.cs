@@ -25,7 +25,7 @@ namespace Reservation.Application.Serivces.UserServiceRegister
 
         //Task<AppResponse<OrderDTO>> ComfirmRequestAsync(Guid? requestId, int status);
 
-        Task<AppResponse<PagingViewModel<List<CollaboratorDTO>>>> GetAllAsync(GetAllRequest request);
+        Task<AppResponse<PagingViewModel<List<CollaboratorDTO>>>> GetAllAsync(GetCollaboratorsRequest request);
 
     }
 }

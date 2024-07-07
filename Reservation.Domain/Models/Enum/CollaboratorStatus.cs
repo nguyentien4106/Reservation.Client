@@ -1,9 +1,9 @@
 ﻿namespace Reservation.Domain.Models.Enum
 {
-    public enum CollaboratorGetType
+    public enum CollaboratorStatus
     {
         All,
-        ReadyAndReviewing,
+        Ready,
         NotReady
     }
 }

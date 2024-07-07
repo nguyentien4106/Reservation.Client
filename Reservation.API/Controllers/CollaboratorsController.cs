@@ -68,7 +68,7 @@ namespace Reservation.API.Controllers
         [Route("/[controller]")]
         [HttpGet]
         [AllowAnonymous]
-        public async Task<AppResponse<PagingViewModel<List<CollaboratorDTO>>>> Collaborators([FromQuery] GetAllRequest request)
+        public async Task<AppResponse<PagingViewModel<List<CollaboratorDTO>>>> Collaborators([FromQuery] GetCollaboratorsRequest request)
         {
             return await _collaboratorService.GetAllAsync(request);
         }

@@ -20,7 +20,9 @@ const CollaboratorCard = lazy(() =>
 const defaultFilter = {
     city: "All",
     sex: "All",
-    orderType: 0,
+    orderType: 2,
+    services: "All",
+    status: 0
 };
 
 function Collaborators() {

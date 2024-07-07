@@ -18,7 +18,7 @@ namespace Reservation.API.Controllers
         [HttpGet]
         public async Task<AppResponse<List<CollaboratorDTO>>> GetAll()
         {
-            return await _manageCollaboratorService.GetAllAsync((int)CollaboratorGetType.All);
+            return await _manageCollaboratorService.GetAllAsync((int)CollaboratorStatus.All);
         }
     }
 }

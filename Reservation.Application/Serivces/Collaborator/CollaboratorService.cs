@@ -193,7 +193,6 @@ namespace Reservation.Application.Serivces.UserServiceRegister
             var collaboratorView = await _unitOfWork.Views.SingleOrDefaultAsync(
                     filter: item => item.CollaboratorId == collaborator.Id
             );
-            //var collaboratorView = await _context.Views.SingleOrDefaultAsync(item => item.CollaboratorId == collaborator.Id);
             if (collaboratorView == null)
             {
                 var view = new View()
@@ -211,10 +210,12 @@ namespace Reservation.Application.Serivces.UserServiceRegister
             await _context.SaveChangesAsync();
         }
 
-        public async Task<AppResponse<PagingViewModel<List<CollaboratorDTO>>>> GetAllAsync(GetAllRequest request)
+        public async Task<AppResponse<PagingViewModel<List<CollaboratorDTO>>>> GetAllAsync(GetCollaboratorsRequest request)
         {
             Expression<Func<Collaborator, bool>> filterByCity = c => request.City == All || c.City == request.City;
             Expression<Func<Collaborator, bool>> filterBySex = c => request.Sex == All || c.Sex == request.Sex;
+            Expression<Func<Collaborator, bool>> filterByStatus = c => request.Status == (int)CollaboratorStatus.All || request.Status == (int)CollaboratorStatus.Ready ? c.IsReady ?? false : !c.IsReady ?? false;
+            
             Func<IQueryable<Collaborator>, IOrderedQueryable<Collaborator>> orderBy;
             
             switch (request.OrderType)
@@ -238,7 +239,7 @@ namespace Reservation.Application.Serivces.UserServiceRegister
             }
             
             var model = await _unitOfWork.Collaborators.GetAllAsync(
-                    filters: [filterByCity, filterBySex],
+                    filters: [filterByCity, filterBySex, filterByStatus],
                     paging: request,
                     orderBy: orderBy,
                     include: o => o.Include(item => item.View)
