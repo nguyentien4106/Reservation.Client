@@ -65,7 +65,7 @@ export default function UserContracts({ contracts }) {
 
     const getImages = (user, jobId) => {
         setOpen(true);
-        R2.getJobImages(getUserName(user.userName), jobId).then((res) => {
+        R2.getJobImages(getUserName(user?.userName), jobId).then((res) => {
             setImages(res.map((item) => item?.url));
         });
     };

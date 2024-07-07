@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using Reservation.Application.Serivces.IRepositories;
 using Reservation.Infrastructure.Data;
 using Reservation.Infrastructure.Data.Entities;
+using OrderEntity = Reservation.Infrastructure.Data.Entities.Order;
+
 namespace Reservation.Application.Serivces.Repositories
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
@@ -12,6 +14,13 @@ namespace Reservation.Application.Serivces.Repositories
         private bool disposed;
 
         private readonly Lazy<Repository<Collaborator>> _collaboratorRepo;
+        private readonly Lazy<Repository<CollaboratorService>> _collaboratorServiceRepo;
+        private readonly Lazy<Repository<OrderEntity>> _orderRepo;
+        private readonly Lazy<Repository<Job>> _jobRepo;
+        private readonly Lazy<Repository<Review>> _reviewRepo;
+        private readonly Lazy<Repository<Contract>> _contractRepo;
+        private readonly Lazy<Repository<Rate>> _rateRepo;
+        private readonly Lazy<Repository<View>> _viewRepo;
 
         public UnitOfWork(
             ApplicationDbContext context,
@@ -21,11 +30,51 @@ namespace Reservation.Application.Serivces.Repositories
             _context = context;
             _logger = loggerFactory.CreateLogger("thuenguoiyeu-api-logs");
             _collaboratorRepo = InitLazyRepository<Collaborator>();
+            _collaboratorServiceRepo = InitLazyRepository<CollaboratorService>();
+            _orderRepo = InitLazyRepository<OrderEntity>();
+            _jobRepo = InitLazyRepository<Job>();
+            _reviewRepo = InitLazyRepository<Review>();
+            _contractRepo = InitLazyRepository<Contract>();
+            _rateRepo = InitLazyRepository<Rate>();
+            _viewRepo = InitLazyRepository<View>();
         }
 
         public IRepository<Collaborator> Collaborators
         {
             get { return _collaboratorRepo.Value; }
+        }
+
+        public IRepository<CollaboratorService> CollaboratorServices
+        {
+            get { return _collaboratorServiceRepo.Value; }
+        }
+
+        public IRepository<OrderEntity> Orders
+        {
+            get { return _orderRepo.Value; }
+        }
+
+        public IRepository<Job> Jobs
+        {
+            get { return _jobRepo.Value; }
+        }
+
+        public IRepository<Review> Reviews
+        {
+            get { return _reviewRepo.Value; }
+        }
+
+        public IRepository<Contract> Contracts
+        {
+            get { return _contractRepo.Value; }
+        }
+        public IRepository<Rate> Rates
+        {
+            get { return _rateRepo.Value; }
+        }
+        public IRepository<View> Views
+        {
+            get { return _viewRepo.Value; }
         }
 
         public async Task CommitAsync()

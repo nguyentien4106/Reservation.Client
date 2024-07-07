@@ -2,12 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Reservation.Infrastructure.Data;
 using Reservation.Domain.Models.DTO.Auth;
-using Reservation.Domain.Models.DTO.Email;
 using Reservation.Domain.Models.DTO.Home;
 using Reservation.Domain.Models.Enum;
-using Reservation.Applicattion.Serivces.Email;
+using Reservation.Application.Serivces.Email;
 using Microsoft.AspNetCore.Hosting;
 using Reservation.Application.Serivces.Email.EmailBody;
+using Reservation.Application.Serivces.IRepositories;
+using System.Linq.Expressions;
+using OrderEntity = Reservation.Infrastructure.Data.Entities.Order;
+using Reservation.Infrastructure.Data.Entities;
 
 namespace Reservation.Application.Serivces.Order
 {
@@ -16,7 +19,8 @@ namespace Reservation.Application.Serivces.Order
         IMapper mapper, 
         IEmailService emailService,
         IHostingEnvironment hostingEnvironment,
-        TokenSettings tokenSettings
+        TokenSettings tokenSettings,
+        IUnitOfWork unitOfWork
     ) 
         : IOrderService
     {
@@ -25,6 +29,7 @@ namespace Reservation.Application.Serivces.Order
         private readonly IEmailService _emailService = emailService;
         private readonly IHostingEnvironment _hostingEnvironment = hostingEnvironment;
         private readonly TokenSettings _tokenSettings = tokenSettings;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<AppResponse<OrderDTO>> ComfirmOrderAsync(Guid? orderId, int status)
         {
@@ -33,7 +38,9 @@ namespace Reservation.Application.Serivces.Order
                 return new AppResponse<OrderDTO>().SetErrorResponse("bind", "Không tìm thấy request");
             }
 
-            var order = await _context.Orders.Include(order => order.ApplicationUser).SingleOrDefaultAsync(item => item.Id == orderId);
+            Expression<Func<OrderEntity, bool>> filterById = o => o.Id == orderId;
+
+            var order = await _unitOfWork.Orders.SingleOrDefaultAsync(filterById, include: o => o.Include(i => i.ApplicationUser));
 
             if (order == null)
             {
@@ -43,9 +50,14 @@ namespace Reservation.Application.Serivces.Order
             order.Status = status;
             order.ConfirmedDate = DateTime.Now;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.CommitAsync();
 
-            var collaborator = await _context.Collaborators.Include(item => item.ApplicationUser).SingleOrDefaultAsync(item => item.Id == order.CollaboratorId);
+            Expression<Func<Collaborator, bool>> filterByCollaboratorId = o => o.Id == order.CollaboratorId;
+
+            var collaborator = await _unitOfWork.Collaborators.SingleOrDefaultAsync(
+                filterByCollaboratorId, 
+                include: o => o.Include(i => i.ApplicationUser)
+            );
 
             var emailBuilder = new EmailBuilder();
             emailBuilder.SetFrom("ThueNguoiYeu.me", "customer-support@ThueNguoiYeu.me.com");
@@ -71,10 +83,11 @@ namespace Reservation.Application.Serivces.Order
             {
                 return new AppResponse<List<OrderDTO>>().SetErrorResponse("user", "Không tìm thấy User");
             }
+            Expression<Func<OrderEntity, bool>> filterByCollaboratorId = o => o.CollaboratorId == collaboratorId;
 
-            var orders = await _context.Orders.Where(item => item.CollaboratorId == collaboratorId).ToListAsync();
+            var orders = await _unitOfWork.Orders.GetAllAsync(filters: [filterByCollaboratorId]);
 
-            return new AppResponse<List<OrderDTO>>().SetSuccessResponse(_mapper.Map<List<OrderDTO>>(orders));
+            return new AppResponse<List<OrderDTO>>().SetSuccessResponse(_mapper.Map<List<OrderDTO>>(orders.ToList()));
         }
 
         public async Task<AppResponse<bool>> CreateOrderAsync(OrderDTO orderDTO)
@@ -84,12 +97,12 @@ namespace Reservation.Application.Serivces.Order
                 return new AppResponse<bool>().SetErrorResponse("user", "User trống!");
             }
 
-            var order = _mapper.Map<Reservation.Infrastructure.Data.Entities.Order>(orderDTO);
+            var order = _mapper.Map<OrderEntity>(orderDTO);
             order.Status = (int)OrderStatus.Sent;
             order.CreatedDate = DateTime.Now;
 
-            await _context.Orders.AddAsync(order);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Orders.AddAsync(order);
+            await _unitOfWork.CommitAsync();
 
             var emailBuilder = new EmailBuilder();
             emailBuilder.SetFrom("ThueNguoiYeu.me", "customer-support@ThueNguoiYeu.me.com");
@@ -114,13 +127,14 @@ namespace Reservation.Application.Serivces.Order
                 return new AppResponse<List<OrderDTO>>().SetErrorResponse("user", "Không tìm thấy User");
             }
 
-            var orders = await _context.Orders
-                .Where(item => item.ApplicationUserId == applicationUserId)
-                .Include(item => item.Collaborator)
-                .Include(item => item.Review)
-                .ToListAsync();
+            Expression<Func<OrderEntity, bool>> filterByUser = o => o.ApplicationUserId == applicationUserId;
 
-            return new AppResponse<List<OrderDTO>>().SetSuccessResponse(_mapper.Map<List<OrderDTO>>(orders));
+            var orders = await _unitOfWork.Orders.GetAllAsync(
+                    filters: [filterByUser], 
+                    include: o => o.Include(i => i.Collaborator).Include(i => i.Review)
+            );
+
+            return new AppResponse<List<OrderDTO>>().SetSuccessResponse(_mapper.Map<List<OrderDTO>>(orders.ToList()));
 
         }
     }

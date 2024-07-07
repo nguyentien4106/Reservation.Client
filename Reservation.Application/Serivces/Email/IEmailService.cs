@@ -2,7 +2,7 @@
 using Reservation.Domain.Models.DTO.Email;
 using Reservation.Domain.Models.DTO.Home;
 
-namespace Reservation.Applicattion.Serivces.Email
+namespace Reservation.Application.Serivces.Email
 {
     public interface IEmailService
     {

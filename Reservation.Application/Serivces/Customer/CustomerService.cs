@@ -4,34 +4,43 @@ using Reservation.Infrastructure.Data;
 using Reservation.Infrastructure.Data.Entities;
 using Reservation.Domain.Models.DTO.Auth;
 using Reservation.Domain.Models.DTO.Customer;
-using Reservation.Domain.Models.DTO.Email;
 using Reservation.Domain.Models.DTO.Home;
 using Reservation.Domain.Models.DTO.Jobs;
-using Reservation.Applicattion.Serivces.Email;
-using Reservation.Application.Serivces.Customer;
+using Reservation.Application.Serivces.Email;
+using Reservation.Application.Serivces.IRepositories;
+using System.Linq.Expressions;
+using OrderEntity = Reservation.Infrastructure.Data.Entities.Order;
 
 namespace Reservation.Application.Serivces.Customer
 {
-    public class CustomerService(ApplicationDbContext context, IMapper mapper, IEmailService emailService) 
+    public class CustomerService(
+        IMapper mapper, 
+        IEmailService emailService,
+        IUnitOfWork unitOfWork
+    ) 
         : ICustomerService
     {
-        private readonly ApplicationDbContext _context = context;
         private readonly IMapper _mapper = mapper;
         private readonly IEmailService _emailService = emailService;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<AppResponse<OrderDTO>> AddReviewAsync(ReviewDTO reviewDto)
         {
-            var order = await _context.Orders.SingleOrDefaultAsync(item => item.Id == reviewDto.OrderId);
+            Expression<Func<OrderEntity, bool>> filterByOrder = o => o.Id == reviewDto.OrderId;
+            var order = await _unitOfWork.Orders.SingleOrDefaultAsync(filterByOrder);
             if(order == null)
             {
                 return new AppResponse<OrderDTO>().SetErrorResponse("bind", "Order không được tìm thấy");
             }
+
             var review = _mapper.Map<Review>(reviewDto);
             review.CreatedDate = DateTime.Now;
 
-            await _context.Reviews.AddAsync(review);
+            await _unitOfWork.Reviews.AddAsync(review);
 
-            var rate = await _context.Rates.SingleOrDefaultAsync(item => item.CollaboratorId == order.CollaboratorId);
+            Expression<Func<Rate, bool>> filterRateByCollaborator = r => r.CollaboratorId == order.CollaboratorId;
+            var rate = await _unitOfWork.Rates.SingleOrDefaultAsync(filterRateByCollaborator);
+            //var rate = await _context.Rates.SingleOrDefaultAsync(item => item.CollaboratorId == order.CollaboratorId);
             if(rate != null)
             {
                 rate.Sum += reviewDto.Rate;
@@ -46,10 +55,10 @@ namespace Reservation.Application.Serivces.Customer
                     CollaboratorId = order.CollaboratorId
                 };
 
-                await _context.Rates.AddAsync(rate);
+                await _unitOfWork.Rates.AddAsync(rate);
             }
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.CommitAsync();
             var orderDto = _mapper.Map<OrderDTO>(review.Order);
 
             return new AppResponse<OrderDTO>().SetSuccessResponse(orderDto);
@@ -62,11 +71,16 @@ namespace Reservation.Application.Serivces.Customer
                 return new AppResponse<List<OrderDTO>>().SetErrorResponse("bind", "Không tìm thấy User");
             }
 
-            var orders = await _context.Orders
-                .Include(item => item.Review)
-                .Where(item => item.ApplicationUserId == applicationUserId)
-                .Include(item => item.Collaborator)
-                .ToListAsync();
+            Expression<Func<OrderEntity, bool>> filterOrderByUser = ord => ord.ApplicationUserId == applicationUserId; ;
+            var orders = await _unitOfWork.Orders.GetAllAsync(
+                filters: [filterOrderByUser],
+                include: o => o.Include(i => i.Review).Include(i => i.Collaborator)
+            );
+            //var orders = await _context.Orders
+            //    .Include(item => item.Review)
+            //    .Include(item => item.Collaborator)
+            //    .Where(item => item.ApplicationUserId == applicationUserId)
+            //    .ToListAsync();
 
             return new AppResponse<List<OrderDTO>>().SetSuccessResponse(_mapper.Map<List<OrderDTO>>(orders));
         }
@@ -111,8 +125,8 @@ namespace Reservation.Application.Serivces.Customer
             }
 
             var job = _mapper.Map<Job>(jobDTO);
-            await _context.Jobs.AddAsync(job);    
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Jobs.AddAsync(job);    
+            await _unitOfWork.CommitAsync();
 
             return new AppResponse<bool>().SetSuccessResponse(true);
         }

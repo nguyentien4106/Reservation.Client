@@ -33,6 +33,20 @@ namespace Reservation.Application.Serivces.Repositories
             }
         }
 
+        public async Task<bool> AddRangeAsync(IEnumerable<T> entities)
+        {
+            try
+            {
+                await _dbSet.AddRangeAsync(entities);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Failed to add range async of type {typeof(T)}");
+                return false;
+            }
+        }
+
         public bool DeleteByEntity(T entity)
         {
             try
@@ -51,6 +65,19 @@ namespace Reservation.Application.Serivces.Repositories
             }
         }
 
+        public bool DeleteByEntities(IEnumerable<T> entites)
+        {
+            try
+            {
+                _dbSet.RemoveRange(entites);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Fail to removes list of entities of {typeof(T)}");
+                return false;
+            }
+        }
         public async Task<bool> DeleteByIdAsync(object id)
         {
             if(id == null)
@@ -103,12 +130,12 @@ namespace Reservation.Application.Serivces.Repositories
             return await result.ToListAsync();
         }
 
-        public async Task<PagingViewModel<IEnumerable<T>>> GetAllAsync(
+        public async Task<PagingViewModel<List<T>>> GetAllAsync(
+            PagingRequest paging,
             Expression<Func<T, bool>>[]? filters = null,
             Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
             Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
-            bool disableTracking = true,
-            PagingRequest? paging = null
+            bool disableTracking = true
         )
         {
             IQueryable<T> query = _dbSet;
@@ -133,7 +160,7 @@ namespace Reservation.Application.Serivces.Repositories
                 query = orderBy(query);
             }
 
-            var result = new PagingViewModel<IEnumerable<T>>();
+            var result = new PagingViewModel<List<T>>();
 
             if(paging != null)
             {
@@ -155,8 +182,8 @@ namespace Reservation.Application.Serivces.Repositories
         {
             try
             {
-                _dbSet.Attach(entity);
-                _context.Entry(entity).State = EntityState.Modified;
+                _dbSet.Entry(entity).State = EntityState.Modified;
+
                 return true;
             }
             catch (Exception ex)
@@ -164,6 +191,26 @@ namespace Reservation.Application.Serivces.Repositories
                 _logger.LogError(ex, "Failed to update entity");
                 return false;
             }
+        }
+
+        public async Task<T> SingleOrDefaultAsync(
+            Expression<Func<T, bool>> filter,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null
+        )
+        {
+            if(filter == null)
+            {
+                throw new ArgumentException("It should be at least one filter condition");
+            }
+
+            IQueryable<T> query = _dbSet.AsNoTracking();
+
+            if(include != null)
+            {
+                query = include(query);
+            }
+
+            return await query.SingleOrDefaultAsync(filter);
         }
     }
 }

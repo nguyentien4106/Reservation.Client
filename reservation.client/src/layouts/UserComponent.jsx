@@ -36,7 +36,7 @@ function UserComponent() {
         >
             <div className='user-option'>
                 <Item 
-                    value={<strong style={{textAlign: "center"}}>{user.userName}</strong>} 
+                    value={<strong style={{textAlign: "center"}}>{user?.userName}</strong>} 
                 />
 
             </div>

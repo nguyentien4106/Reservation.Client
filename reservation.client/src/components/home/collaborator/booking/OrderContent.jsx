@@ -7,6 +7,7 @@ import DataService from "../../../../lib/DataService";
 import { CUSTOMER_PATH, HOME_PATH, ORDER_PATH } from "../../../../constant/urls";
 import { useDispatch } from "react-redux";
 import { hide, show } from "@/state/loading/loadingSlice";
+import ClockCircleOutlined from '@ant-design/icons/ClockCircleOutlined';
 
 const layout = {
     labelCol: {
@@ -161,17 +162,23 @@ const OrderContent = ({ collaboratorEmail, collaboratorId, nickName, collaborato
 
             <Form.Item
                 name="times"
-                label="Thời gian"
+                label="Số giờ muốn thuê"
                 rules={[
                     {
                         required: true,
-                    },
+                        
+                    }
                 ]}
-                style={{ width: "100%" }}
+                // style={{ width: "100%" }}
+                prefix={<ClockCircleOutlined />}
 
             >
-                <InputNumber min={1} 
+                <InputNumber 
                     onChange={setTime}
+                    placeholder="Tối thiểu 2 giờ"
+                    style={{
+                        width: "50%"
+                    }}
                 />
             </Form.Item>
 
@@ -200,7 +207,7 @@ const OrderContent = ({ collaboratorEmail, collaboratorId, nickName, collaborato
             >
                 <Input />
             </Form.Item>
-            <Form.Item name="zalo" label="Zalo">
+            <Form.Item name="zalo" label="Phương thức liên lạc khác ?">
                 <Input />
             </Form.Item>
 

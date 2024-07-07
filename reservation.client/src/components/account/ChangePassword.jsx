@@ -48,7 +48,7 @@ function ChangePassword() {
         <Form
             initialValues={{
                 remember: true,
-                email: user.userName,
+                email: user?.userName,
             }}
             onFinish={onFinish}
             layout="vertical"

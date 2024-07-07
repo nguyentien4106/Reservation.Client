@@ -19,7 +19,6 @@ const CollaboratorCard = lazy(() =>
 
 const defaultFilter = {
     city: "All",
-    district: "All",
     sex: "All",
     orderType: 0,
 };
@@ -38,7 +37,6 @@ function Collaborators() {
     const getCollaborators = () => {
         dispatch(show());
         const params = new URLSearchParams({ ...filter, ...paging });
-
         DataService.get(COLLABORATOR_PATH.getAll + params)
             .then((res) => {
                 const { data } = res.data;
@@ -57,7 +55,6 @@ function Collaborators() {
     }, []);
 
     useEffect(() => {
-        console.log(filter)
         getCollaborators();
     }, [filter, paging]);
 
@@ -152,7 +149,7 @@ function Collaborators() {
                     ) : (
                         <Col>
                             <strong style={{ color: "red" }}>
-                                Hiện tại chưa có talents nào đang mở.
+                                Hiện tại chưa có Talent nào đang mở.
                             </strong>
                         </Col>
                     )}
@@ -169,18 +166,20 @@ function Collaborators() {
                 pageSize={paging.pageSize}
             />
 
-            <Modal
-                onCancel={() => setOpenFilter(false)}
-                open={openFilter}
-                footer={null}
-            >
-                <FilterArea
-                    services={services}
-                    filterResult={filterResult}
-                    setFilter={setFilter}
-                    filter={filter}
-                />
-            </Modal>
+            {
+                openFilter && <Modal
+                    onCancel={() => setOpenFilter(false)}
+                    open={openFilter}
+                    footer={null}
+                >
+                    <FilterArea
+                        services={services}
+                        filterResult={filterResult}
+                        setFilter={setFilter}
+                        filter={filter}
+                    />
+                </Modal>
+            }
         </Flex>
     );
 }

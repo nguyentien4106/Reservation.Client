@@ -21,22 +21,31 @@ namespace Reservation.Application.Serivces.IRepositories
             bool disableTracking = true
         );
 
-        Task<PagingViewModel<IEnumerable<TEntity>>> GetAllAsync(
+        Task<PagingViewModel<List<TEntity>>> GetAllAsync(
+            PagingRequest paging,
             Expression<Func<TEntity, bool>>[]? filters = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
-            bool disableTracking = true,
-            PagingRequest? paging = null
+            bool disableTracking = true
+        );
+
+        Task<TEntity> SingleOrDefaultAsync(
+            Expression<Func<TEntity, bool>> filter,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null
         );
 
         Task<TEntity> GetByIdAsync(object id);
 
         Task<bool> AddAsync(TEntity entity);
 
+        Task<bool> AddRangeAsync(IEnumerable<TEntity> entity);
+
         bool Update(TEntity entity);
 
         Task<bool> DeleteByIdAsync(object id);
 
         bool DeleteByEntity(TEntity entity);
+
+        bool DeleteByEntities(IEnumerable<TEntity> entities);
     }
 }

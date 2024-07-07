@@ -19,7 +19,6 @@ export const COLLABORATOR_PATH = {
     update: "Collaborators/Update",
     getProfile: "Collaborators/GetProfile?collaboratorId=",
     getProfileByEmail: "Collaborators/GetProfileByEmail?email=",
-    getAll: "Collaborators/GetAll?type=",
     changeStatus: "Collaborators/ChangeStatus",
     getAll: "Collaborators?"
 }
@@ -42,7 +41,7 @@ export const JOBS_PATH = {
     createJob: "Jobs",
     applyJob: "Jobs/Apply",
     users: "Jobs/Users/",
-    userApplies: "Jobs/UsersApplies/"
+    userApplied: "Jobs/UserApplied/"
 }
 
 export const ORDER_PATH = {

@@ -7,13 +7,15 @@ using Reservation.Domain.Models.DTO.Auth;
 using Reservation.Domain.Models.DTO.Collaborator;
 using Reservation.Domain.Models.Enum;
 using System.Linq.Expressions;
-using Reservation.Applicattion.Serivces.Email;
+using Reservation.Application.Serivces.Email;
 using Reservation.Application.Serivces.UserServiceRegister;
 using Reservation.Domain.Extensions;
 using Reservation.Domain.Models.Request.Collaborators;
 using Reservation.Domain.Models.ViewModel;
 using System.Collections.Generic;
 using Reservation.Application.Serivces.IRepositories;
+using System;
+using OrderEntity = Reservation.Infrastructure.Data.Entities.Order;
 
 namespace Reservation.Application.Serivces.UserServiceRegister
 {
@@ -33,30 +35,23 @@ namespace Reservation.Application.Serivces.UserServiceRegister
         private const string All = "All";
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(int type)
-        {
-            Expression<Func<Collaborator, bool>> filter = type switch
-            {
-                (int)CollaboratorGetType.All => (Collaborator c) => true,
-                (int)CollaboratorGetType.ReadyAndReviewing => (Collaborator c) => c.IsReady == true && c.Status == (int)ProfileStatus.Reviewing,
-                _ => (Collaborator c) => c.IsReady == false,
-            };
+        //public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(int type)
+        //{
+        //    Expression<Func<Collaborator, bool>> filter = type switch
+        //    {
+        //        (int)CollaboratorGetType.All => (Collaborator c) => true,
+        //        (int)CollaboratorGetType.ReadyAndReviewing => (Collaborator c) => c.IsReady == true && c.Status == (int)ProfileStatus.Reviewing,
+        //        _ => (Collaborator c) => c.IsReady == false,
+        //    };
 
-            //var collaborators = await _unitOfWork
-            //    .Collaborators
-            //    .GetAllAsync(
-            //        filter, 
-            //        include: o => o.Include(i => i.CollaboratorServices).ThenInclude(i => i.Service)
-            //    );
+        //    var collaborators = await _context.Collaborators
+        //        .Include(item => item.CollaboratorServices)
+        //        .ThenInclude(item => item.Service)
+        //        .Where(filter)
+        //        .ToListAsync();
 
-            var collaborators = await _context.Collaborators
-                .Include(item => item.CollaboratorServices)
-                .ThenInclude(item => item.Service)
-                .Where(filter)
-                .ToListAsync();
-
-            return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(_mapper.Map<List<CollaboratorDTO>>(collaborators));
-        }
+        //    return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(_mapper.Map<List<CollaboratorDTO>>(collaborators));
+        //}
 
         public async Task<AppResponse<CollaboratorDTO>> GetProfileAsync(Guid? collaboratorId)
         {
@@ -65,38 +60,44 @@ namespace Reservation.Application.Serivces.UserServiceRegister
                 return new AppResponse<CollaboratorDTO>().SetErrorResponse("id", $"{collaboratorId} not found!");
             }
 
-            var collaborator = await _context.Collaborators
-                .Include(item => item.View)
-                .Include(item => item.CollaboratorServices)
-                .ThenInclude(item => item.Service)
-                .SingleOrDefaultAsync(item => item.Id == collaboratorId);
+            Expression<Func<Collaborator, bool>> filter = item => item.Id == collaboratorId;
 
-            var orders = await _context.Orders.Include(item => item.Review).Where(item => item.CollaboratorId == collaboratorId).ToListAsync();
-
-            collaborator.Orders = orders;
-
+            var collaborator = await _unitOfWork.Collaborators
+                .SingleOrDefaultAsync(
+                    filter, 
+                    include: o => o.Include(i => i.View)
+                                    .Include(i => i.CollaboratorServices)
+                                    .ThenInclude(i => i.Service)
+            );
 
             if (collaborator == null)
             {
                 return new AppResponse<CollaboratorDTO>().SetErrorResponse("id", "User not found!");
             }
 
-            await UpdateView(collaborator);
+            Expression<Func<OrderEntity, bool>> filterByCollaborator = o => o.CollaboratorId == collaboratorId;
+            var orders = await _unitOfWork.Orders.GetAllAsync(
+                filters: [filterByCollaborator],
+                include: o => o.Include(i => i.Review)
+            );
 
+            collaborator.Orders = orders.ToList();
+            
+            await UpdateView(collaborator);
 
             return new AppResponse<CollaboratorDTO>().SetSuccessResponse(_mapper.Map<CollaboratorDTO>(collaborator));
         }
 
-        public async Task<AppResponse<string>> GetUserIdAsync(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
-            {
-                return new AppResponse<string>().SetErrorResponse("user", "User not found");
-            }
+        //public async Task<AppResponse<string>> GetUserIdAsync(string email)
+        //{
+        //    var user = await _userManager.FindByEmailAsync(email);
+        //    if (user == null)
+        //    {
+        //        return new AppResponse<string>().SetErrorResponse("user", "User not found");
+        //    }
 
-            return new AppResponse<string>().SetSuccessResponse(user.Id);
-        }
+        //    return new AppResponse<string>().SetSuccessResponse(user.Id);
+        //}
 
         public async Task<AppResponse<string>> AddAsync(CollaboratorDTO dto)
         {
@@ -104,8 +105,8 @@ namespace Reservation.Application.Serivces.UserServiceRegister
             newCollaborator.Status = (int)ProfileStatus.Reviewing;
             newCollaborator.JoinedDate = DateTime.Now;
 
-            await _context.Collaborators.AddAsync(newCollaborator);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Collaborators.AddAsync(newCollaborator);
+            await _unitOfWork.CommitAsync();
 
             return new AppResponse<string>().SetSuccessResponse(newCollaborator.Id.ToString());
         }
@@ -116,41 +117,28 @@ namespace Reservation.Application.Serivces.UserServiceRegister
             {
                 return new AppResponse<string>().SetErrorResponse("user", "User not found");
             }
-
-            var collaborator = await _context.Collaborators.Include(item => item.CollaboratorServices).SingleOrDefaultAsync(item => item.Id == dto.Id);
+            Expression<Func<Collaborator, bool>> filter = c => c.Id == dto.Id;
+            var collaborator = await _unitOfWork.Collaborators.SingleOrDefaultAsync(
+                    filter,
+                    include: o => o.Include(i => i.CollaboratorServices)
+            );
 
             if (collaborator == null)
             {
                 return new AppResponse<string>().SetErrorResponse("user", $"Collaborator is not existed with ${dto.Id}");
-
             }
 
-            _context.CollaboratorServices.RemoveRange(collaborator.CollaboratorServices);
+            _unitOfWork.CollaboratorServices.DeleteByEntities(collaborator.CollaboratorServices);
+            //_context.CollaboratorServices.RemoveRange(collaborator.CollaboratorServices);
             var collaboratorServices = _mapper.Map<List<Reservation.Infrastructure.Data.Entities.CollaboratorService>>(dto.CollaboratorServices);
-            _context.CollaboratorServices.AddRange(collaboratorServices);
+            //_context.CollaboratorServices.AddRange(collaboratorServices);
+            await _unitOfWork.CollaboratorServices.AddRangeAsync(collaboratorServices);
 
-            Update(collaborator, dto);
-            await _context.SaveChangesAsync();
+            var newCollaborator = _mapper.Map<Collaborator>(dto);
+
+            _unitOfWork.Collaborators.Update(newCollaborator);
+            await _unitOfWork.CommitAsync();
             return new AppResponse<string>().SetSuccessResponse("Update Successfully!");
-        }
-
-        private static void Update(Collaborator entity, CollaboratorDTO newValue)
-        {
-            entity.IsReady = newValue.IsReady;
-            entity.NickName = newValue.NickName;
-            entity.PhoneNumber = newValue.PhoneNumber;
-            entity.Email = newValue.Email;
-            entity.City = newValue.City;
-            entity.District = newValue.District;
-            entity.BirthDate = newValue.BirthDate;
-            entity.PricePerHour = newValue.PricePerHour;
-            entity.Introduction = newValue.Introduction;
-            entity.Title = newValue.Title;
-            entity.Weight = newValue.Weight;
-            entity.Height = newValue.Height;
-            entity.Job = newValue.Job;
-            entity.Sex = newValue.Sex;
-            entity.OtherServices = newValue.OtherServices;
         }
 
         public async Task<AppResponse<string>> ChangeStatusAsync(Guid? collaboratorId, int status)
@@ -160,7 +148,8 @@ namespace Reservation.Application.Serivces.UserServiceRegister
                 return new AppResponse<string>().SetErrorResponse("id", "The Collaborator went wrong!");
             }
 
-            var collaborator = await _context.Collaborators.SingleOrDefaultAsync(item => item.Id == collaboratorId);
+            var collaborator = await _unitOfWork.Collaborators
+                .SingleOrDefaultAsync(item => item.Id == collaboratorId);
             
             if(collaborator == null)
             {
@@ -169,7 +158,7 @@ namespace Reservation.Application.Serivces.UserServiceRegister
 
             collaborator.Status = status;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.CommitAsync();
 
             return new AppResponse<string>().SetSuccessResponse("Approved Successfully!");
 
@@ -182,11 +171,14 @@ namespace Reservation.Application.Serivces.UserServiceRegister
                 return new AppResponse<CollaboratorDTO>().SetSuccessResponse(new(), "id", $"{email} not found!");
             }
 
-            var collaborator = await _context.Collaborators
-                .Include(item => item.ApplicationUser)
-                .Include(item => item.CollaboratorServices)
-                .ThenInclude(cs => cs.Service)
-                .FirstOrDefaultAsync(collaborator => collaborator.Email == email);
+            Expression<Func<Collaborator, bool>> filterByEmail = c => c.Email == email;
+
+            var collaborator = await _unitOfWork.Collaborators.SingleOrDefaultAsync(
+                filterByEmail,
+                include: o => o.Include(i => i.ApplicationUser)
+                .Include(i => i.CollaboratorServices)
+                .ThenInclude(i => i.Service)
+            );
 
             if (collaborator == null)
             {
@@ -198,7 +190,10 @@ namespace Reservation.Application.Serivces.UserServiceRegister
 
         private async Task UpdateView(Collaborator collaborator)
         {
-            var collaboratorView = await _context.Views.SingleOrDefaultAsync(item => item.CollaboratorId == collaborator.Id);
+            var collaboratorView = await _unitOfWork.Views.SingleOrDefaultAsync(
+                    filter: item => item.CollaboratorId == collaborator.Id
+            );
+            //var collaboratorView = await _context.Views.SingleOrDefaultAsync(item => item.CollaboratorId == collaborator.Id);
             if (collaboratorView == null)
             {
                 var view = new View()
@@ -218,62 +213,40 @@ namespace Reservation.Application.Serivces.UserServiceRegister
 
         public async Task<AppResponse<PagingViewModel<List<CollaboratorDTO>>>> GetAllAsync(GetAllRequest request)
         {
-            var query = _context.Collaborators
-                .Where(collaborator => request.City == All || collaborator.City == request.City)
-                .Where(collaborator => request.Sex == All || collaborator.Sex == request.Sex);
-
-            //query = query.Where(collaborator => request.City == All || collaborator.City == request.City);
-            //query = query.Where(collaborator => request.District == All || collaborator.District == request.District);
-            //query = query.Where(collaborator => request.Sex == All || collaborator.Sex == request.Sex);
-
             Expression<Func<Collaborator, bool>> filterByCity = c => request.City == All || c.City == request.City;
-            Expression<Func<Collaborator, bool>> filterBySex = c => request.City == All || c.City == request.City;
- 
-            var result = await _unitOfWork.Collaborators.GetAllAsync(
-                    filters: [filterByCity, filterBySex],
-                    paging: request
-                );
-            //var result = await query.ToListAsync();
-
-            if (result == null)
-            {
-                return new AppResponse<PagingViewModel<List<CollaboratorDTO>>>().SetSuccessResponse(new());
-            }
-            var collaboratorDtos = _mapper.Map<List<CollaboratorDTO>>(result);
-
+            Expression<Func<Collaborator, bool>> filterBySex = c => request.Sex == All || c.Sex == request.Sex;
+            Func<IQueryable<Collaborator>, IOrderedQueryable<Collaborator>> orderBy;
+            
             switch (request.OrderType)
             {
-                case (int)OrderFilterType.PriceIncreasing:
-                    collaboratorDtos = collaboratorDtos.OrderByPrice();
+                case (int) OrderFilterType.RateCountDecreasing:
+                    orderBy = query => query.OrderByDescending(item => item.Rate);
                     break;
-
-                case (int)OrderFilterType.PriceDecreasing:
-                    collaboratorDtos = collaboratorDtos.OrderByPriceDecreasing();
-                    break;
-
                 case (int)OrderFilterType.RateCountIncreasing:
-                    collaboratorDtos = collaboratorDtos.OrderByRateCount();
+                    orderBy = query => query.OrderBy(item => item.Rate);
                     break;
-
-                case (int)OrderFilterType.RateCountDecreasing:
-                    collaboratorDtos = collaboratorDtos.OrderByRateCountDecreasing();
-                    break;
-
-                case (int)OrderFilterType.AgeIncreasing:
-                    collaboratorDtos = collaboratorDtos.OrderByAge();
-                    break;
-
+                
                 case (int)OrderFilterType.AgeDecreasing:
-                    collaboratorDtos = collaboratorDtos.OrderByAgeDecreasing();
+                    orderBy = query => query.OrderByDescending(item => item.BirthDate);
+                    break;
+                case (int)OrderFilterType.AgeIncreasing:
+                    orderBy = query => query.OrderBy(item => item.BirthDate);
+                    break;
+                default:
+                    orderBy = query => query.OrderByDescending(item => item.JoinedDate);
                     break;
             }
+            
+            var model = await _unitOfWork.Collaborators.GetAllAsync(
+                    filters: [filterByCity, filterBySex],
+                    paging: request,
+                    orderBy: orderBy,
+                    include: o => o.Include(item => item.View)
+                );
+            var collaborators = _mapper.Map<List<CollaboratorDTO>>(model.Data);
+            var result = new PagingViewModel<List<CollaboratorDTO>>(model.Total, collaborators);
 
-            var count = collaboratorDtos.Count;
-            collaboratorDtos = collaboratorDtos.Paginate(request).ToList();
-
-            var model = new PagingViewModel<List<CollaboratorDTO>>(count, collaboratorDtos);
-
-            return new AppResponse<PagingViewModel<List<CollaboratorDTO>>>().SetSuccessResponse(model);
+            return new AppResponse<PagingViewModel<List<CollaboratorDTO>>>().SetSuccessResponse(result);
         }
 
     }

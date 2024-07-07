@@ -47,10 +47,10 @@ export default function Account() {
             <h1>Account</h1>
             <Form
                 initialValues={{
-                    email: user.userName,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    phoneNumber: user.phoneNumber,
+                    email: user?.userName,
+                    firstName: user?.firstName,
+                    lastName: user?.lastName,
+                    phoneNumber: user?.phoneNumber,
                 }}
                 onFinish={onFinish}
             >
@@ -69,8 +69,8 @@ export default function Account() {
                         </Form.Item>
                         <Form.Item name="userName" label="User Name">
                             <Input
-                                placeholder={getUserName(user.userName)}
-                                value={getUserName(user.userName)}
+                                placeholder={getUserName(user?.userName)}
+                                value={getUserName(user?.userName)}
                                 disabled
                             />
                         </Form.Item>

@@ -21,7 +21,7 @@ const SettingPage = () => {
                 (res) => {
                     const { data } = res.data;
                     setCollaborator(data);
-                    setInitialValues(data ?? { email: user.userName });
+                    setInitialValues(data ?? { email: user?.userName });
                     localStorage.setItem("collaboratorId", data?.id ?? null)
 
                 }

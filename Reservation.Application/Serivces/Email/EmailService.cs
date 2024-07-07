@@ -2,7 +2,7 @@
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
-using Reservation.Applicattion.Serivces.Email;
+using Reservation.Application.Serivces.Email;
 using Reservation.Domain.Models.DTO.Email;
 using Reservation.Domain.Models.DTO.Home;
 using System.Text;

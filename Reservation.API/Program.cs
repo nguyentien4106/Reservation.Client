@@ -17,7 +17,7 @@ using Reservation.Application.Serivces.Customer;
 using Reservation.Application.Serivces.Jobs;
 using Reservation.Application.Serivces.Order;
 using Reservation.API.Middleware;
-using Reservation.Applicattion.Serivces.Email;
+using Reservation.Application.Serivces.Email;
 using Reservation.Application.Serivces.Account;
 using Reservation.Application.Serivces.IRepositories;
 using Reservation.Application.Serivces.Repositories;

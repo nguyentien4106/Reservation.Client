@@ -2,23 +2,28 @@
 using Microsoft.EntityFrameworkCore;
 using Reservation.Infrastructure.Data;
 using Reservation.Infrastructure.Data.Entities;
-using Reservation.Domain.Extensions;
 using Reservation.Domain.Models.DTO.Auth;
 using Reservation.Domain.Models.DTO.Jobs;
-using Reservation.Domain.Models.ViewModel.Jobs;
-using Reservation.Applicattion.Serivces.Email;
+using Reservation.Application.Serivces.Email;
 using Reservation.Domain.Models.Request;
-using System.Net.NetworkInformation;
 using Reservation.Domain.Models.ViewModel;
+using Reservation.Application.Serivces.IRepositories;
+using System.Linq.Expressions;
 
 namespace Reservation.Application.Serivces.Jobs
 {
-    public class JobsService(ApplicationDbContext context, IMapper mapper, IEmailService emailService) 
+    public class JobsService(
+        IUnitOfWork unitOfWork, 
+        //ApplicationDbContext context, 
+        IMapper mapper, 
+        IEmailService emailService
+    ) 
         : IJobsService
     {
-        private readonly ApplicationDbContext _context = context;
+        //private readonly ApplicationDbContext _context = context;
         private readonly IMapper _mapper = mapper;
         private readonly IEmailService _emailService = emailService;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<AppResponse<bool>> ApplyJobAsync(ContractDTO dto)
         {
@@ -28,8 +33,8 @@ namespace Reservation.Application.Serivces.Jobs
             }
 
             var contract = _mapper.Map<Contract>(dto);
-            await _context.Contracts.AddAsync(contract);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Contracts.AddAsync(contract);
+            await _unitOfWork.CommitAsync();
 
             return new AppResponse<bool>().SetSuccessResponse(true);
         }
@@ -42,60 +47,56 @@ namespace Reservation.Application.Serivces.Jobs
             }
 
             var job = _mapper.Map<Job>(jobDTO);
-            await _context.Jobs.AddAsync(job);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Jobs.AddAsync(job);
+            await _unitOfWork.CommitAsync();
 
             return new AppResponse<bool>().SetSuccessResponse(true);
         }
 
         public async Task<AppResponse<PagingViewModel<List<JobDTO>>>> GetAll(PagingRequest paging)
         {
-            var count = await _context.Jobs.CountAsync();
-            var jobs = await _context.Jobs
-                .Include(item => item.ApplicationUser)
-                .Include(item => item.JobServices)
-                .ThenInclude(item => item.Service)
-                .AsNoTracking()
-                .OrderByDescending(item => item.CreatedDate)
-                .Select(entity => _mapper.Map<JobDTO>(entity))
-                .Paginate(paging)
-                .ToListAsync();
+            var result = await _unitOfWork.Jobs.GetAllAsync(
+                paging: paging,
+                include: o => o.Include(i => i.ApplicationUser)
+                                .Include(i => i.JobServices)
+                                .ThenInclude(i => i.Service),
+                orderBy: item => item.OrderByDescending(i => i.CreatedDate)
+            );
 
-            var model = new PagingViewModel<List<JobDTO>>(count, jobs);
+            var jobs = _mapper.Map<List<JobDTO>>(result.Data);
+
+            var model = new PagingViewModel<List<JobDTO>>(result.Total, jobs);
             return new AppResponse<PagingViewModel<List<JobDTO>>>().SetSuccessResponse(model);
         }
 
         public async Task<AppResponse<PagingViewModel<List<ContractDTO>>>> GetByUserApplies(PagingRequest paging, string userId)
         {
-            var count = await _context.Jobs.CountAsync();
-            var contracts = await _context.Contracts
-                .Where(item => item.ApplicationUserId == userId)
-                .Include(item => item.Job)
-                .AsNoTracking()
-                .OrderByDescending(item => item.CreatedDate)
-                .Paginate(paging)
-                .ToListAsync();
+            Expression<Func<Contract, bool>> filterByUser = c => c.ApplicationUserId == userId;
+            var result = await _unitOfWork.Contracts.GetAllAsync(
+                    paging: paging,
+                    filters: [filterByUser],
+                    include: o => o.Include(i => i.Job),
+                    orderBy: o => o.OrderByDescending(i => i.CreatedDate)
+                );
 
-            var data = _mapper.Map<List<ContractDTO>>(contracts);
+            var contracts = _mapper.Map<List<ContractDTO>>(result.Data);
 
-            var model = new PagingViewModel<List<ContractDTO>>(count, data);
+            var model = new PagingViewModel<List<ContractDTO>>(result.Total, contracts);
 
             return new AppResponse<PagingViewModel<List<ContractDTO>>>().SetSuccessResponse(model);
         }
 
         public async Task<AppResponse<PagingViewModel<List<JobDTO>>>> GetByUsers(PagingRequest paging, string userId)
         {
-            var query = _context.Jobs.Where(item => item.ApplicationUserId == userId);
+            Expression<Func<Job, bool>> filterByUser = j => j.ApplicationUserId == userId;
 
-            var count = await query.CountAsync();
-            var jobs = await query
-                .AsNoTracking()
-                .OrderByDescending(item => item.CreatedDate)
-                .Select(entity => _mapper.Map<JobDTO>(entity))
-                .Paginate(paging)
-                .ToListAsync();
-
-            var model = new PagingViewModel<List<JobDTO>>(count, jobs);
+            var result = await _unitOfWork.Jobs.GetAllAsync(
+                paging,
+                filters: [filterByUser],
+                orderBy: o => o.OrderByDescending(item => item.CreatedDate)
+            );
+            var jobs = _mapper.Map<List<JobDTO>>(result.Data);
+            var model = new PagingViewModel<List<JobDTO>>(result.Total, jobs);
 
             return new AppResponse<PagingViewModel<List<JobDTO>>>().SetSuccessResponse(model);
         }
@@ -106,12 +107,17 @@ namespace Reservation.Application.Serivces.Jobs
             {
                 return new AppResponse<List<ContractDTO>>().SetCommonError();
             }
-
-            var contracts = await _context.Contracts
-                .Include(i => i.ApplicationUser)
-                .ThenInclude(i => i.Collaborator)
-                .Where(item => item.JobId == jobId)
-                .ToListAsync();
+            Expression<Func<Contract, bool>> filterByJob = c => c.JobId == jobId;
+            var contracts = await _unitOfWork.Contracts.GetAllAsync(
+                    filters: [filterByJob],
+                    include: o => o.Include(i => i.ApplicationUser)
+                                    .ThenInclude(i => i.Collaborator)
+                );
+            //var contracts = await _context.Contracts
+            //    .Include(i => i.ApplicationUser)
+            //    .ThenInclude(i => i.Collaborator)
+            //    .Where(item => item.JobId == jobId)
+            //    .ToListAsync();
 
             return new AppResponse<List<ContractDTO>>().SetSuccessResponse(_mapper.Map<List<ContractDTO>>(contracts));
         }
@@ -123,11 +129,15 @@ namespace Reservation.Application.Serivces.Jobs
                 return new AppResponse<JobDTO>().SetCommonError();
             }
 
-            var job = await _context.Jobs
-                .Include(job => job.ApplicationUser)
-                .Include(item => item.JobServices)
-                .ThenInclude(item => item.Service)
-                .SingleOrDefaultAsync(job => job.Id == jobId);
+            Expression<Func<Job, bool>> filterByJob = j => j.Id == jobId;
+
+            var job = await _unitOfWork.Jobs
+                .SingleOrDefaultAsync(
+                filterByJob, 
+                include: o => o.Include(i => i.ApplicationUser)
+                                .Include(i => i.JobServices)
+                                .ThenInclude(i => i.Service)
+            );
         
             return new AppResponse<JobDTO>().SetSuccessResponse(_mapper.Map<JobDTO>(job));
         }

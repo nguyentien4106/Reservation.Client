@@ -1,15 +1,25 @@
 ﻿using Reservation.Infrastructure.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OrderEntity = Reservation.Infrastructure.Data.Entities.Order;
 
 namespace Reservation.Application.Serivces.IRepositories
 {
     public interface IUnitOfWork
     {
         IRepository<Collaborator> Collaborators { get; }
+
+        IRepository<CollaboratorService> CollaboratorServices { get; }
+
+        IRepository<OrderEntity> Orders { get; }
+
+        IRepository<Job> Jobs { get; }
+
+        IRepository<Review> Reviews { get; }
+
+        IRepository<Contract> Contracts { get; }
+
+        IRepository<Rate> Rates { get; }
+
+        IRepository<View> Views { get; }
 
         Task CommitAsync();
 

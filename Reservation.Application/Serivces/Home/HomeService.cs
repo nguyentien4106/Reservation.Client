@@ -5,7 +5,7 @@ using Reservation.Domain.Extensions;
 using Reservation.Domain.Models.DTO.Auth;
 using Reservation.Domain.Models.DTO.Collaborator;
 using Reservation.Domain.Models.Enum;
-using Reservation.Applicattion.Serivces.Email;
+using Reservation.Application.Serivces.Email;
 using Reservation.Application.Serivces.IRepositories;
 
 namespace Reservation.Application.Serivces.Home

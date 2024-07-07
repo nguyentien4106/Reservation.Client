@@ -40,7 +40,7 @@ namespace Reservation.API.Controllers
         }
 
         [HttpGet("[action]/{applicationUserId}")]
-        public async Task<AppResponse<PagingViewModel<List<ContractDTO>>>> UsersApplies(string applicationUserId, [FromQuery] PagingRequest paging)
+        public async Task<AppResponse<PagingViewModel<List<ContractDTO>>>> UserApplied(string applicationUserId, [FromQuery] PagingRequest paging)
         {
             return await _service.GetByUserApplies(paging, applicationUserId);
         }

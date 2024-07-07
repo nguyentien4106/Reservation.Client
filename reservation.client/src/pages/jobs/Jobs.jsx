@@ -29,7 +29,7 @@ export default function Jobs() {
             dispatch(show())
             const getJobs = DataService.get(JOBS_PATH.getAll + `?${searchParams.toString()}`).then(res => res.data.data)
             if(user){
-                const getAppliedJobs = DataService.get(JOBS_PATH.userApplies + user.id + "?" + searchParams.toString()).then(res => res.data.data)
+                const getAppliedJobs = DataService.get(JOBS_PATH.userApplied + user.id + "?" + searchParams.toString()).then(res => res.data.data)
                 return await Promise.all([getJobs, getAppliedJobs])
             
             }

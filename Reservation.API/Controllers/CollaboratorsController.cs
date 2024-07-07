@@ -20,11 +20,11 @@ namespace Reservation.API.Controllers
     {
         private readonly ICollaboratorService _collaboratorService = collaboratorService;
 
-        [HttpGet]
-        public async Task<AppResponse<string>> GetUser(string email)
-        {
-            return await _collaboratorService.GetUserIdAsync(email);
-        }
+        //[HttpGet]
+        //public async Task<AppResponse<string>> GetUser(string email)
+        //{
+        //    return await _collaboratorService.GetUserIdAsync(email);
+        //}
 
         [HttpPost]
         public async Task<AppResponse<string>> Add(CollaboratorDTO dto)
@@ -52,12 +52,12 @@ namespace Reservation.API.Controllers
             return await _collaboratorService.GetProfileByEmailAsync(email);
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<AppResponse<List<CollaboratorDTO>>> GetAll(int type)
-        {
-            return await _collaboratorService.GetAllAsync(type);
-        }
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public async Task<AppResponse<List<CollaboratorDTO>>> GetAll(int type)
+        //{
+        //    return await _collaboratorService.GetAllAsync(type);
+        //}
 
         [HttpPost]
         public async Task<AppResponse<string>> ChangeStatus(ChangeStatusRequest request)

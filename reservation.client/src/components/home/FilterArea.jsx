@@ -60,7 +60,6 @@ const getFilterItem = ({
 
 function FilterArea({ setFilter, filterResult, filter }) {
     const provinces = locationAPI.getProvinces(hasAll);
-    console.log(filter)
     const onProvinceSelect = (e, province) => {
         setFilter((prev) => Object.assign(prev, { city: province.value }));
     };
@@ -82,11 +81,11 @@ function FilterArea({ setFilter, filterResult, filter }) {
                 },
                 {
                     label: "Nam",
-                    value: "Female",
+                    value: "Male",
                 },
                 {
                     label: "Nữ",
-                    value: "Male",
+                    value: "Female",
                 },
             ],
             width: 200,
