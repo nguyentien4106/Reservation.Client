@@ -87,7 +87,7 @@ export default function Jobs() {
                         jobs.map((item) => <Job 
                                                 key={item.id} 
                                                 job={item} 
-                                                applied={appliedJobs.includes(item.id)} 
+                                                applied={appliedJobs?.includes(item.id)} 
                                                 setAppliedJobs={setAppliedJobs}
                                                 >{item.title}</Job>
                                             )

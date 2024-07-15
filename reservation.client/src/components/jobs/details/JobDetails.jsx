@@ -3,14 +3,13 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Job from '../Job';
 import DataService from '../../../lib/DataService';
 import { JOBS_ROUTE_PATH } from '../../../constant/paths';
-import { Flex } from 'antd';
 
 export default function JobDetails() {
     let { jobId } = useParams();
     const navigate = useNavigate();
     const [job, setJob] = useState({})
     const location = useLocation()
-    const { applied } = location.state
+    const { applied } = location.state || false
     useEffect(() => {
         DataService.get("Jobs/" + jobId).then(res => {
             setJob(res.data.data)
