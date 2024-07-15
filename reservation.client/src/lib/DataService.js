@@ -6,8 +6,6 @@ import { AUTH_PATH } from "../constant/urls";
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
 const service = axios.create()
-service.defaults.headers.common["Access-Control-Allow-Origin"] = "*"
-service.defaults.headers.common["Access-Control-Allow-Credentials"] = true
 
 const AUTH_REQUEST = "Auth/"
 
@@ -37,11 +35,6 @@ const beforeRequest = request => {
         axios.post(BASE_URL + AUTH_PATH.refreshToken, {
             AccessToken: getLocal("accessToken"),
             refreshToken: refreshToken,
-        }, {
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Credentials": true
-            }
         }).then(res => {
             const { data } = res.data
             
