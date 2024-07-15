@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MimeKit;
 using Reservation.Application.Serivces.Email;
 using Reservation.Domain.Models.DTO.Email;
@@ -14,13 +15,14 @@ namespace Reservation.Application.Serivces.Email
     {
         private readonly IConfiguration _configuration;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly ILogger<EmailService> _logger;
 
         private readonly string _fromEmail;
         private readonly string _fromName;
         private readonly string _key;
         private readonly string _server;
 
-        public EmailService(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public EmailService(IConfiguration configuration, IHostingEnvironment hostingEnvironment, ILogger<EmailService> logger)
         {
             _configuration = configuration;
             _fromEmail = _configuration.GetValue<string>("EmailService:Email") ?? "";
@@ -28,6 +30,7 @@ namespace Reservation.Application.Serivces.Email
             _key = _configuration.GetValue<string>("EmailService:Key") ?? "";
             _server = _configuration.GetValue<string>("EmailService:Server") ?? "";
             _hostingEnvironment = hostingEnvironment;
+            _logger = logger;
         }
 
         public bool SendMail(EmailContent email)
@@ -42,11 +45,13 @@ namespace Reservation.Application.Serivces.Email
                 {
                     Text = email.Content
                 };
+                _logger.LogInformation($"Sent email to {email.ToEmail}");
 
                 return Sent(message);
             }
             catch(Exception ex)
             {
+                _logger.LogError($"Sent email error, {ex.Message}");
                 return false;
             }
         }

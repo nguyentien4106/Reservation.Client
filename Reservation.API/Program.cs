@@ -147,10 +147,13 @@ namespace Reservation.API
             }
             else
             {
-                await initialiser.SeedAsync();
+                //await initialiser.SeedAsync();
             }
 
-
+            app.Map("/", () =>
+            {
+                return "ThueNguoiYeuAPI";
+            });
             app.UseHttpsRedirection();
             app.UseCors("webAppRequests");
             app.UseAuthorization();

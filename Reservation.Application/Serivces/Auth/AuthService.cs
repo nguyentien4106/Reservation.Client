@@ -51,9 +51,9 @@ namespace Reservation.Application.Serivces.Auth
             }
             await _userManager.AddToRoleAsync(user, UserRole);
 
-            await SendVerification(request.Email, user);
-
-            return new AppResponse<bool>().SetSuccessResponse(true, "confirm", "Bạn đã đăng ký thành công. Vui lòng kiểm tra email để kích hoạt tài khoản.");
+            var sent = await SendVerification(request.Email, user);
+            var text = sent ? "Đã gửi email thành công" : "Gửi email thất bại";
+            return new AppResponse<bool>().SetSuccessResponse(true, "confirm", $"Bạn đã đăng ký thành công. Vui lòng kiểm tra email để kích hoạt tài khoản! {text}");
         }
 
         
@@ -118,9 +118,10 @@ namespace Reservation.Application.Serivces.Auth
                 return new AppResponse<UserLoginResponse>().SetErrorResponse("password", result.ToString(), 403);
             }
 
-            await SendVerification(request.Email, user);
+            var sent = await SendVerification(request.Email, user);
+            var text = sent ? "Đã gửi email thành công" : "Gửi email thất bại";
 
-            return new AppResponse<UserLoginResponse>().SetErrorResponse("account", "Bạn chưa kích hoạt tài khoản. Vui lòng kiểm tra email để kích hoạt!", 401);
+            return new AppResponse<UserLoginResponse>().SetErrorResponse("account", $"Bạn chưa kích hoạt tài khoản. Vui lòng kiểm tra email để kích hoạt! {text}", 401);
 
         }
 
