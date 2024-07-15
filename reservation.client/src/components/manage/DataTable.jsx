@@ -51,6 +51,11 @@ const DataTable = ({ users }) => {
                 )}
             />
             <Column title="Email" dataIndex="email" key="email" />
+            <Column title="Confirmed" dataIndex="emailConfirmed" key="emailConfirmed" render={(text, collaborator) => (
+                    <Tag color={collaborator.emailConfirmed ? "green" : "red"}>
+                        {collaborator.emailConfirmed ? "Yes" : "No"}
+                    </Tag>
+                )}/>
             <Column title="Phone" dataIndex="phoneNumber" key="phoneNumber" />
             <Column title="First Name" dataIndex="firstName" />
             <Column title="Last Name" dataIndex="lastName" />
