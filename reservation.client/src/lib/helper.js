@@ -39,3 +39,5 @@ export const getBase64 = (file) =>
     });
 
 export const showNumber = number => new Intl.NumberFormat().format(number)
+
+export const getQueryString = obj => `?${new URLSearchParams(obj).toString()}`

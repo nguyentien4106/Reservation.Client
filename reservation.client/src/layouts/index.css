@@ -26,3 +26,42 @@
 .user-option:hover{
     background-color: #f5f5f5;
 }
+
+.user-component{
+    width: 10%;
+}
+
+.user-component span{
+    /* margin-top: 5px; */
+}
+
+.notifications{
+    background-color: aliceblue;
+    position: absolute;
+    width: 70vh;
+    right: 0;
+    z-index: 2;
+}
+
+.read{
+    background-color: white;
+}
+
+.not-read{
+    background-color: aliceblue;
+}
+
+@media only screen and (max-width: 600px){
+    .user-component{
+        width: 30%;
+    }
+
+    .user-component span{
+        margin-top: 5px;
+    }
+
+    .notifications{
+        right: -70px;
+        width: 40vh;
+    }
+}

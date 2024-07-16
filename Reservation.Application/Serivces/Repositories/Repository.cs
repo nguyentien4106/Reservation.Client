@@ -38,6 +38,7 @@ namespace Reservation.Application.Serivces.Repositories
             try
             {
                 await _dbSet.AddRangeAsync(entities);
+                _logger.LogInformation($"Add Range of type {typeof(T)}");
                 return true;
             }
             catch (Exception ex)
@@ -60,7 +61,7 @@ namespace Reservation.Application.Serivces.Repositories
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, "Some errors occurs");
+                _logger.LogError(ex, $"Deleted entity of type {typeof(T)} occurs errors");
                 return false;
             }
         }
@@ -195,7 +196,8 @@ namespace Reservation.Application.Serivces.Repositories
 
         public async Task<T> SingleOrDefaultAsync(
             Expression<Func<T, bool>> filter,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null
+            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
+            bool tracking = false
         )
         {
             if(filter == null)
@@ -203,7 +205,7 @@ namespace Reservation.Application.Serivces.Repositories
                 throw new ArgumentException("It should be at least one filter condition");
             }
 
-            IQueryable<T> query = _dbSet.AsNoTracking();
+            IQueryable<T> query = tracking ? _dbSet.AsTracking() : _dbSet.AsNoTracking();
 
             if(include != null)
             {

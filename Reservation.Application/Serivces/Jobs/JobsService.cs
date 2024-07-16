@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Reservation.Infrastructure.Data;
 using Reservation.Infrastructure.Data.Entities;
 using Reservation.Domain.Models.DTO.Auth;
 using Reservation.Domain.Models.DTO.Jobs;
@@ -9,12 +8,12 @@ using Reservation.Domain.Models.Request;
 using Reservation.Domain.Models.ViewModel;
 using Reservation.Application.Serivces.IRepositories;
 using System.Linq.Expressions;
+using Reservation.Domain.Models.Enum;
 
 namespace Reservation.Application.Serivces.Jobs
 {
     public class JobsService(
         IUnitOfWork unitOfWork, 
-        //ApplicationDbContext context, 
         IMapper mapper, 
         IEmailService emailService
     ) 
@@ -35,6 +34,7 @@ namespace Reservation.Application.Serivces.Jobs
             var contract = _mapper.Map<Contract>(dto);
             await _unitOfWork.Contracts.AddAsync(contract);
             await _unitOfWork.CommitAsync();
+
 
             return new AppResponse<bool>().SetSuccessResponse(true);
         }
@@ -113,11 +113,7 @@ namespace Reservation.Application.Serivces.Jobs
                     include: o => o.Include(i => i.ApplicationUser)
                                     .ThenInclude(i => i.Collaborator)
                 );
-            //var contracts = await _context.Contracts
-            //    .Include(i => i.ApplicationUser)
-            //    .ThenInclude(i => i.Collaborator)
-            //    .Where(item => item.JobId == jobId)
-            //    .ToListAsync();
+
 
             return new AppResponse<List<ContractDTO>>().SetSuccessResponse(_mapper.Map<List<ContractDTO>>(contracts));
         }

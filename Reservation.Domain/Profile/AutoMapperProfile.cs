@@ -28,7 +28,8 @@ namespace Reservation.Domain.Profile
             CreateMap<View, ViewDTO>();
 
             CreateMap<Order, OrderDTO>()
-                .ForMember(item => item.NickName, opt => opt.MapFrom(src => src.Collaborator.NickName));
+                .ForMember(item => item.NickName, opt => opt.MapFrom(src => src.Collaborator.NickName))
+                .ForMember(item => item.CollaboratorEmail, opt => opt.MapFrom(src => src.Collaborator.Email));
 
             CreateMap<OrderDTO, Order>()
                 .ForMember(item => item.CollaboratorId, opt => opt.MapFrom(src => src.CollaboratorId));

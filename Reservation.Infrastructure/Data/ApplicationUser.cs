@@ -9,7 +9,11 @@ namespace Reservation.Infrastructure.Data
     
         public Collaborator? Collaborator { get; set; }
 
+        public List<Notification>? Notifications { get; set; } = [];
+
         public List<Order> Orders { get; set; } = [];
+
+        public List<Contract> Contracts { get; set; } = [];
 
         public List<JobService> JobServices { get; set; } = [];
 

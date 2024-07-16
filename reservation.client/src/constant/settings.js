@@ -23,3 +23,10 @@ export const ORDERS_STATUS = {
     Denied: 1,
     Approved: 2
 }
+
+export const NOTIFICATION_TYPE = {
+    NewOrder: 0,
+    NewEmployee: 1,
+    NewReview: 2,
+    NewStatusOrder: 3
+}

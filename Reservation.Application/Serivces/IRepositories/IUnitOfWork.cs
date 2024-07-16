@@ -1,5 +1,7 @@
 ﻿using Reservation.Infrastructure.Data.Entities;
 using OrderEntity = Reservation.Infrastructure.Data.Entities.Order;
+using NotificationEntity = Reservation.Infrastructure.Data.Entities.Notification;
+using Reservation.Infrastructure.Data;
 
 namespace Reservation.Application.Serivces.IRepositories
 {
@@ -20,6 +22,10 @@ namespace Reservation.Application.Serivces.IRepositories
         IRepository<Rate> Rates { get; }
 
         IRepository<View> Views { get; }
+
+        IRepository<NotificationEntity> Notifications { get; }
+
+        IRepository<ApplicationUser> ApplicationUsers { get; }
 
         Task CommitAsync();
 

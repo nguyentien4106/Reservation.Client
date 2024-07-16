@@ -29,6 +29,8 @@ namespace Reservation.Infrastructure.Data
 
         public DbSet<Contract> Contracts { get; set; }
 
+        public DbSet<Notification> Notifications { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -51,7 +53,6 @@ namespace Reservation.Infrastructure.Data
                 .HasOne(cs => cs.Service)
                 .WithMany(s => s.CollaboratorServices)
                 .HasForeignKey(cs => cs.ServiceId);
-
 
             builder.Entity<JobService>()
                 .HasKey(cs => new { cs.JobId, cs.ServiceId });
@@ -84,6 +85,17 @@ namespace Reservation.Infrastructure.Data
             builder.Entity<Order>().Property(e => e.Amount).HasPrecision(18, 2);
             builder.Entity<Job>().Property(e => e.Cast).HasPrecision(18, 2);
 
+            builder.Entity<Contract>()
+                .HasOne(i => i.Job)
+                .WithMany(m => m.Contracts)
+                .HasForeignKey(i => i.JobId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Entity<Contract>()
+                .HasOne(i => i.ApplicationUser)
+                .WithMany(m => m.Contracts)
+                .HasForeignKey(i => i.ApplicationUserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         }
 
     }

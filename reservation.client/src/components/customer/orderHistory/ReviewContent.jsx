@@ -37,9 +37,12 @@ function ReviewContent({ order, message, setOrdersSrc, submit }) {
         DataService.post(CUSTOMER_PATH.addReview, params)
         .then(res => {
             const { data } = res
-            if(data.isSucceed){
+            if(data?.isSucceed){
                 message.success("Đăng review thành công!")
-                setOrdersSrc(prev => prev.map(item => item.id === data.data.id ? data.data : item))
+                setOrdersSrc(prev => prev.map(item => item.id === data?.data ? { ...item, id: data?.data } : item))
+            }
+            else {
+                message.error("Đăng review không thành công!")
             }
         })
         .catch(err => message.error(generateMessages(err)))

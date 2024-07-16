@@ -1,15 +1,17 @@
 import { Avatar, Card, Flex, Image, Rate, Spin, Typography } from "antd";
 import dayjs from "dayjs";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { R2 } from "../../../../lib/R2";
-import { getUserName } from "../../../../lib/helper";
+import { getUser, getUserName } from "../../../../lib/helper";
+import { ContainerInfoProfile } from "../../../../pages/home/collaborator/CollaboratorPage";
 
 const { Meta } = Card;
 
 export default function Review({ order }) {
     const [expand, setExpand] = useState(false);
     const [images, setImages] = useState([]);
-
+    console.log(order)
+    console.log(getUser())
     useEffect(() => {
         R2.getReviewImages(getUserName(order.collaboratorEmail), order.id).then(
             (res) => {
@@ -31,7 +33,7 @@ export default function Review({ order }) {
                     }
                     title={
                         <Flex justify="space-between">
-                            <Typography.Text>{order.name}</Typography.Text>
+                            <Typography.Text>{order.name && order.name.trim() !== "" ? order.name : "Anonymous"}</Typography.Text>
                             <Rate
                                 defaultValue={order.review?.rate}
                                 disabled

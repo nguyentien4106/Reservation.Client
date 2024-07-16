@@ -31,7 +31,8 @@ namespace Reservation.Application.Serivces.IRepositories
 
         Task<TEntity> SingleOrDefaultAsync(
             Expression<Func<TEntity, bool>> filter,
-            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+            bool tracking = false
         );
 
         Task<TEntity> GetByIdAsync(object id);

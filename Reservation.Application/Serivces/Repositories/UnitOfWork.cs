@@ -4,6 +4,7 @@ using Reservation.Application.Serivces.IRepositories;
 using Reservation.Infrastructure.Data;
 using Reservation.Infrastructure.Data.Entities;
 using OrderEntity = Reservation.Infrastructure.Data.Entities.Order;
+using NotificationEntity = Reservation.Infrastructure.Data.Entities.Notification;
 
 namespace Reservation.Application.Serivces.Repositories
 {
@@ -21,6 +22,8 @@ namespace Reservation.Application.Serivces.Repositories
         private readonly Lazy<Repository<Contract>> _contractRepo;
         private readonly Lazy<Repository<Rate>> _rateRepo;
         private readonly Lazy<Repository<View>> _viewRepo;
+        private readonly Lazy<Repository<NotificationEntity>> _notificationRepo;
+        private readonly Lazy<Repository<ApplicationUser>> _userRepo;
 
         public UnitOfWork(
             ApplicationDbContext context,
@@ -37,6 +40,8 @@ namespace Reservation.Application.Serivces.Repositories
             _contractRepo = InitLazyRepository<Contract>();
             _rateRepo = InitLazyRepository<Rate>();
             _viewRepo = InitLazyRepository<View>();
+            _notificationRepo = InitLazyRepository<NotificationEntity>();
+            _userRepo = InitLazyRepository<ApplicationUser>();
         }
 
         public IRepository<Collaborator> Collaborators
@@ -76,6 +81,14 @@ namespace Reservation.Application.Serivces.Repositories
         {
             get { return _viewRepo.Value; }
         }
+        public IRepository<NotificationEntity> Notifications
+        {
+            get { return _notificationRepo.Value; }
+        }
+        public IRepository<ApplicationUser> ApplicationUsers
+        {
+            get { return _userRepo.Value; }
+        }
 
         public async Task CommitAsync()
         {
@@ -112,6 +125,7 @@ namespace Reservation.Application.Serivces.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
         private Lazy<Repository<T>> InitLazyRepository<T>() where T : class
         {
             return new Lazy<Repository<T>>(() =>

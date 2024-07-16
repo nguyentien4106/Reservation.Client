@@ -35,24 +35,6 @@ namespace Reservation.Application.Serivces.UserServiceRegister
         private const string All = "All";
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        //public async Task<AppResponse<List<CollaboratorDTO>>> GetAllAsync(int type)
-        //{
-        //    Expression<Func<Collaborator, bool>> filter = type switch
-        //    {
-        //        (int)CollaboratorGetType.All => (Collaborator c) => true,
-        //        (int)CollaboratorGetType.ReadyAndReviewing => (Collaborator c) => c.IsReady == true && c.Status == (int)ProfileStatus.Reviewing,
-        //        _ => (Collaborator c) => c.IsReady == false,
-        //    };
-
-        //    var collaborators = await _context.Collaborators
-        //        .Include(item => item.CollaboratorServices)
-        //        .ThenInclude(item => item.Service)
-        //        .Where(filter)
-        //        .ToListAsync();
-
-        //    return new AppResponse<List<CollaboratorDTO>>().SetSuccessResponse(_mapper.Map<List<CollaboratorDTO>>(collaborators));
-        //}
-
         public async Task<AppResponse<CollaboratorDTO>> GetProfileAsync(Guid? collaboratorId)
         {
             if (collaboratorId == null || !collaboratorId.HasValue)
@@ -78,7 +60,7 @@ namespace Reservation.Application.Serivces.UserServiceRegister
             Expression<Func<OrderEntity, bool>> filterByCollaborator = o => o.CollaboratorId == collaboratorId;
             var orders = await _unitOfWork.Orders.GetAllAsync(
                 filters: [filterByCollaborator],
-                include: o => o.Include(i => i.Review)
+                include: o => o.Include(i => i.Review).Include(item => item.Collaborator)
             );
 
             collaborator.Orders = orders.ToList();
@@ -87,17 +69,6 @@ namespace Reservation.Application.Serivces.UserServiceRegister
 
             return new AppResponse<CollaboratorDTO>().SetSuccessResponse(_mapper.Map<CollaboratorDTO>(collaborator));
         }
-
-        //public async Task<AppResponse<string>> GetUserIdAsync(string email)
-        //{
-        //    var user = await _userManager.FindByEmailAsync(email);
-        //    if (user == null)
-        //    {
-        //        return new AppResponse<string>().SetErrorResponse("user", "User not found");
-        //    }
-
-        //    return new AppResponse<string>().SetSuccessResponse(user.Id);
-        //}
 
         public async Task<AppResponse<string>> AddAsync(CollaboratorDTO dto)
         {
@@ -129,9 +100,7 @@ namespace Reservation.Application.Serivces.UserServiceRegister
             }
 
             _unitOfWork.CollaboratorServices.DeleteByEntities(collaborator.CollaboratorServices);
-            //_context.CollaboratorServices.RemoveRange(collaborator.CollaboratorServices);
             var collaboratorServices = _mapper.Map<List<Reservation.Infrastructure.Data.Entities.CollaboratorService>>(dto.CollaboratorServices);
-            //_context.CollaboratorServices.AddRange(collaboratorServices);
             await _unitOfWork.CollaboratorServices.AddRangeAsync(collaboratorServices);
 
             var newCollaborator = _mapper.Map<Collaborator>(dto);

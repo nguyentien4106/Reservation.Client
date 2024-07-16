@@ -11,6 +11,7 @@ using Reservation.Application.Serivces.IRepositories;
 using System.Linq.Expressions;
 using OrderEntity = Reservation.Infrastructure.Data.Entities.Order;
 using Reservation.Infrastructure.Data.Entities;
+using Reservation.Domain.Extensions;
 
 namespace Reservation.Application.Serivces.Order
 {
@@ -24,7 +25,6 @@ namespace Reservation.Application.Serivces.Order
     ) 
         : IOrderService
     {
-        private readonly ApplicationDbContext _context = context;
         private readonly IMapper _mapper = mapper;
         private readonly IEmailService _emailService = emailService;
         private readonly IHostingEnvironment _hostingEnvironment = hostingEnvironment;
@@ -40,7 +40,10 @@ namespace Reservation.Application.Serivces.Order
 
             Expression<Func<OrderEntity, bool>> filterById = o => o.Id == orderId;
 
-            var order = await _unitOfWork.Orders.SingleOrDefaultAsync(filterById, include: o => o.Include(i => i.ApplicationUser));
+            var order = await _unitOfWork.Orders
+                .SingleOrDefaultAsync(
+                    filterById, 
+                    include: o => o.Include(i => i.ApplicationUser).Include(item => item.Collaborator));
 
             if (order == null)
             {
@@ -49,22 +52,28 @@ namespace Reservation.Application.Serivces.Order
 
             order.Status = status;
             order.ConfirmedDate = DateTime.Now;
+            _unitOfWork.Orders.Update(order);
+
+            await _unitOfWork.Notifications
+                .AddAsync(
+                new Notification(
+                    order.ApplicationUserId, 
+                    (int)NotificationType.NewStatusOrder, 
+                    new 
+                    {
+                        Status = status,
+                        Collaborator = order.Collaborator.NickName,
+                    }.ToJSON()));
 
             await _unitOfWork.CommitAsync();
-
-            Expression<Func<Collaborator, bool>> filterByCollaboratorId = o => o.Id == order.CollaboratorId;
-
-            var collaborator = await _unitOfWork.Collaborators.SingleOrDefaultAsync(
-                filterByCollaboratorId, 
-                include: o => o.Include(i => i.ApplicationUser)
-            );
 
             var emailBuilder = new EmailBuilder();
             emailBuilder.SetFrom("ThueNguoiYeu.me", "customer-support@ThueNguoiYeu.me.com");
             emailBuilder.SetTo(order.Name, order.Email);
             emailBuilder.SetSubject("Thông báo mới về yêu cầu cho thuê.");
             emailBuilder.SetBody(
-                new OrderConfirmationEmailBodyBuilder(_hostingEnvironment, _tokenSettings, order).GetBodyBuilder()
+                new OrderConfirmationEmailBodyBuilder(_hostingEnvironment, _tokenSettings, order)
+                .GetBodyBuilder()
             );
 
             var sent = _emailService.Sent(emailBuilder.Build());
@@ -94,14 +103,26 @@ namespace Reservation.Application.Serivces.Order
         {
             if (string.IsNullOrEmpty(orderDTO.ApplicationUserId) || orderDTO == null)
             {
-                return new AppResponse<bool>().SetErrorResponse("user", "User trống!");
+                return new AppResponse<bool>().SetErrorResponse("user", "Không tìm thấy user!");
             }
 
             var order = _mapper.Map<OrderEntity>(orderDTO);
             order.Status = (int)OrderStatus.Sent;
             order.CreatedDate = DateTime.Now;
-
+            
             await _unitOfWork.Orders.AddAsync(order);
+            Expression<Func<ApplicationUser, bool>> filterByUser = o => o.Collaborator.Id == order.CollaboratorId;
+            var user = await _unitOfWork.ApplicationUsers.SingleOrDefaultAsync(filterByUser);
+            await _unitOfWork.Notifications.AddAsync(
+                new Notification(
+                    user?.Id, 
+                    (int)NotificationType.NewOrder, 
+                    new 
+                    {
+                        UserName = user.UserName,
+                        OrderId = order.Id
+                    }.ToJSON()
+            )); 
             await _unitOfWork.CommitAsync();
 
             var emailBuilder = new EmailBuilder();

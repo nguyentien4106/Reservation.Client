@@ -13,6 +13,7 @@ export const ContainerInfoProfile = createContext({});
 function CollaboratorPage() {
     const { id } = useParams();
     const navigate = useNavigate()
+    const collaborator = UseFetchCollaborator(id);
 
     if (id === "null") {
         return (
@@ -28,7 +29,7 @@ function CollaboratorPage() {
             </>
         );
     }
-    const collaborator = UseFetchCollaborator(id);
+    
     return (
         <ContainerInfoProfile.Provider value={collaborator}>
             <div onClick={ () => navigate(COLLABORATORS_ROUTE_PATH.collaborators)} className="pointer">
