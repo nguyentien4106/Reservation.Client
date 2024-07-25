@@ -10,7 +10,7 @@ function AvatarComponent({ setHasAvatar }) {
     const [fileList, setFileList] = useState([]);
     const { message } = App.useApp();
     const { user } = useSelector(store => store.user);
-    const userName = getUserName(user?.userName);
+    const userName = getUserName(user?.email);
 
     useEffect(() => {
         const fetchAndSetFileList = async () => {

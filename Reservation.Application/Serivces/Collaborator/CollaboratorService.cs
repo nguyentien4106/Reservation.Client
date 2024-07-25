@@ -151,7 +151,7 @@ namespace Reservation.Application.Serivces.UserServiceRegister
 
             if (collaborator == null)
             {
-                return new AppResponse<CollaboratorDTO>().SetErrorResponse("id", "User not found!");
+                return new AppResponse<CollaboratorDTO>().SetSuccessResponse(new ());
             }
 
             return new AppResponse<CollaboratorDTO>().SetSuccessResponse(_mapper.Map<CollaboratorDTO>(collaborator));

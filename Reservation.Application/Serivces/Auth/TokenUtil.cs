@@ -17,7 +17,7 @@ namespace Reservation.Application.Serivces.Auth
             var userClaims = new List<Claim>
             {
                 new ("id", user.Id.ToString()),
-                new ("userName", user.UserName??"") ,
+                new ("email", user.Email ?? "") ,
                 new ("firstName", user.FirstName?? ""),
                 new ("lastName", user.LastName?? ""),
                 new ("phoneNumber", user.PhoneNumber?? ""),

@@ -37,7 +37,7 @@ function UserComponent() {
                 <Item
                     value={
                         <strong style={{ textAlign: "center" }}>
-                            {user?.userName}
+                            {user?.email}
                         </strong>
                     }
                 />

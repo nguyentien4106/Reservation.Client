@@ -72,4 +72,12 @@ export default class DataService{
             }
         })
     }
+
+    static put(url, data, options){
+        return service.put(BASE_URL + url, data, {
+            headers: {
+                Authorization: `Bearer ${Cookie.getAccessToken()}`
+            }
+        })
+    }
 }

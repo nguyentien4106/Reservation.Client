@@ -126,7 +126,7 @@ namespace Reservation.Application.Serivces.Order
             await _unitOfWork.CommitAsync();
 
             var emailBuilder = new EmailBuilder();
-            emailBuilder.SetFrom("ThueNguoiYeu.me", "customer-support@ThueNguoiYeu.me.com");
+            emailBuilder.SetFrom("ThueNguoiYeu.me", "customer-support@ThueNguoiYeu.me");
             emailBuilder.SetTo(orderDTO.NickName ?? "Customer", orderDTO?.CollaboratorEmail ?? "nguyenvantien0620@gmail.com");
             emailBuilder.SetSubject("Bạn có một người muốn thuê mới.");
             emailBuilder.SetBody(new NewOrderEmailBodyBuiler(_hostingEnvironment, orderDTO, orderDTO.NickName ?? "Customer").GetBodyBuilder());

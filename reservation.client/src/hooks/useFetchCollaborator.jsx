@@ -10,7 +10,7 @@ function UseFetchCollaborator(collaboratorId) {
         return null
     }
     useEffect(() => {
-        DataService.get(COLLABORATOR_PATH.getProfile + collaboratorId)
+        DataService.get(COLLABORATOR_PATH.get + collaboratorId)
         .then(res => {
             const { data } = res.data
             setCollaborator(data)

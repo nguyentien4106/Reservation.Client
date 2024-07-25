@@ -75,7 +75,7 @@ const OrderContent = ({ collaboratorEmail, collaboratorId, nickName, collaborato
             }}
             initialValues={{
                 name: `${user?.firstName} ${user?.lastName}`,
-                email: user?.userName,
+                email: user?.email,
                 price: price,
                 phoneNumber: user.phoneNumber
             }}

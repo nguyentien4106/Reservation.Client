@@ -13,18 +13,12 @@ using Reservation.Domain.Models.ViewModel;
 
 namespace Reservation.API.Controllers
 {
-    [Route("[controller]/[action]")]
     [ApiController]
+    [Route("[controller]")]
     [Authorize]
     public class CollaboratorsController(ICollaboratorService collaboratorService) : ControllerBase
     {
         private readonly ICollaboratorService _collaboratorService = collaboratorService;
-
-        //[HttpGet]
-        //public async Task<AppResponse<string>> GetUser(string email)
-        //{
-        //    return await _collaboratorService.GetUserIdAsync(email);
-        //}
 
         [HttpPost]
         public async Task<AppResponse<string>> Add(CollaboratorDTO dto)
@@ -32,13 +26,13 @@ namespace Reservation.API.Controllers
             return await _collaboratorService.AddAsync(dto);
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<AppResponse<string>> Update(CollaboratorDTO dto)
         {
             return await _collaboratorService.UpdateAsync(dto);
         }
 
-        [HttpGet]
+        [HttpGet("{collaboratorId}")]
         [AllowAnonymous]
         public async Task<AppResponse<CollaboratorDTO>> GetProfile(Guid? collaboratorId)
         {
@@ -46,26 +40,20 @@ namespace Reservation.API.Controllers
         }
 
         [HttpGet]
+        [Route("[action]")]
         [AllowAnonymous]
         public async Task<AppResponse<CollaboratorDTO>> GetProfileByEmail(string? email)
         {
             return await _collaboratorService.GetProfileByEmailAsync(email);
         }
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public async Task<AppResponse<List<CollaboratorDTO>>> GetAll(int type)
-        //{
-        //    return await _collaboratorService.GetAllAsync(type);
-        //}
-
         [HttpPost]
+        [Route("[action]")]
         public async Task<AppResponse<string>> ChangeStatus(ChangeStatusRequest request)
         {
             return await _collaboratorService.ChangeStatusAsync(request.CollaboratorId, request.Status);
         }
 
-        [Route("/[controller]")]
         [HttpGet]
         [AllowAnonymous]
         public async Task<AppResponse<PagingViewModel<List<CollaboratorDTO>>>> Collaborators([FromQuery] GetCollaboratorsRequest request)

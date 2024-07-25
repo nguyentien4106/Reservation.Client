@@ -13,7 +13,7 @@ const SettingPage = () => {
     const [collaborator, setCollaborator] = useState({ id: "" });
     const { message } = App.useApp();
     const [initialValues, setInitialValues] = useState({});
-    const email = user?.userName
+    const email = user?.email
 
     useEffect(() => {
         if (email) {
@@ -21,12 +21,9 @@ const SettingPage = () => {
                 (res) => {
                     const { data } = res.data;
                     setCollaborator(data);
-                    setInitialValues(data ?? { email: user?.userName });
-                    localStorage.setItem("collaboratorId", data?.id ?? null)
-
+                    setInitialValues(data ?? { email: user?.email });
                 }
             ).catch((err) => {
-                console.log(err)
                 if(err.response.status == 400){
                     message.error("Không tìm thấy hồ sơ theo đường dẫn này. Hãy thử lại !")
                 }
@@ -59,7 +56,6 @@ const SettingPage = () => {
                             Hồ sơ
                         </h2>
                         <LeaseInfoComponent
-                            collaborator={collaborator}
                             initialValues={initialValues}
                         />
                     </div>

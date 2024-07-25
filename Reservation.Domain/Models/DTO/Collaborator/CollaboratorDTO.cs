@@ -4,7 +4,7 @@ namespace Reservation.Domain.Models.DTO.Collaborator
 {
     public class CollaboratorDTO
     {
-        public Guid? Id { get; set; }
+        public Guid? Id { get; set; } = new Guid();
 
         public string? ApplicationUserId { get; set; }
 
@@ -20,7 +20,7 @@ namespace Reservation.Domain.Models.DTO.Collaborator
 
         public string? District { get; set; }
 
-        public DateTime? BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; } = new DateTime(2000, 01, 01);
 
         public int? PricePerHour { get; set; }
 

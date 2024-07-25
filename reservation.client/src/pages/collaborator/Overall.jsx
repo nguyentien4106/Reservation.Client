@@ -23,7 +23,7 @@ export default function Overall() {
 
     useEffect(() => {
         dispatch(show());
-        DataService.get(COLLABORATOR_PATH.getProfile + user?.collaboratorId)
+        DataService.get(COLLABORATOR_PATH.get + user?.collaboratorId)
             .then((res) => {
                 const { orders } = res.data.data;
                 setReady(res.data.data.isReady);

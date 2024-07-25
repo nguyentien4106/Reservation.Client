@@ -57,7 +57,7 @@ export default function JobApplyInformation({
 
             try {
                 const image = await getBase64(file.originFileObj);
-                const fileName = `${getUserName(user?.userName)}/jobs/${job.id}_${file.name}`
+                const fileName = `${getUserName(user?.email)}/jobs/${job.id}_${file.name}`
 
                 await R2.upload(fileName, image, file.type);
             } catch (err) {

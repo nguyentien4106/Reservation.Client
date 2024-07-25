@@ -21,7 +21,8 @@ import locationAPI from "../../../api/locationAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { show, hide } from "@/state/loading/loadingSlice";
 import { setUser } from "../../../state/user/userSlice";
-import { getLocal } from "../../../lib/helper";
+import { GUID } from "../../../constant/settings";
+
 const layout = {
     labelCol: {
         span: 8,
@@ -48,12 +49,13 @@ export default function LeaseInfoComponent({ initialValues }) {
     const [form] = Form.useForm();
     const { user } = useSelector(store => store.user)
     const dispatch = useDispatch()
-    const collaboratorId = getLocal("collaboratorId")
+    const collaboratorId = initialValues?.id
 
     useEffect(() => {
         const newValues = {
             ...initialValues,
             birthDate: dayjs(initialValues?.birthDate),
+            email: user?.email
         };
 
         form.setFieldsValue(newValues);
@@ -73,8 +75,8 @@ export default function LeaseInfoComponent({ initialValues }) {
                 collaboratorId: collaboratorId,
                 price: item.price
             }));
-        console.log(services)
-        if(!services || !services.length){
+
+            if(!services || !services.length){
             message.error("Bạn cần chọn ít nhất một dịch vụ cho thuê.")
             return
         }
@@ -84,20 +86,21 @@ export default function LeaseInfoComponent({ initialValues }) {
             applicationUserId: user?.id,
             collaboratorServices: services,
             city: values.city,
-            id: collaboratorId
+            id: collaboratorId,
+            avgRate: 0
         };
 
-        const url = collaboratorId && collaboratorId != "00000000-0000-0000-0000-000000000000"
-            ? COLLABORATOR_PATH.update
-            : COLLABORATOR_PATH.add;
-
-        dispatch(show())
-        DataService.post(url, params).then((res) => {
-            const { data } = res;
-            if(url === COLLABORATOR_PATH.add){
-                localStorage.setItem("collaboratorId", data.data)
-                dispatch(setUser({ collaboratorId: data.data }))
+        const handle = () => {
+            if(collaboratorId === GUID.empty){
+                return DataService.post(COLLABORATOR_PATH.add, params)
             }
+
+            return DataService.put(COLLABORATOR_PATH.update, params)
+        }
+        
+        dispatch(show())
+        handle().then((res) => {
+            const { data } = res;
             message.open({
                 type: data.isSucceed ? "success" : "error",
                 content: data.isSucceed
@@ -106,7 +109,7 @@ export default function LeaseInfoComponent({ initialValues }) {
                 duration: 5,
             });
         }).catch((e) => {
-            message.error("Đã có lỗi xảy ra xin kiểm tra lại.")
+            message.error(`Đã có lỗi xảy ra xin kiểm tra lại. ${e}`)
         }).finally(() => {
             dispatch(hide())
         });
@@ -125,7 +128,6 @@ export default function LeaseInfoComponent({ initialValues }) {
                 validateMessages={validateMessages}
                 initialValues={{
                     ...initialValues,
-                    email: user?.userName,
                 }}
                 form={form}
             >
